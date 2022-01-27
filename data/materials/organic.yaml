@@ -1,0 +1,27 @@
+bone:
+  is_a_kind_of: solid
+  processes:
+    burn: {}
+    cook: {}
+
+fat:
+  is_a_kind_of: solid
+  # TODO: should be of almost 0 hardness, maybe negative if I use a modified
+  #       Mohs scale
+  processes:
+    burn: {}
+    cook: {}
+    melt: {}
+
+flesh:
+  is_a_kind_of: solid
+  processes:
+    burn: {}
+    cook: {}
+
+wood:
+  # not abstract for now, but could be down the line
+  is_a_kind_of: solid
+  processes:
+    burn: {}
+    pyrolyze: {}

@@ -8,21 +8,14 @@ physical_material:
   has_attributes:
     - mass
 
-meltable:
-  abstract!: true
-  has_traits:
-    - melting_point
-    - sublimation_point
-
-solid:
+gas:
   abstract!: true
   is_a_kind_of: physical_material
-  has_attributes:
-    - length
-    - width
-    - height
+  has_traits:
+    - condensation_point
+    - deposition_point
 
-# "Liquids" also include suspensions such as mud, which is characterized as a
+# "Liquids" also include suspensions such as syrup, which is characterized as a
 # liquid with very high viscosity.
 liquid:
   abstract!: true
@@ -32,12 +25,12 @@ liquid:
     - freezing_point
     - viscosity
 
-gas:
+# Meltable indicates a substance that can melt, versus one that only burns.
+meltable:
   abstract!: true
-  is_a_kind_of: physical_material
   has_traits:
-    - condensation_point
-    - deposition_point
+    - melting_point
+    - sublimation_point
 
 # A powder is something solid but granular, such as sand.
 # Like a liquid, it is shapeless and can flow. It may also be able to coat
@@ -45,5 +38,15 @@ gas:
 powder:
   abstract!: true
   is_a_kind_of: physical_material
+
+# "Solid" for our purposes means something with a definite shape.
+solid:
+  abstract!: true
+  is_a_kind_of: physical_material
+  has_attributes:
+    - length
+    - width
+    - height
+    - hardness
 
 # TODO: laminar items such as paper?

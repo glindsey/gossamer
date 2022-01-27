@@ -1,5 +1,0 @@
-flesh:
-  is_a_kind_of: solid
-  processes:
-    - burn
-    - cook

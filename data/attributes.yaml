@@ -1,6 +1,7 @@
 # Attributes are transient and apply to individual things, whereas traits
 # are intrinsic and apply to materials.
 attributes:
+  hardness: {}
   height:
     measurement: distance
   length:
