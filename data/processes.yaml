@@ -1,0 +1,97 @@
+# Standard processes
+# Processes take input materials and time, and produce effects.
+
+processes:
+  boil:
+    inputs:
+      - liquid
+    conditions:
+      greater_than:
+        - 0: temperature
+        - 0: boiling_point
+    effects:
+      - transmute
+
+  burn: true
+
+  corrode: true
+
+  condense:
+    inputs:
+      - gas
+      - solid
+    conditions:
+      greater_than:
+        - 0: temperature
+        - 0: freezing_point
+      less_than:
+        - 0: temperature
+        - 0: boiling_point
+    effects:
+      - destroy
+      - coat
+
+  deposit:
+    inputs:
+      - gas
+      - solid
+    conditions:
+      less_than:
+        - 0: temperature
+        - 0: freezing_point
+    effects:
+      - destroy
+      - coat
+
+  freeze:
+    inputs:
+      - liquid
+    conditions:
+      less_than:
+        - 0: temperature
+        - 0: freezing_point
+    effects:
+      - transmute
+
+  # unsure if this should be a process as it doesn't produce a tangible output
+  glow: true
+
+  melt:
+    inputs:
+      - solid
+    conditions:
+      greater_than:
+        - 0: temperature
+        - 0: freezing_point
+      less_than:
+        - 0: temperature
+        - 0: boiling_point
+    effects:
+      - transmute
+
+  oxidize: true
+
+  pyrolyze: true
+
+  rot: true
+
+  rust:
+    is_a_kind_of: oxidize
+    inputs:
+      - iron_alloy
+    # TODO: fill in conditions here
+    effects:
+      - increment_attribute: rustiness
+
+  sublimate:
+    inputs:
+      - solid
+    conditions:
+      greater_than:
+        - 0: temperature
+        - 0: boiling_point
+    effects:
+      - transmute
+
+  tarnish:
+    is_a_kind_of: oxidize

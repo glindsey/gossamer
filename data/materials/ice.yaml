@@ -1,0 +1,10 @@
+ice:
+  is_a_kind_of: solid
+  processes:
+    sublimate:
+      outputs:
+        transmute: steam
+    conduct: true
+    melt:
+      outputs:
+        transmute: water

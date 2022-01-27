@@ -1,0 +1,12 @@
+steam:
+  is_a_kind_of: gas
+  processes:
+    deposit:
+      outputs:
+        - destroy
+        - coat: frost
+    conduct: true
+    condense:
+      outputs:
+        - destroy
+        - coat: dew

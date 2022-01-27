@@ -1,0 +1,4 @@
+copper:
+  is_a_kind_of: metal
+  processes:
+    - tarnish

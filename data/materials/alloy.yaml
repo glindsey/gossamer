@@ -1,0 +1,3 @@
+alloy:
+  abstract!: true
+  is_a_kind_of: metal

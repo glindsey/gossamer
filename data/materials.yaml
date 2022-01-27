@@ -1,0 +1,30 @@
+# Basic materials
+materials:
+  material:
+    abstract!: true
+    has_attributes:
+      boiling_point: temperature
+      freezing_point: temperature
+
+  solid:
+    abstract!: true
+    is_a_kind_of: material
+
+  # "Liquids" also include suspensions such as mud, which is characterized as a
+  # liquid with very high viscosity.
+  liquid:
+    abstract!: true
+    is_a_kind_of: material
+    has_attributes:
+      viscosity: percentage
+
+  gas:
+    abstract!: true
+    is_a_kind_of: material
+
+  # A powder is something solid but granular, such as sand.
+  # Like a liquid, it is shapeless and can flow. It may also be able to coat
+  # things if the powder is fine enough.
+  powder:
+    abstract!: true
+    is_a_kind_of: material

@@ -1,0 +1,5 @@
+oil:
+  abstract!: true
+  is_a_kind_of: liquid
+  processes:
+    - burn

@@ -1,0 +1,6 @@
+wood:
+  # not abstract for now, but could be down the line
+  is_a_kind_of: solid
+  processes:
+    - burn
+    - pyrolyze

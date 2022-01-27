@@ -1,0 +1,6 @@
+coin:
+  is_a_kind_of: currency
+  always:
+    has_property: shaped
+  usually:
+    is_made_of: metal

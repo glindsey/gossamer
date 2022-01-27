@@ -1,0 +1,114 @@
+# Standard properties
+
+properties:
+  acrid:
+    senses: [smell]
+
+  bitter:
+    senses: [smell, taste]
+
+  colored:
+    abstract!: true
+    senses: [sight]
+
+  iridescent:
+    senses: [sight]
+
+  opaque:
+    senses: [sight]
+    excludes: [translucent, transparent]
+
+  rough:
+    senses: [touch]
+
+  shaped:
+    abstract!: true
+    senses: [sight, touch]
+
+  shapeless:
+    senses: [sight, touch]
+    excludes: shaped
+
+  shiny:
+    senses: [sight]
+
+  smooth:
+    senses: [touch]
+
+  sour:
+    senses: [smell, taste]
+
+  sweet:
+    senses: [smell, taste]
+
+  translucent:
+    senses: [sight]
+    excludes: [opaque, transparent]
+
+  transparent:
+    senses: [sight]
+    excludes: [opaque, translucent]
+
+  # Colors
+  aqua:
+    is_a_kind_of: colored
+  beige:
+    is_a_kind_of: colored
+  black:
+    is_a_kind_of: colored
+  blue:
+    is_a_kind_of: colored
+  brown:
+    is_a_kind_of: colored
+  cyan:
+    is_a_kind_of: colored
+  gray:
+    is_a_kind_of: colored
+  green:
+    is_a_kind_of: colored
+  magenta:
+    is_a_kind_of: colored
+  orange:
+    is_a_kind_of: colored
+  pink:
+    is_a_kind_of: colored
+  purple:
+    is_a_kind_of: colored
+  red:
+    is_a_kind_of: colored
+  tan:
+    is_a_kind_of: colored
+  yellow:
+    is_a_kind_of: colored
+  white:
+    is_a_kind_of: colored
+
+  # Shapes
+  circular:
+    is_a_kind_of: shaped
+  conical:
+    is_a_kind_of: shaped
+  cubical:
+    is_a_kind_of: shaped
+  cylindrical:
+    is_a_kind_of: shaped
+  hexagonal:
+    is_a_kind_of: shaped
+  octagonal:
+    is_a_kind_of: shaped
+  ovoid:
+    is_a_kind_of: shaped
+  pentagonal:
+    is_a_kind_of: shaped
+  pyramidal:
+    is_a_kind_of: shaped
+  rectangular:
+    is_a_kind_of: shaped
+  spherical:
+    is_a_kind_of: shaped
+  square:
+    is_a_kind_of: shaped
+  toroidal:
+    is_a_kind_of: shaped
+  triangular:
+    is_a_kind_of: shaped

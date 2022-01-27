@@ -1,0 +1,41 @@
+require:
+  - 'rubocop-performance'
+  - 'rubocop-rspec'
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 2.7
+  Exclude:
+    - '.pryrc'
+    - 'bin/rails'
+
+Metrics:
+  Enabled: true
+
+Metrics/AbcSize:
+  Max: 20
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/LineLength:
+  Max: 80
+
+Metrics/MethodLength:
+  Max: 25
+
+# Permit certain names that are less than three characters long, but which make
+# sense to have as valid parameter names.
+Naming/MethodParameterName:
+  AllowedNames:
+    - 'as'
+    - 'by'
+    - 'id'
+    - 'if'
+    - 'ip'
+    - 'to'
+    - 'x'
+    - 'y'

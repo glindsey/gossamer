@@ -1,0 +1,12 @@
+water:
+  is_a_kind_of: liquid
+  processes:
+    boil:
+      outputs:
+        transmute: steam
+    conduct: true
+    freeze:
+      outputs:
+        transmute: ice
+
+

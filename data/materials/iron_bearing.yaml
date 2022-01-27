@@ -1,0 +1,7 @@
+iron_bearing:
+  abstract!: true
+  has_attributes:
+    rustiness:
+      type: percentage
+  processes:
+    - rust
