@@ -1,0 +1,18 @@
+# Attributes are transient and apply to individual things, whereas traits
+# are intrinsic and apply to materials.
+traits:
+  boiling_point:
+    type: temperature
+  condensation_point:
+    type: temperature
+  deposition_point:
+    type: temperature
+  freezing_point:
+    type: temperature
+  melting_point:
+    type: temperature
+  sublimation_point:
+    type: temperature
+  viscosity:
+    type: percentage
+

@@ -1,5 +1,7 @@
 ice:
-  is_a_kind_of: solid
+  is_a_kind_of:
+    - meltable
+    - solid
   processes:
     sublimate:
       outputs:

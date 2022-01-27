@@ -4,7 +4,7 @@ water:
     boil:
       outputs:
         transmute: steam
-    conduct: true
+    conduct: {}
     freeze:
       outputs:
         transmute: ice

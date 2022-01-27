@@ -4,94 +4,95 @@
 processes:
   boil:
     inputs:
-      - liquid
+      0: liquid
     conditions:
       greater_than:
         - 0: temperature
         - 0: boiling_point
     effects:
-      - transmute
+      0: transmute
 
-  burn: true
+  burn: {}
 
-  corrode: true
+  corrode: {}
 
   condense:
     inputs:
-      - gas
-      - solid
+      n0: gas
+      n1: solid
     conditions:
       greater_than:
-        - 0: temperature
-        - 0: freezing_point
+        - n0: temperature
+        - n0: freezing_point
       less_than:
-        - 0: temperature
-        - 0: boiling_point
+        - n0: temperature
+        - n0: boiling_point
     effects:
-      - destroy
-      - coat
+      n0: destroy
+      n1: coat
 
   deposit:
     inputs:
-      - gas
-      - solid
+      n0: gas
+      n1: solid
     conditions:
       less_than:
-        - 0: temperature
-        - 0: freezing_point
+        - n0: temperature
+        - n0: freezing_point
     effects:
-      - destroy
-      - coat
+      n0: destroy
+      n1: coat
 
   freeze:
     inputs:
-      - liquid
+      n0: liquid
     conditions:
       less_than:
-        - 0: temperature
-        - 0: freezing_point
+        - n0: temperature
+        - n0: freezing_point
     effects:
-      - transmute
+      n0: transmute
 
   # unsure if this should be a process as it doesn't produce a tangible output
-  glow: true
+  glow: {}
 
   melt:
     inputs:
-      - solid
+      n0: solid
     conditions:
       greater_than:
-        - 0: temperature
-        - 0: freezing_point
+        - n0: temperature
+        - n0: freezing_point
       less_than:
-        - 0: temperature
-        - 0: boiling_point
+        - n0: temperature
+        - n0: boiling_point
     effects:
-      - transmute
+      n0: transmute
 
-  oxidize: true
+  oxidize: {}
 
-  pyrolyze: true
+  pyrolyze: {}
 
-  rot: true
+  rot: {}
 
   rust:
     is_a_kind_of: oxidize
     inputs:
-      - iron_alloy
+      n0: iron_alloy
     # TODO: fill in conditions here
     effects:
-      - increment_attribute: rustiness
+      n0:
+        increment_attribute: rustiness
 
   sublimate:
     inputs:
-      - solid
+      n0: solid
     conditions:
       greater_than:
-        - 0: temperature
-        - 0: boiling_point
+        - n0: temperature
+        - n0: boiling_point
     effects:
-      - transmute
+      n0: transmute
 
   tarnish:
     is_a_kind_of: oxidize

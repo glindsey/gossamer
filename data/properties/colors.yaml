@@ -1,0 +1,38 @@
+colored:
+  abstract!: true
+  senses: [sight]
+
+
+aqua:
+  is_a_kind_of: colored
+beige:
+  is_a_kind_of: colored
+black:
+  is_a_kind_of: colored
+blue:
+  is_a_kind_of: colored
+brown:
+  is_a_kind_of: colored
+cyan:
+  is_a_kind_of: colored
+gray:
+  is_a_kind_of: colored
+green:
+  is_a_kind_of: colored
+magenta:
+  is_a_kind_of: colored
+orange:
+  is_a_kind_of: colored
+pink:
+  is_a_kind_of: colored
+purple:
+  is_a_kind_of: colored
+red:
+  is_a_kind_of: colored
+tan:
+  is_a_kind_of: colored
+yellow:
+  is_a_kind_of: colored
+white:
+  is_a_kind_of: colored
+

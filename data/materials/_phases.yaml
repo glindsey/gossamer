@@ -1,0 +1,49 @@
+# Basic material phases
+material:
+  abstract!: true
+
+physical_material:
+  abstract!: true
+  is_a_kind_of: material
+  has_attributes:
+    - mass
+
+meltable:
+  abstract!: true
+  has_traits:
+    - melting_point
+    - sublimation_point
+
+solid:
+  abstract!: true
+  is_a_kind_of: physical_material
+  has_attributes:
+    - length
+    - width
+    - height
+
+# "Liquids" also include suspensions such as mud, which is characterized as a
+# liquid with very high viscosity.
+liquid:
+  abstract!: true
+  is_a_kind_of: physical_material
+  has_traits:
+    - boiling_point
+    - freezing_point
+    - viscosity
+
+gas:
+  abstract!: true
+  is_a_kind_of: physical_material
+  has_traits:
+    - condensation_point
+    - deposition_point
+
+# A powder is something solid but granular, such as sand.
+# Like a liquid, it is shapeless and can flow. It may also be able to coat
+# things if the powder is fine enough.
+powder:
+  abstract!: true
+  is_a_kind_of: physical_material
+
+# TODO: laminar items such as paper?

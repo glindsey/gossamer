@@ -1,0 +1,37 @@
+shaped:
+  abstract!: true
+  senses: [sight, touch]
+  excludes: shapeless
+
+shapeless:
+  senses: [sight, touch]
+  excludes: shaped
+
+circular:
+  is_a_kind_of: shaped
+conical:
+  is_a_kind_of: shaped
+cubical:
+  is_a_kind_of: shaped
+cylindrical:
+  is_a_kind_of: shaped
+hexagonal:
+  is_a_kind_of: shaped
+octagonal:
+  is_a_kind_of: shaped
+ovoid:
+  is_a_kind_of: shaped
+pentagonal:
+  is_a_kind_of: shaped
+pyramidal:
+  is_a_kind_of: shaped
+rectangular:
+  is_a_kind_of: shaped
+spherical:
+  is_a_kind_of: shaped
+square:
+  is_a_kind_of: shaped
+toroidal:
+  is_a_kind_of: shaped
+triangular:
+  is_a_kind_of: shaped

@@ -1,4 +1,9 @@
 # Standard properties
+# Properties can be intrinsic or transient.
+# If it is a property of a material, it is intrinsic to that material, but might
+# be superceded by other properties of a thing made of that material.
+#
+# If it is a property of a thing, it is transient and changeable.
 
 properties:
   acrid:
@@ -7,9 +12,8 @@ properties:
   bitter:
     senses: [smell, taste]
 
-  colored:
-    abstract!: true
-    senses: [sight]
+  ductile:
+    senses: [touch]
 
   iridescent:
     senses: [sight]
@@ -18,16 +22,11 @@ properties:
     senses: [sight]
     excludes: [translucent, transparent]
 
-  rough:
+  malleable:
     senses: [touch]
 
-  shaped:
-    abstract!: true
-    senses: [sight, touch]
-
-  shapeless:
-    senses: [sight, touch]
-    excludes: shaped
+  rough:
+    senses: [touch]
 
   shiny:
     senses: [sight]
@@ -49,66 +48,3 @@ properties:
     senses: [sight]
     excludes: [opaque, translucent]
 
-  # Colors
-  aqua:
-    is_a_kind_of: colored
-  beige:
-    is_a_kind_of: colored
-  black:
-    is_a_kind_of: colored
-  blue:
-    is_a_kind_of: colored
-  brown:
-    is_a_kind_of: colored
-  cyan:
-    is_a_kind_of: colored
-  gray:
-    is_a_kind_of: colored
-  green:
-    is_a_kind_of: colored
-  magenta:
-    is_a_kind_of: colored
-  orange:
-    is_a_kind_of: colored
-  pink:
-    is_a_kind_of: colored
-  purple:
-    is_a_kind_of: colored
-  red:
-    is_a_kind_of: colored
-  tan:
-    is_a_kind_of: colored
-  yellow:
-    is_a_kind_of: colored
-  white:
-    is_a_kind_of: colored
-
-  # Shapes
-  circular:
-    is_a_kind_of: shaped
-  conical:
-    is_a_kind_of: shaped
-  cubical:
-    is_a_kind_of: shaped
-  cylindrical:
-    is_a_kind_of: shaped
-  hexagonal:
-    is_a_kind_of: shaped
-  octagonal:
-    is_a_kind_of: shaped
-  ovoid:
-    is_a_kind_of: shaped
-  pentagonal:
-    is_a_kind_of: shaped
-  pyramidal:
-    is_a_kind_of: shaped
-  rectangular:
-    is_a_kind_of: shaped
-  spherical:
-    is_a_kind_of: shaped
-  square:
-    is_a_kind_of: shaped
-  toroidal:
-    is_a_kind_of: shaped
-  triangular:
-    is_a_kind_of: shaped

@@ -20,19 +20,22 @@
 units:
   percentage:
     type: fixed2
+    measures: percentage
     min: 0
     max: 10000
     format:
       full: "# percent"
       abbreviated: "#%"
-  temperature:
+  degrees_celsius:
     type: fixed2
+    measures: temperature
     min: -27315
     format:
       full: "# degrees Celsius"
       abbreviated: "#°C"
   millimeters:
     type: fixed
+    measures: distance
     min: 0
     format:
       full: "# millimeters"
@@ -46,6 +49,7 @@ units:
         divide_by: 1000000
   centimeters:
     type: fixed1
+    measures: distance
     min: 0
     format:
       full: "# centimeters"
@@ -59,6 +63,7 @@ units:
         divide_by: 100000
   meters:
     type: fixed3
+    measures: distance
     min: 0
     format:
       full: "# meters"
@@ -72,6 +77,7 @@ units:
         divide_by: 1000
   kilometers:
     type: fixed6
+    measures: distance
     min: 0
     format:
       full: "# meters"
@@ -85,6 +91,7 @@ units:
         multiply_by: 1000
   milligrams:
     type: fixed
+    measures: mass
     min: 0
     format:
       full: "# milligrams"
@@ -96,6 +103,7 @@ units:
         divide_by: 1000000
   grams:
     type: fixed3
+    measures: mass
     min: 0
     format:
       full: "# grams"
@@ -107,6 +115,7 @@ units:
         divide_by: 1000
   kilograms:
     type: fixed6
+    measures: mass
     min: 0
     format:
       full: "# kilograms"
@@ -118,6 +127,7 @@ units:
         multiply_by: 1000
   milliliters:
     type: fixed
+    measures: fluid_volume
     min: 0
     format:
       full: "# milliliters"
@@ -127,6 +137,7 @@ units:
         divide_by: 1000
   liters:
     type: fixed3
+    measures: fluid_volume
     min: 0
     format:
       full: "# liters"

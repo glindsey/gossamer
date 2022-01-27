@@ -16,14 +16,20 @@ module Gossamer
         data.each do |(key, _)|
           checker_class =
             case key
+            when 'attributes'
+              ::Gossamer::SanityCheckers::Attributes
             when 'materials'
               ::Gossamer::SanityCheckers::Materials
+            when 'measurements'
+              ::Gossamer::SanityCheckers::Measurements
             when 'processes'
               ::Gossamer::SanityCheckers::Processes
             when 'properties'
               ::Gossamer::SanityCheckers::Properties
             when 'senses'
               ::Gossamer::SanityCheckers::Senses
+            when 'traits'
+              ::Gossamer::SanityCheckers::Traits
             when 'things'
               ::Gossamer::SanityCheckers::Things
             when 'units'

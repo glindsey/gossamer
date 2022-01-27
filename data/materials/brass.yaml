@@ -1,4 +1,0 @@
-brass:
-  is_a_kind_of: alloy
-  processes:
-    - tarnish

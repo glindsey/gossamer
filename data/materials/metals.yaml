@@ -1,0 +1,48 @@
+metal:
+  abstract!: true
+  is_a_kind_of:
+    - meltable
+    - solid
+  has_properties:
+    - ductile
+    - malleable
+    - shiny
+  processes:
+    alloy: {}
+    conduct: {}
+    melt: {}
+
+alloy:
+  abstract!: true
+  is_a_kind_of: metal
+
+brass:
+  is_a_kind_of: alloy
+  processes:
+    tarnish: {}
+
+bronze:
+  is_a_kind_of: alloy
+
+copper:
+  is_a_kind_of: metal
+  processes:
+    tarnish: {}
+
+gold:
+  is_a_kind_of: metal
+
+iron:
+  is_a_kind_of: [metal, iron_bearing]
+
+iron_bearing:
+  abstract!: true
+  has_attributes:
+    - rustiness
+  processes:
+    rust: {}
+
+silver:
+  is_a_kind_of: metal
+  processes:
+    - tarnish

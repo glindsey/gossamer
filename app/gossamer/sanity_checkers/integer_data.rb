@@ -2,14 +2,16 @@
 
 module Gossamer
   module SanityCheckers
-    # Sanity checker for materials data.
-    class Materials < Base
+    # Sanity checker for an integer.
+    class IntegerData < Base
       def initialize(full_data, path: [])
         super
       end
 
       def _check
-        check_root_group(::Gossamer::SanityCheckers::Material)
+        return [] if data.is_a?(Integer)
+
+        [uhoh("Expected an integer, but got #{data.class}: #{data}")]
       end
     end
   end

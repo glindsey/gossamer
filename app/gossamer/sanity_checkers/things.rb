@@ -9,21 +9,7 @@ module Gossamer
       end
 
       def _check
-        log = []
-
-        if data.is_a?(Hash)
-          data.each do |(thing, _)|
-            log += ::Gossamer::SanityCheckers::Thing.new(
-              full_data, path: path + [thing]
-            ).check
-          end
-        else
-          log.push(
-            uhoh("Expected a hash but got a #{data.class}")
-          )
-        end
-
-        log
+        check_root_group(::Gossamer::SanityCheckers::Thing)
       end
     end
   end

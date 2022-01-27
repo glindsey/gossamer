@@ -2,14 +2,16 @@
 
 module Gossamer
   module SanityCheckers
-    # Sanity checker for materials data.
-    class Materials < Base
+    # Sanity checker for a formatting string.
+    class FormatString < Base
       def initialize(full_data, path: [])
         super
       end
 
       def _check
-        check_root_group(::Gossamer::SanityCheckers::Material)
+        return [] if data.is_a?(String)
+
+        [uhoh("Expected a string, but got #{data}")]
       end
     end
   end

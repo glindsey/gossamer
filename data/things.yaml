@@ -1,0 +1,6 @@
+things:
+  currency:
+    abstract!: true
+
+  tangible_object:
+    abstract!: true

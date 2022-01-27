@@ -2,14 +2,14 @@
 
 module Gossamer
   module SanityCheckers
-    # Sanity checker for materials data.
-    class Materials < Base
+    # Sanity checker for attributes data.
+    class Attributes < Base
       def initialize(full_data, path: [])
         super
       end
 
       def _check
-        check_root_group(::Gossamer::SanityCheckers::Material)
+        check_root_group(::Gossamer::SanityCheckers::Attribute)
       end
     end
   end

@@ -9,24 +9,20 @@ module Gossamer
       end
 
       def _check
-        log = []
-
-        if data.is_a?(Hash)
-          data.each do |(key, value)|
-            case key
-            when 'abstract!'
-              unless value.is_a?(TrueClass) || value.is_a?(FalseClass)
-                log.push(uhoh("#{value} isn't a boolean value"))
-              end
-            when 'is_a_kind_of'
-              log += ::Gossamer::SanityCheckers::IsAKindOf.new(
-                full_data, category: 'senses', path: path + [key]
-              ).check
+        check_subkeys do |key, value|
+          case key
+          when 'abstract!'
+            unless value.is_a?(TrueClass) || value.is_a?(FalseClass)
+              [uhoh("#{value} isn't a boolean value")]
             end
+          when 'is_a_kind_of'
+            ::Gossamer::SanityCheckers::ConceptReference.new(
+              full_data, category: 'senses', path: path + [key]
+            ).check
+          else
+            [uhoh("don't know how to interpret #{key}")]
           end
         end
-
-        log
       end
     end
   end
