@@ -1,35 +1,25 @@
 # Gossamer
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/gossamer`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Playing around with game development in Ruby using `gosu` (https://www.libgosu.org/), because I'm a bit nuts. Project codename is "gossamer" as a play on the name "gosu".
 
 ## Installation
 
-Add this line to your application's Gemfile:
+You need Ruby 2.7.5 and Bundler installed. I suggest using a Ruby version manager such as `rvm` or `chruby`, since (as of the time of this writing) 2.7.5 is pretty cutting-edge, and if you do any other Ruby development you'll probably be using a different version.
 
-```ruby
-gem 'gossamer'
-```
-
-And then execute:
+Then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install gossamer
+That should grab and install any dependencies you need.
 
 ## Usage
 
-TODO: Write usage instructions here
+There's not much to "use", yet. `bin/gossamer` runs the app, but at the moment it does practically nothing except set up a Gosu window and track some events. Most of the real work is in the RSpec tests right now.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `bundle exec rspec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/gossamer.
+Bug reports and pull requests are welcome on GitHub at https://github.com/glindsey/gossamer.
