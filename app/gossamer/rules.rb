@@ -6,8 +6,15 @@ module Gossamer
     attr_reader :data
 
     def initialize
-      @data = YamlLoader.new.parse(
+      # Load main data
+      main_data = YamlLoader.new.parse(
         File.expand_path(File.join(__dir__, '..', '..', 'data'))
+      )
+
+      # Load mod data
+      @data = YamlLoader.new.parse(
+        File.expand_path(File.join(__dir__, '..', '..', 'mods')),
+        prev: main_data
       )
 
       warn ::Gossamer::SanityCheckers::Root.new(@data).check

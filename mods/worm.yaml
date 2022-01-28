@@ -1,0 +1,9 @@
+things:
+  worm:
+    is_a_kind_of: insect
+    always:
+      is_made_of: worm_flesh
+
+materials:
+  worm_flesh:
+    is_a_kind_of: flesh

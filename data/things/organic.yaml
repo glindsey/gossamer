@@ -1,0 +1,10 @@
+insect:
+  abstract!: true
+  is_a_kind_of: lifeform
+
+lifeform:
+  abstract!: true
+  is_a_kind_of: tangible_object
+  usually:
+    has_properties:
+      - alive
