@@ -28,8 +28,6 @@ module Gossamer
               ::Gossamer::SanityCheckers::Properties
             when 'senses'
               ::Gossamer::SanityCheckers::Senses
-            when 'traits'
-              ::Gossamer::SanityCheckers::Traits
             when 'things'
               ::Gossamer::SanityCheckers::Things
             when 'units'

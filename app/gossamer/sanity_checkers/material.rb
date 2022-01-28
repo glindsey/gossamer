@@ -16,16 +16,12 @@ module Gossamer
               [uhoh("#{value} isn't a boolean value")]
             end
           when 'has_attributes'
-            ::Gossamer::SanityCheckers::ConceptReference.new(
-              full_data, category: 'attributes', path: path + [key]
+            ::Gossamer::SanityCheckers::AttributeReference.new(
+              full_data, path: path + [key]
             ).check
-          when 'has_properties'
+          when 'implies'
             ::Gossamer::SanityCheckers::ConceptReference.new(
               full_data, category: 'properties', path: path + [key]
-            ).check
-          when 'has_traits'
-            ::Gossamer::SanityCheckers::ConceptReference.new(
-              full_data, category: 'traits', path: path + [key]
             ).check
           when 'is_a_kind_of'
             ::Gossamer::SanityCheckers::ConceptReference.new(

@@ -15,6 +15,10 @@ module Gossamer
             unless value.is_a?(TrueClass) || value.is_a?(FalseClass)
               [uhoh("#{value} isn't a boolean value")]
             end
+          when 'implies'
+            ::Gossamer::SanityCheckers::ConceptReference.new(
+              full_data, category: 'properties', path: path + [key]
+            ).check
           when 'is_a_kind_of'
             ::Gossamer::SanityCheckers::ConceptReference.new(
               full_data, category: 'attributes', path: path + [key]

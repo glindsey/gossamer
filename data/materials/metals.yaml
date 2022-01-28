@@ -3,7 +3,7 @@ metal:
   is_a_kind_of:
     - meltable
     - solid
-  has_properties:
+  implies:
     - ductile
     - malleable
     - shiny

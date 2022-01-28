@@ -1,7 +1,31 @@
-# Attributes are transient and apply to individual things, whereas traits
-# are intrinsic and apply to materials.
+# An attribute can apply to a material, a property, or a thing.
+#
+# In the data files, the *value* of an attribute can be set directly in the
+# definition of a material/property/thing, or via a qualifier like "usually".
+# In the former case, the value is considered to be an "intrinsic" constant; in
+# the latter, it is a variable that can change at runtime. In any case, a value
+# set for attribute on a thing instance will override its "intrinsic" value
+# when queried.
+
 attributes:
+  # *** Typically set on materials ***
+  boiling_point:
+    measurement: temperature
+  condensation_point:
+    measurement: temperature
+  deposition_point:
+    measurement: temperature
+  freezing_point:
+    measurement: temperature
   hardness: {}
+  melting_point:
+    measurement: temperature
+  sublimation_point:
+    measurement: temperature
+  viscosity:
+    measurement: percentage
+
+  # *** Typically set on things, and isn't likely to vary during runtime ***
   height:
     measurement: distance
   length:
@@ -10,6 +34,8 @@ attributes:
     measurement: mass
   width:
     measurement: distance
+
+  # *** Typically IS likely to vary during runtime ***
   rustiness:
     measurement: percentage
   temperature:

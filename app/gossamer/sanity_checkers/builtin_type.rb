@@ -4,25 +4,35 @@ module Gossamer
   module SanityCheckers
     # Sanity checker for a built-in type.
     class BuiltinType < Base
+      PATTERNS = [
+        { regex: /^bool(ean)?$/, replacement: 'bool' },
+        { regex: /^color$/, replacement: 'color' },
+        { regex: /^enum(erat(ed|ion))?$/, replacement: 'enum' },
+        { regex: /^int(eger)?$/, replacement: 'int' },
+        { regex: /^fixed/, replacement: 'fixed' },
+        { regex: /^str(ing)?$/, replacement: 'str' },
+        { regex: /^id$/, replacement: 'id' },
+        { regex: /^list:\s*/, replacement: 'list: ' },
+        { regex: /^dict(ionary)?:\s*/, replacement: 'dict: ' }
+      ].freeze
+
       def initialize(full_data, path: [])
         super
       end
 
       def _check
         if data.is_a?(String)
-          [
-            /color/,
-            /int/,
-            /fixed[0-9]?/,
-            /string/,
-            /id/,
-            /list: .*/,
-            /dictionary: .*/
-          ].each { |pattern| return [] if data.match?(pattern) }
+          okay = false
+          PATTERNS.each do |pattern|
+            next unless data.match?(pattern[:regex])
+
+            okay = true
+            replace_data_with(data.sub(pattern[:regex], pattern[:replacement]))
+            break
+          end
 
           # TODO: more checking for lists, dictionaries
-
-          [uhoh("Don't understand the type '#{data}'")]
+          okay ? [] : [uhoh("Don't understand the type '#{data}'")]
         else
           [uhoh("Expected a string, but got #{data}")]
         end
