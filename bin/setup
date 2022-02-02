@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+
+# NOTE: As with all `bin` scripts, run this from the project root, not from the
+#       `bin` directory.
+
 set -euo pipefail
 IFS=$'\n\t'
 set -vx

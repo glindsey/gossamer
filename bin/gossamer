@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# NOTE: As with all `bin` scripts, run this from the project root, not from the
+#       `bin` directory.
+
 require_relative '../app/gossamer'
 
 # Create and run the main window.
