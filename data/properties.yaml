@@ -13,6 +13,8 @@ properties:
   acrid:
     senses: [smell]
 
+  alive: {}
+
   bitter:
     senses: [smell, taste]
 

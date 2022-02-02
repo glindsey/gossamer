@@ -1,25 +1,24 @@
 # Standard processes
-# Processes take input materials and time, and produce effects.
+# Processes operate on input things that meet certain conditions, take time,
+# and produce effects.
 
 processes:
+
+  # ==== Phase Changes ========================================================
   boil:
     inputs:
-      n0: liquid
+      n0: { is_made_of: liquid }
     conditions:
       greater_than:
         - n0: temperature
         - n0: boiling_point
     effects:
-      n0: transmute
-
-  burn: {}
-
-  corrode: {}
+      - transmute: [n0, { n0: boil_result }]
 
   condense:
     inputs:
-      n0: gas
-      n1: solid
+      n0: { is_made_of: gas }
+      n1: { is_made_of: solid }
     conditions:
       greater_than:
         - n0: temperature
@@ -28,37 +27,34 @@ processes:
         - n0: temperature
         - n0: boiling_point
     effects:
-      n0: destroy
-      n1: coat
+      - destroy: n0
+      - coat: [n1, { n0: condense_material }]
 
   deposit:
     inputs:
-      n0: gas
-      n1: solid
+      n0: { is_made_of: gas }
+      n1: { is_made_of: solid }
     conditions:
       less_than:
         - n0: temperature
         - n0: freezing_point
     effects:
-      n0: destroy
-      n1: coat
+      - destroy: n0
+      - coat: [n1, { n0: deposit_material }]
 
   freeze:
     inputs:
-      n0: liquid
+      n0: { is_made_of: liquid }
     conditions:
       less_than:
         - n0: temperature
         - n0: freezing_point
     effects:
-      n0: transmute
-
-  # unsure if this should be a process as it doesn't produce a tangible output
-  glow: {}
+      - transmute: [n0, { n0: freeze_result }]
 
   melt:
     inputs:
-      n0: solid
+      n0: { is_made_of: solid }
     conditions:
       greater_than:
         - n0: temperature
@@ -67,32 +63,82 @@ processes:
         - n0: temperature
         - n0: boiling_point
     effects:
-      n0: transmute
+      - transmute: [n0, { n0: melt_result }]
 
-  oxidize: {}
+  sublimate:
+    inputs:
+      n0: { is_made_of: solid }
+    conditions:
+      greater_than:
+        - n0: temperature
+        - n0: boiling_point
+    effects:
+      - transmute: [n0, { n0: sublimate_result }]
 
+  # ==== Reactions Dealing Primarily with FIRE ================================
+  burn: {}
+  cook: {}
   pyrolyze: {}
 
-  rot: {}
+  # ==== Chemical Reactions ===================================================
+  corrode:
+    inputs:
+      n0: { is_made_of: corrodable }
+    conditions:
+      less_than: [{n0: corrosion}, 100]
+    effects:
+      - increment_attribute: { n0: corrosion }
+
+  corrode_away:
+    inputs:
+      n0: { is_made_of: corrodable }
+    conditions:
+      greater_than_or_equal_to: [{n0: corrosion}, 100]
+    effects:
+      - increment_attribute: { n0: corrode_result }
+
+  oxidize:
+    is_a_kind_of: oxidize
+    inputs:
+      n0: { is_made_of: oxidizable }
+    conditions:
+      less_than: [{n0: oxidation_percentage}, 100]
+    effects:
+      - increment_attribute: { n0: oxidation_percentage }
+
+  oxidize_away:
+    is_a_kind_of: oxidize
+    inputs:
+      n0: { is_made_of: oxidizable }
+    conditions:
+      greater_than_or_equal_to: [{n0: oxidation_percentage}, 100]
+    effects:
+      - transmute: [n0, { n0: oxidize_result }]
 
   rust:
     is_a_kind_of: oxidize
     inputs:
-      n0: iron_alloy
-    # TODO: fill in conditions here
-    effects:
-      n0:
-        increment_attribute: rustiness
+      n0: { is_made_of: iron_alloy }
 
-  sublimate:
+  rust_away:
+    is_a_kind_of: oxidize_away
     inputs:
-      n0: solid
-    conditions:
-      greater_than:
-        - n0: temperature
-        - n0: boiling_point
-    effects:
-      n0: transmute
+      n0: { is_made_of: iron_alloy }
 
   tarnish:
     is_a_kind_of: oxidize
+    inputs:
+      n0: { is_made_of: tarnishable }
+
+  # ==== Mixing Processes =====================================================
+  alloy: {}
+  mix: {}
+
+  # ==== Biological Processes =================================================
+  rot: {}
+
+  # ==== Other Processes ======================================================
+
+  # unsure if this should be a process as it doesn't produce a tangible output
+  glow: {}
+

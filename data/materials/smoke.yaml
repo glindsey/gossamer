@@ -1,8 +1,5 @@
 smoke:
   is_a_kind_of: gas
-  processes:
-    deposit:
-      effects:
-        n0: destroy
-        n1:
-          coat: soot
+  has_refs:
+    materials:
+      deposit_result: soot

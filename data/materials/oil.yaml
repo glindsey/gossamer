@@ -1,5 +1,6 @@
 oil:
   abstract!: true
-  is_a_kind_of: liquid
-  processes:
-    burn: {}
+  is_a_kind_of: [liquid, flammable]
+  has_refs:
+    materials:
+      burn_result: smoke

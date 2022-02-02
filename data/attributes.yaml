@@ -15,6 +15,8 @@ attributes:
     measurement: temperature
   deposition_point:
     measurement: temperature
+  flash_point:
+    measurement: temperature
   freezing_point:
     measurement: temperature
   hardness: {}
@@ -36,7 +38,15 @@ attributes:
     measurement: distance
 
   # *** Typically IS likely to vary during runtime ***
-  rustiness:
+  char:
+    measurement: percentage
+  cooked_percentage:
+    measurement: percentage
+  corrosion:
+    measurement: percentage
+  oxidation_percentage:
+    measurement: percentage
+  tarnishedness:
     measurement: percentage
   temperature:
     measurement: temperature

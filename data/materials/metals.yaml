@@ -1,48 +1,29 @@
 metal:
   abstract!: true
-  is_a_kind_of:
-    - meltable
-    - solid
+  is_a_kind_of: [solid, meltable]
   implies:
     - ductile
     - malleable
     - shiny
-  processes:
-    alloy: {}
-    conduct: {}
-    melt: {}
 
 alloy:
   abstract!: true
   is_a_kind_of: metal
 
 brass:
-  is_a_kind_of: alloy
-  processes:
-    tarnish: {}
+  is_a_kind_of: [alloy, tarnishable]
 
 bronze:
-  is_a_kind_of: alloy
+  is_a_kind_of: [alloy, tarnishable]
 
 copper:
-  is_a_kind_of: metal
-  processes:
-    tarnish: {}
+  is_a_kind_of: [metal, tarnishable]
 
 gold:
   is_a_kind_of: metal
 
 iron:
-  is_a_kind_of: [metal, iron_bearing]
-
-iron_bearing:
-  abstract!: true
-  has_attributes:
-    - rustiness
-  processes:
-    rust: {}
+  is_a_kind_of: [metal, rustable]
 
 silver:
-  is_a_kind_of: metal
-  processes:
-    tarnish: {}
+  is_a_kind_of: [metal, tarnishable]

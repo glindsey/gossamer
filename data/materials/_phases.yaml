@@ -1,13 +1,4 @@
 # Basic material phases
-material:
-  abstract!: true
-
-physical_material:
-  abstract!: true
-  is_a_kind_of: material
-  has_attributes:
-    - mass
-
 gas:
   abstract!: true
   is_a_kind_of: physical_material
@@ -24,13 +15,6 @@ liquid:
     - boiling_point
     - freezing_point
     - viscosity
-
-# Meltable indicates a substance that can melt, versus one that only burns.
-meltable:
-  abstract!: true
-  has_attributes:
-    - melting_point
-    - sublimation_point
 
 # A powder is something solid but granular, such as sand.
 # Like a liquid, it is shapeless and can flow. It may also be able to coat

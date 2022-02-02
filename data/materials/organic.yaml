@@ -1,27 +1,14 @@
 bone:
-  is_a_kind_of: solid
-  processes:
-    burn: {}
-    cook: {}
+  is_a_kind_of: [solid, burnable, cookable]
 
 fat:
-  is_a_kind_of: solid
+  is_a_kind_of: [solid, cookable, flammable, meltable]
   # TODO: should be of almost 0 hardness, maybe negative if I use a modified
   #       Mohs scale
-  processes:
-    burn: {}
-    cook: {}
-    melt: {}
 
 flesh:
-  is_a_kind_of: solid
-  processes:
-    burn: {}
-    cook: {}
+  is_a_kind_of: [solid, burnable, cookable]
 
 wood:
   # not abstract for now, but could be down the line
-  is_a_kind_of: solid
-  processes:
-    burn: {}
-    pyrolyze: {}
+  is_a_kind_of: [solid, flammable]

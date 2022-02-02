@@ -19,6 +19,8 @@ module Gossamer
             ::Gossamer::SanityCheckers::AttributeReference.new(
               full_data, path: path + [key]
             ).check
+          when 'has_refs'
+            [note("'has_refs' is not yet implemented")]
           when 'implies'
             ::Gossamer::SanityCheckers::ConceptReference.new(
               full_data, category: 'properties', path: path + [key]
@@ -26,10 +28,6 @@ module Gossamer
           when 'is_a_kind_of'
             ::Gossamer::SanityCheckers::ConceptReference.new(
               full_data, category: 'materials', path: path + [key]
-            ).check
-          when 'processes'
-            ::Gossamer::SanityCheckers::Processes.new(
-              full_data, path: path + [key]
             ).check
           else
             [uhoh("don't know how to interpret #{key}")]

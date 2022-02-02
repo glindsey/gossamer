@@ -1,0 +1,73 @@
+# Abstract categories to put materials into.
+
+material:
+  abstract!: true
+
+physical_material:
+  abstract!: true
+  is_a_kind_of: material
+  has_attributes:
+    - mass
+
+# Burnable indicates a substance that can burn.
+burnable:
+  abstract!: true
+  has_attributes:
+    - char # @todo Prefer something else here -- maybe just "burn_percentage"
+  has_refs:
+    materials:
+      burn_result: ''
+
+# Flammable indicates a substance that can burn AND has a flash point.
+flammable:
+  abstract!: true
+  is_a_kind_of: flammable
+  has_attributes:
+    - flash_point
+
+# Meltable indicates a substance that can melt, versus one that only burns.
+meltable:
+  abstract!: true
+  has_attributes:
+    - melting_point
+    - sublimation_point
+
+# Cookable is any substance that can be cooked.
+cookable:
+  abstract!: true
+  has_attributes:
+    - cooked_percentage
+
+# Corrodable is any substance that can corrode.
+corrodable:
+  abstract!: true
+  has_attributes:
+    - corrosion
+  has_refs:
+    materials:
+      corrode_result: ''
+
+# Oxidizable is any substance that rusts/tarnishes/etc.
+oxidizable:
+  abstract!: true
+  has_attributes:
+    - oxidation_percentage
+  has_refs:
+    materials:
+      oxidize_result: ''
+
+# Iron-bearing is any substance that contains iron and can rust.
+rustable:
+  abstract!: true
+  is_a_kind_of: oxidizable
+  has_refs:
+    materials:
+      oxidize_result: rust
+
+# Tarnishable is any substance that can tarnish.
+tarnishable:
+  abstract!: true
+  is_a_kind_of: oxidizable
+  has_refs:
+    materials:
+      oxidize_result: tarnish
