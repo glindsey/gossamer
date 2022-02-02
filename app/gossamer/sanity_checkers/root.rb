@@ -17,21 +17,21 @@ module Gossamer
           checker_class =
             case key
             when 'attributes'
-              ::Gossamer::SanityCheckers::Attributes
+              ::Gossamer::SanityCheckers::RootAttributes
             when 'materials'
-              ::Gossamer::SanityCheckers::Materials
+              ::Gossamer::SanityCheckers::RootMaterials
             when 'measurements'
-              ::Gossamer::SanityCheckers::Measurements
+              ::Gossamer::SanityCheckers::RootMeasurements
             when 'processes'
-              ::Gossamer::SanityCheckers::Processes
+              ::Gossamer::SanityCheckers::RootProcesses
             when 'properties'
-              ::Gossamer::SanityCheckers::Properties
+              ::Gossamer::SanityCheckers::RootProperties
             when 'senses'
-              ::Gossamer::SanityCheckers::Senses
+              ::Gossamer::SanityCheckers::RootSenses
             when 'things'
-              ::Gossamer::SanityCheckers::Things
+              ::Gossamer::SanityCheckers::RootThings
             when 'units'
-              ::Gossamer::SanityCheckers::Units
+              ::Gossamer::SanityCheckers::RootUnits
             else
               log.push(
                 "(root): \"#{key}\" is not recognized and will be ignored"

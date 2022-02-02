@@ -4,9 +4,11 @@ ice:
     - solid
   processes:
     sublimate:
-      outputs:
-        transmute: steam
+      effects:
+        n0:
+          transmute: steam
     conduct: true
     melt:
-      outputs:
-        transmute: water
+      effects:
+        n0:
+          transmute: water

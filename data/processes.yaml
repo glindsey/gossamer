@@ -4,13 +4,13 @@
 processes:
   boil:
     inputs:
-      0: liquid
+      n0: liquid
     conditions:
       greater_than:
-        - 0: temperature
-        - 0: boiling_point
+        - n0: temperature
+        - n0: boiling_point
     effects:
-      0: transmute
+      n0: transmute
 
   burn: {}
 

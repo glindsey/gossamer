@@ -16,5 +16,6 @@ group :development, :test do
   gem 'rubocop'
   gem 'rubocop-performance'
   gem 'rubocop-rspec'
+  gem 'sourcify'
   gem 'table_print'
 end

@@ -16,13 +16,17 @@ module Gossamer
               [uhoh("#{value} isn't a boolean value")]
             end
           when 'always'
-            [note("'always' is not yet implemented")]
+            ::Gossamer::SanityCheckers::Always.new(
+              full_data, path: path + [key]
+            ).check
           when 'is_a_kind_of'
             ::Gossamer::SanityCheckers::ConceptReference.new(
               full_data, category: 'things', path: path + [key]
             ).check
           when 'usually'
-            [note("'usually' is not yet implemented")]
+            ::Gossamer::SanityCheckers::Usually.new(
+              full_data, path: path + [key]
+            ).check
           else
             [uhoh("don't know how to interpret #{key}")]
           end

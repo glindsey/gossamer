@@ -41,9 +41,18 @@ module Gossamer
                    'but that is not defined')
             )
           end
+        when Hash
+          data.each do |key, _|
+            next if category_data.key?(key)
+
+            log.push(
+              uhoh("References '#{@category}.#{key}', " \
+                   'but that is not defined')
+            )
+          end
         else
           log.push(
-            uhoh("Expected a string or array, but got #{data}")
+            uhoh("Expected a string or array, but got #{data.inspect}")
           )
         end
 

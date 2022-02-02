@@ -25,7 +25,10 @@ Metrics/LineLength:
   Max: 80
 
 Metrics/MethodLength:
-  Max: 30
+  Max: 50
+
+Metrics/PerceivedComplexity:
+  Max: 10
 
 # Permit certain names that are less than three characters long, but which make
 # sense to have as valid parameter names.

@@ -2,14 +2,22 @@
 
 module Gossamer
   module SanityCheckers
-    # Sanity checker for processes data.
+    # Sanity checker for processes data under other tags.
     class Processes < Base
       def initialize(full_data, path: [])
         super
       end
 
       def _check
-        check_root_group(::Gossamer::SanityCheckers::Process)
+        ::Gossamer::SanityCheckers::ConceptReference.new(
+          full_data, category: 'processes', path: path
+        ).check
+
+        check_subkeys do |key, _|
+          ::Gossamer::SanityCheckers::Process.new(
+            full_data, path: path + [key]
+          ).check
+        end
       end
     end
   end

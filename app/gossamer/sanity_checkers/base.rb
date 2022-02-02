@@ -6,6 +6,8 @@ module Gossamer
     class Base
       attr_reader :full_data, :path
 
+      include ::Gossamer::Mixins::Assertions
+
       def initialize(full_data, path: [])
         @full_data = full_data
         @path = path
@@ -21,11 +23,17 @@ module Gossamer
       end
 
       def data
-        data ||= path.present? ? @full_data.dig(*@path) : @full_data
+        return @data if @data
 
-        uhoh('The dig attempt failed') if data.nil?
+        assert { @full_data.is_a?(Hash) }
+        assert { @path.is_a?(Array) }
+        assert { @path.all?(String) }
 
-        data
+        @data = path.present? ? @full_data.dig(*@path) : @full_data
+
+        uhoh('The dig attempt failed') if @data.nil?
+
+        @data
       end
 
       def replace_data_with(val)
@@ -78,7 +86,7 @@ module Gossamer
             log += result if result.present?
           end
         else
-          log.push(uhoh("Expected a hash or 'true', but got #{data}"))
+          log.push(uhoh("Expected a hash or 'true', but got #{data.inspect}"))
         end
 
         log

@@ -2,6 +2,7 @@ smoke:
   is_a_kind_of: gas
   processes:
     deposit:
-      outputs:
-        - destroy
-        - coat: soot
+      effects:
+        n0: destroy
+        n1:
+          coat: soot
