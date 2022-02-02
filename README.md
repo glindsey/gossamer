@@ -14,11 +14,11 @@ That should grab and install any dependencies you need.
 
 ## Usage
 
-There's not much to "use", yet. `bin/gossamer` runs the app, but at the moment it does practically nothing except set up a Gosu window and track some events. Most of the real work is in the RSpec tests right now.
+There's not much to "use", yet. `bin/gossamer` runs the app, but at the moment it does nothing except crash. Most of the real work is in the RSpec tests right now... which also fail other than the few I'm actively working on. Look, it's all basically a trash fire, but it's *my* trash fire.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `bundle exec rspec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bundler` to install dependencies. Then, run `bundle exec rspec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment. (That is probably also broken at the moment.)
 
 ## Contributing
 
