@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Gossamer
-  module SanityCheckers
+  module RuleCops
     # Sanity checker for an integer.
     class IntegerData < Base
       def initialize(full_data, path: [])

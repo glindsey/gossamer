@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Gossamer
-  module SanityCheckers
+  module RuleCops
     # Sanity checker for root processes data.
     class RootProcesses < Base
       def initialize(full_data, path: [])
@@ -9,7 +9,7 @@ module Gossamer
       end
 
       def _check
-        check_root_group(::Gossamer::SanityCheckers::Process)
+        check_root_group(::Gossamer::RuleCops::Process)
       end
     end
   end

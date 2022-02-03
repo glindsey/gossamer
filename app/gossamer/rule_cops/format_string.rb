@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Gossamer
-  module SanityCheckers
-    # Sanity checker for a string.
-    class StringData < Base
+  module RuleCops
+    # Sanity checker for a formatting string.
+    class FormatString < Base
       def initialize(full_data, path: [])
         super
       end
@@ -11,7 +11,7 @@ module Gossamer
       def _check
         return [] if data.is_a?(String)
 
-        [uhoh("Expected a string, but got #{data.class}: #{data}")]
+        [uhoh("Expected a string, but got #{data}")]
       end
     end
   end

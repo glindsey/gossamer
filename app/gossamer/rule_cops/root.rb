@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Gossamer
-  module SanityCheckers
+  module RuleCops
     # Sanity checker for the root of the data tree.
     class Root < Base
       def initialize(full_data, path: [])
@@ -17,19 +17,19 @@ module Gossamer
           checker_class =
             case key
             when 'attributes'
-              ::Gossamer::SanityCheckers::RootAttributes
+              ::Gossamer::RuleCops::RootAttributes
             when 'materials'
-              ::Gossamer::SanityCheckers::RootMaterials
+              ::Gossamer::RuleCops::RootMaterials
             when 'measurements'
-              ::Gossamer::SanityCheckers::RootMeasurements
+              ::Gossamer::RuleCops::RootMeasurements
             when 'processes'
-              ::Gossamer::SanityCheckers::RootProcesses
+              ::Gossamer::RuleCops::RootProcesses
             when 'properties'
-              ::Gossamer::SanityCheckers::RootProperties
+              ::Gossamer::RuleCops::RootProperties
             when 'senses'
-              ::Gossamer::SanityCheckers::RootSenses
+              ::Gossamer::RuleCops::RootSenses
             when 'things'
-              ::Gossamer::SanityCheckers::RootThings
+              ::Gossamer::RuleCops::RootThings
             else
               log.push(
                 "(root): \"#{key}\" is not recognized and will be ignored"

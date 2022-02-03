@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Gossamer
-  module SanityCheckers
+  module RuleCops
     # Sanity checker for rules that reference root concepts.
     class ConceptReference < Base
       attr_reader :category
@@ -10,6 +10,10 @@ module Gossamer
         super(full_data, path: path)
 
         @category = category
+      end
+
+      def self.check(full_data, category:, path: [])
+        new(full_data, category: category, path: path).check
       end
 
       def category_data

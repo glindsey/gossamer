@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Gossamer
-  module SanityCheckers
+  module RuleCops
     # Sanity checker for a unit format.
     class UnitFormat < Base
       def initialize(full_data, path: [])
@@ -22,7 +22,7 @@ module Gossamer
         end
 
         %w[full abbreviated].filter_map do |str|
-          ::Gossamer::SanityCheckers::FormatString.new(
+          ::Gossamer::RuleCops::FormatString.new(
             full_data, path: path + [str]
           ).check
         end

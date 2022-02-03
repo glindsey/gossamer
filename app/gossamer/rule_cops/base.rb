@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Gossamer
-  module SanityCheckers
+  module RuleCops
     # Base class for all data sanity checkers.
     class Base
       attr_reader :full_data, :path
@@ -16,6 +16,10 @@ module Gossamer
       def check
         warn "Checking \"#{pathname}\"..."
         _check
+      end
+
+      def self.check(full_data, path: [])
+        new(full_data, path: path).check
       end
 
       def pathname

@@ -17,7 +17,7 @@ module Gossamer
         prev: main_data
       )
 
-      warn ::Gossamer::SanityCheckers::Root.new(@data).check
+      warn ::Gossamer::RuleCops::Root.new(@data).check
     end
 
     def [](key)

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Gossamer
-  module SanityCheckers
+  module RuleCops
     # Sanity checker for rules that reference attributes.
     class AttributeReference < Base
       def initialize(full_data, path: [])
