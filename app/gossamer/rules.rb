@@ -11,13 +11,20 @@ module Gossamer
         File.expand_path(File.join(__dir__, '..', '..', 'data'))
       )
 
-      # Load mod data
-      @data = YamlLoader.new.parse(
-        File.expand_path(File.join(__dir__, '..', '..', 'mods')),
-        prev: main_data
-      )
+      mod_data = main_data
 
-      warn ::Gossamer::RuleCops::Root.new(@data).check
+      %w[mods experimental].each do |dir|
+        mod_data = YamlLoader.new.parse(
+          File.expand_path(File.join(__dir__, '..', '..', dir)),
+          prev: mod_data
+        )
+      rescue Errno::ENOENT
+        # Directory doesn't exist, so ignore it and move on
+      end
+
+      @data = mod_data
+
+      warn ::Gossamer::RuleCops::Root.check(@data)
     end
 
     # @todo Everything below this probably needs to be rewritten

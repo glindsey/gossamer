@@ -26,7 +26,7 @@ module Gossamer
       end
 
       def pathname
-        @path.join('.')
+        @path.present? ? @path.join('.') : '(root)'
       end
 
       def data
