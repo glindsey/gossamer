@@ -24,12 +24,8 @@ module Gossamer
             ::Gossamer::RuleCops::ConceptReference.check(
               full_data, category: 'properties', path: subpath
             )
-          when 'inherits_from'
+          when 'inherits_from', 'is_a_kind_of'
             # No problem, this was already handled above
-          when 'is_a_kind_of'
-            ::Gossamer::RuleCops::ConceptReference.check(
-              full_data, category: 'attributes', path: subpath
-            )
           when 'measurement'
             ::Gossamer::RuleCops::ConceptReference.check(
               full_data, category: 'measurements', path: subpath

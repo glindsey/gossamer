@@ -20,11 +20,11 @@ module Gossamer
             ::Gossamer::RuleCops::BooleanData.check(
               full_data, path: subpath
             )
-          when 'excludes', 'is_a_kind_of'
+          when 'excludes'
             ::Gossamer::RuleCops::ConceptReference.check(
               full_data, category: 'properties', path: subpath
             )
-          when 'inherits_from'
+          when 'inherits_from', 'is_a_kind_of'
             # No problem, this was already handled above
           when 'senses'
             ::Gossamer::RuleCops::ConceptReference.check(

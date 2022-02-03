@@ -51,6 +51,11 @@ module Gossamer
         @data = nil # clear cached data so it is retrieved again on next request
       end
 
+      def replace_key_value_with(key, val)
+        path.inject(@full_data, :fetch)[key] = val
+        @data = nil # clear cached data so it is retrieved again on next request
+      end
+
       def note(description)
         if @options[:note]
           ["   NOTE: #{checking(description)}"]
@@ -160,15 +165,29 @@ module Gossamer
         log
       end
 
-      # Handle `inherits_from` tags.
+      # Handle `inherits_from` and `is_a_kind_of` tags.
+      # The only difference is that `inherits_from` is removed from the target
+      # definition, while `is_a_kind_of` is retained.
       def process_inheritance
+        unless %w[inherits_from is_a_kind_of].any? { |key| data.key?(key) }
+          return []
+        end
+
         return uhoh("Can't inherit at this hash level") unless path.size == 2
 
         log = []
 
+        replace_key_value_with(
+          'inherits_from',
+          smart_merge(
+            data['inherits_from'],
+            data['is_a_kind_of']
+          )
+        )
+
         # @todo Double-check this. I'm pretty sure inheritance loops could cause
         #       an infinite loop here.
-        while data.key?('inherits_from')
+        while data.key?('inherits_from') && data['inherits_from'].present?
           targets = data['inherits_from']
           category = path.first
           case targets
@@ -191,13 +210,14 @@ module Gossamer
           return missing("#{category}.#{key}")
         end
 
-        inherited_data = full_data[category][key]
+        inherited_data =
+          smart_merge(
+            full_data[category][key].except('abstract!'),
+            { 'inherits_from' => full_data[category]['is_a_kind_of'] }
+          )
 
         replace_data_with(
-          smart_merge(
-            inherited_data.except('abstract!'),
-            data.except('inherits_from')
-          )
+          smart_merge(inherited_data, data.except('inherits_from'))
         )
 
         []

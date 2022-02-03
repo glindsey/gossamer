@@ -26,15 +26,11 @@ module Gossamer
             )
           when 'has_refs'
             nyi(key)
-          when 'inherits_from'
+          when 'inherits_from', 'is_a_kind_of'
             # No problem, this was already handled above
           when 'implies'
             ::Gossamer::RuleCops::ConceptReference.check(
               full_data, category: 'properties', path: subpath
-            )
-          when 'is_a_kind_of'
-            ::Gossamer::RuleCops::ConceptReference.check(
-              full_data, category: 'materials', path: subpath
             )
           else
             unknown(key)

@@ -50,12 +50,8 @@ module Gossamer
             )
           when 'has_parts', 'has_properties'
             uhoh("#{key} must be under 'always' or 'usually'")
-          when 'inherits_from'
+          when 'inherits_from', 'is_a_kind_of'
             # No problem, this was already handled above
-          when 'is_a_kind_of'
-            ::Gossamer::RuleCops::ConceptReference.check(
-              full_data, category: 'things', path: subpath
-            )
           when 'usually'
             ::Gossamer::RuleCops::Usually.check(
               full_data, path: subpath

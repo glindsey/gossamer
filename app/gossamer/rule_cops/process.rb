@@ -22,12 +22,8 @@ module Gossamer
             )
           when 'conditions', 'effects', 'inputs'
             nyi(key)
-          when 'inherits_from'
+          when 'inherits_from', 'is_a_kind_of'
             # No problem, this was already handled above
-          when 'is_a_kind_of'
-            ::Gossamer::RuleCops::ConceptReference.check(
-              full_data, category: 'processes', path: subpath
-            )
           else
             unknown(key)
           end

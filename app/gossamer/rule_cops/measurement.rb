@@ -29,12 +29,8 @@ module Gossamer
               ::Gossamer::RuleCops::UnitFormat.check(
                 full_data, path: subpath
               )
-            when 'inherits_from'
+            when 'inherits_from', 'is_a_kind_of'
               # No problem, this was already handled above
-            when 'is_a_kind_of'
-              ::Gossamer::RuleCops::ConceptReference.check(
-                full_data, category: 'measurements', path: subpath
-              )
             when 'max', 'min'
               ::Gossamer::RuleCops::IntegerData.check(
                 full_data, path: subpath
