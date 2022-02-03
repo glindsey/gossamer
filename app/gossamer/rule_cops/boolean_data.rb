@@ -9,9 +9,7 @@ module Gossamer
       end
 
       def _check
-        return [] if data.is_a?(TrueClass) || data.is_a?(FalseClass)
-
-        uhoh("Expected 'true' or 'false', but got #{data.class}: #{data}")
+        expect_one_of([TrueClass, FalseClass])
       end
     end
   end

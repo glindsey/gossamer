@@ -9,9 +9,7 @@ module Gossamer
       end
 
       def _check
-        return [] if data.is_a?(String)
-
-        uhoh("Expected a string, but got #{data.class}: #{data}")
+        expect(String)
       end
     end
   end

@@ -9,9 +9,7 @@ module Gossamer
       end
 
       def _check
-        return [] if data.is_a?(Integer)
-
-        uhoh("Expected an integer, but got #{data.class}: #{data}")
+        expect(Integer)
       end
     end
   end

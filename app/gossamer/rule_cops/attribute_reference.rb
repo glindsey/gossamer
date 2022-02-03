@@ -23,7 +23,7 @@ module Gossamer
         when Hash
           data.each { |(key, value)| log.push(check_hash_pair(key, value)) }
         else
-          log += uhoh("Expected a string or array, but got #{data}")
+          expected_one_of([String, Array, Hash])
         end
 
         log
@@ -45,7 +45,7 @@ module Gossamer
 
           log += check_hash_pair(line.keys.first, line.values.first)
         else
-          log += uhoh("Expected a string or single-pair hash, but got #{data}")
+          expected_one_of([String, Hash])
         end
 
         log
@@ -64,11 +64,10 @@ module Gossamer
         log = []
 
         unless attrs_data.key?(attr_name)
-          log += uhoh("References 'attributes.#{attr_name}', " \
-                      'but that is not defined')
+          log += missing("attributes.#{attr_name}")
         end
         if attr_name == path[-1]
-          log += uhoh('References itself, but this is not allowed')
+          log += selfref
         end
 
         log

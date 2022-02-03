@@ -36,7 +36,7 @@ module Gossamer
           # TODO: more checking for lists, dictionaries
           log += uhoh("Don't understand the type '#{data}'") unless okay
         else
-          log += uhoh("Expected a string, but got #{data}")
+          expected(String)
         end
 
         log

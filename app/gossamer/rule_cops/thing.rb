@@ -9,13 +9,30 @@ module Gossamer
       end
 
       def _check
-        check_subkeys do |key, _|
+        check_subkeys do |key, value|
           subpath = path + [key]
           case key
           when 'abstract!'
             ::Gossamer::RuleCops::BooleanData.check(
               full_data, path: subpath
             )
+          # `part_property!` indicates that parts of this thing will inherit
+          # this thing as a property. For example, "human" has `part_property!`
+          # set, because its parts should be considered a "human head", a
+          # "human leg", et cetera.
+          when 'part_property!'
+            log = ::Gossamer::RuleCops::BooleanData.check(
+              full_data, path: subpath
+            )
+
+            if value == true && !full_data['properties'].key?(value)
+              log += uhoh(
+                "`part_property!` is true, but '#{path[-1]}' is not defined " \
+                "as a property in the ruleset"
+              )
+            end
+
+            log
           when 'always'
             ::Gossamer::RuleCops::Always.check(
               full_data, path: subpath

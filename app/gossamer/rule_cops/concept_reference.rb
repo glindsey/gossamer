@@ -25,29 +25,25 @@ module Gossamer
 
         case data
         when String
-          unless category_data.key?(data)
-            log += uhoh("References '#{@category}.#{data}', " \
-                        'but that is not defined')
-          end
+          log += missing(data) unless category_data.key?(data)
+
           if data == path[-1]
-            log += uhoh('References itself, but this is not allowed')
+            log += selfref
           end
         when Array
           data.each do |subval|
             next if category_data.key?(subval)
 
-            log += uhoh("References '#{@category}.#{subval}', " \
-                        'but that is not defined')
+            log += missing(subval)
           end
         when Hash
           data.each do |key, _|
             next if category_data.key?(key)
 
-            log += uhoh("References '#{@category}.#{key}', " \
-                        'but that is not defined')
+            log += missing(key)
           end
         else
-          log += uhoh("Expected a string or array, but got #{data.inspect}")
+          expected_one_of([String, Array])
         end
 
         log

@@ -49,7 +49,7 @@ module Gossamer
 
       def note(description)
         if @options[:note]
-          ["   NOTE: While checking \"#{pathname}\": #{description}"]
+          ["   NOTE: #{checking(description)}"]
         else
           []
         end
@@ -57,14 +57,44 @@ module Gossamer
 
       def todo(description)
         if @options[:todo]
-          ["   TODO: While checking \"#{pathname}\": #{description}"]
+          ["   TODO: #{checking(description)}"]
         else
           []
         end
       end
 
       def uhoh(description)
-        ["WARNING: While checking \"#{pathname}\": #{description}"]
+        ["WARNING: #{checking(description)}"]
+      end
+
+      def expect(type)
+        data.is_a?(type) ? [] : expected(type)
+      end
+
+      def expect_one_of(types)
+        if types.any? { |type| data.is_a?(type) }
+          []
+        else
+          expected_one_of(types)
+        end
+      end
+
+      def expected(type)
+        uhoh("Expected #{type} but got #{data.class} " \
+             "(#{data.inspect})")
+      end
+
+      def expected_one_of(types)
+        uhoh("Expected one of #{types.inspect} but got #{data.class} " \
+             "(#{data.inspect})")
+      end
+
+      def selfref
+        uhoh('References itself, but that is not allowed')
+      end
+
+      def missing(key)
+        uhoh("References '#{key}', but that is not defined in the ruleset")
       end
 
       def nyi(key)
@@ -77,6 +107,10 @@ module Gossamer
 
       private
 
+      def checking(description)
+        "Checking \"#{pathname}\": #{description}"
+      end
+
       # Standard checks for root groups.
       def check_root_group(subkey_checker_class)
         log = []
@@ -88,7 +122,7 @@ module Gossamer
             ).check
           end
         else
-          log += uhoh("Expected a hash but got a #{data.class}")
+          expected(Hash)
         end
 
         log
@@ -116,7 +150,7 @@ module Gossamer
             end
           end
         else
-          log += uhoh("Expected a hash or 'true', but got #{data.inspect}")
+          expected([Hash, TrueClass])
         end
 
         log
