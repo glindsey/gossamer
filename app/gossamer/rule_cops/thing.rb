@@ -10,6 +10,7 @@ module Gossamer
 
       def _check
         # Process inheritance first.
+        # @todo Maybe also do `is_a_kind_of` here too? Unsure.
         process_inheritance if data.key?('inherits')
 
         check_subkeys do |key, value|

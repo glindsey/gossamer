@@ -9,6 +9,7 @@ module Gossamer
       attr_reader :full_data, :path, :options
 
       include ::Gossamer::Mixins::Assertions
+      include ::Gossamer::Mixins::SmartMerge
 
       def initialize(full_data, path: [], **options)
         @full_data = full_data
@@ -159,21 +160,27 @@ module Gossamer
         log
       end
 
+      # Handle `inherits` tags.
       def process_inheritance
         warn '-- Processing inheritance'
 
         return uhoh("Can't inherit at this hash level") unless path.size == 2
 
         log = []
-        targets = data['inherits']
-        category = path.first
-        case targets
-        when Array
-          targets.each { |key| log += inherit_from(category, key) }
-        when String
-          log += inherit_from(category, targets)
-        else
-          log += expected_one_of([String, Array])
+
+        # @todo Double-check this. I'm pretty sure inheritance loops could cause
+        #       an infinite loop here.
+        while data.key?('inherits')
+          targets = data['inherits']
+          category = path.first
+          case targets
+          when Array
+            targets.each { |key| log += inherit_from(category, key) }
+          when String
+            log += inherit_from(category, targets)
+          else
+            log += expected_one_of([String, Array])
+          end
         end
 
         log
@@ -191,7 +198,12 @@ module Gossamer
         warn "-- Inherited data: #{inherited_data}"
         warn "-- Key data: #{data}"
 
-        replace_data_with(inherited_data.except('abstract!').merge(data))
+        replace_data_with(
+          smart_merge(
+            inherited_data.except('abstract!'),
+            data.except('inherits')
+          )
+        )
 
         warn "-- Merged data: #{data}"
 
