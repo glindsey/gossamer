@@ -13,7 +13,7 @@ Metrics:
   Enabled: true
 
 Metrics/AbcSize:
-  Max: 30
+  Max: 40
 
 Metrics/BlockLength:
   Enabled: false

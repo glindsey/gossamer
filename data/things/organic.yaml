@@ -5,6 +5,10 @@ lifeform:
     has_properties:
       - alive
 
+species:
+  abstract!: true
+  part_property!: true
+
 amphibian:
   abstract!: true
   is_a_kind_of: lifeform

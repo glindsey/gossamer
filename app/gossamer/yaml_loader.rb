@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require 'active_support/core_ext/hash/deep_merge'
-require 'active_support/core_ext/object/blank'
-require 'psych'
-require_relative '../gossamer'
+require COMMON
 
 module Gossamer
   # Utility methods that load YAML files from a directory and return the

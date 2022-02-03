@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require COMMON
+
 module Gossamer
   module RuleCops
     # Base class for all data sanity checkers.
@@ -45,6 +47,7 @@ module Gossamer
 
       def replace_data_with(val)
         path[0..-2].inject(@full_data, :fetch)[path.last] = val
+        @data = nil # clear cached data so it is retrieved again on next request
       end
 
       def note(description)
@@ -154,6 +157,45 @@ module Gossamer
         end
 
         log
+      end
+
+      def process_inheritance
+        warn '-- Processing inheritance'
+
+        return uhoh("Can't inherit at this hash level") unless path.size == 2
+
+        log = []
+        targets = data['inherits']
+        category = path.first
+        case targets
+        when Array
+          targets.each { |key| log += inherit_from(category, key) }
+        when String
+          log += inherit_from(category, targets)
+        else
+          log += expected_one_of([String, Array])
+        end
+
+        log
+      end
+
+      def inherit_from(category, key)
+        warn "-- Merging data from #{category}.#{key} into #{pathname}"
+
+        unless full_data[category].key?(key)
+          return missing("#{category}.#{key}")
+        end
+
+        inherited_data = full_data[category][key]
+
+        warn "-- Inherited data: #{inherited_data}"
+        warn "-- Key data: #{data}"
+
+        replace_data_with(inherited_data.except('abstract!').merge(data))
+
+        warn "-- Merged data: #{data}"
+
+        []
       end
 
       def _check

@@ -9,6 +9,9 @@ module Gossamer
       end
 
       def _check
+        # Process inheritance first.
+        process_inheritance if data.key?('inherits')
+
         check_subkeys do |key, value|
           subpath = path + [key]
           case key
@@ -28,7 +31,11 @@ module Gossamer
             # @todo It might be better to just auto-add things with this meta-
             #       property set as properties in their own right, instead of
             #       requiring them to be declared in the ruleset.
-            if value == true && !full_data['properties'].key?(value)
+            #
+            #       Also, this isn't checked for an abstract thing, because it
+            #       should apply to subclass things, not the abstract thing.
+            if value == true && !data.key?('abstract!') &&
+               !full_data['properties'].key?(value)
               log += uhoh(
                 "`part_property!` is true, but '#{path[-1]}' is not defined " \
                 'as a property in the ruleset'
@@ -42,6 +49,8 @@ module Gossamer
             )
           when 'has_parts', 'has_properties'
             uhoh("#{key} must be under 'always' or 'usually'")
+          when 'inherits'
+            # No problem, this was already handled above
           when 'is_a_kind_of'
             ::Gossamer::RuleCops::ConceptReference.check(
               full_data, category: 'things', path: subpath
