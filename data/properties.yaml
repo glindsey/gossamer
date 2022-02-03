@@ -12,45 +12,56 @@
 # setting when queried.
 
 properties:
-  acrid:
-    senses: [smell]
-
   alive:
     excludes: [dead]
-
-  bitter:
-    senses: [smell, taste]
 
   dead:
     excludes: [alive]
 
+# ==== Touch/Mold Attributes ==================================================
+# Still not sure about some of these.
   ductile:
     senses: [touch]
-
-  iridescent:
-    senses: [sight]
-
-  opaque:
-    senses: [sight]
-    excludes: [translucent, transparent]
 
   malleable:
     senses: [touch]
 
   rough:
     senses: [touch]
-
-  shiny:
-    senses: [sight]
+    excludes: [smooth]
 
   smooth:
     senses: [touch]
+    excludes: [rough]
+
+# ==== Smell/Taste Attributes =================================================
+  acrid:
+    senses: [smell]
+
+  bitter:
+    senses: [smell, taste]
 
   sour:
     senses: [smell, taste]
 
   sweet:
     senses: [smell, taste]
+
+# ==== Visual Attributes ======================================================
+  iridescent:
+    senses: [sight]
+
+  matte:
+    senses: [sight]
+    excludes: [shiny]
+
+  opaque:
+    senses: [sight]
+    excludes: [translucent, transparent]
+
+  shiny:
+    senses: [sight]
+    excludes: [matte]
 
   translucent:
     senses: [sight]
@@ -60,3 +71,27 @@ properties:
     senses: [sight]
     excludes: [opaque, translucent]
 
+# ==== Physical Attributes ====================================================
+# Not sure about some of these right now.
+
+  left:
+    senses: [sight, touch]
+    excludes: [right]
+
+  right:
+    senses: [sight, touch]
+    excludes: [left]
+
+  front:
+    excludes: [rear]
+
+  rear:
+    excludes: [front]
+
+  clockwise:
+    senses: [sight, touch]
+    excludes: [counterclockwise]
+
+  counterclockwise:
+    senses: [sight, touch]
+    excludes: [clockwise]

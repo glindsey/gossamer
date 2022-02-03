@@ -21,6 +21,8 @@ module Gossamer
       end
 
       def _check
+        log = []
+
         if data.is_a?(String)
           okay = false
           PATTERNS.each do |pattern|
@@ -32,10 +34,12 @@ module Gossamer
           end
 
           # TODO: more checking for lists, dictionaries
-          okay ? [] : [uhoh("Don't understand the type '#{data}'")]
+          log += uhoh("Don't understand the type '#{data}'") unless okay
         else
-          [uhoh("Expected a string, but got #{data}")]
+          log += uhoh("Expected a string, but got #{data}")
         end
+
+        log
       end
     end
   end

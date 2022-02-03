@@ -20,6 +20,8 @@ module Gossamer
       warn ::Gossamer::RuleCops::Root.new(@data).check
     end
 
+    # @todo Everything below this probably needs to be rewritten
+
     def [](key)
       recursive_get(key)
     end

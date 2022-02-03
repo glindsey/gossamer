@@ -1,0 +1,22 @@
+body_part:
+  abstract!: true
+
+limb:
+  abstract!: true
+  is_a_kind_of: body_part
+
+leg:
+  abstract!: true
+  is_a_kind_of: limb
+
+left_leg:
+  abstract!: true
+  is_a_kind_of: leg
+  always:
+    has_properties: [left]
+
+right_leg:
+  abstract!: true
+  is_a_kind_of: leg
+  always:
+    has_properties: [right]

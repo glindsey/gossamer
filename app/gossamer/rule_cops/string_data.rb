@@ -11,7 +11,7 @@ module Gossamer
       def _check
         return [] if data.is_a?(String)
 
-        [uhoh("Expected a string, but got #{data.class}: #{data}")]
+        uhoh("Expected a string, but got #{data.class}: #{data}")
       end
     end
   end

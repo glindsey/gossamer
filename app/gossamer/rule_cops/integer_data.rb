@@ -11,7 +11,7 @@ module Gossamer
       def _check
         return [] if data.is_a?(Integer)
 
-        [uhoh("Expected an integer, but got #{data.class}: #{data}")]
+        uhoh("Expected an integer, but got #{data.class}: #{data}")
       end
     end
   end

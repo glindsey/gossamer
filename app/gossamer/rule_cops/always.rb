@@ -16,6 +16,10 @@ module Gossamer
             ::Gossamer::RuleCops::AttributeReference.check(
               full_data, path: subpath
             )
+          when 'has_parts'
+            ::Gossamer::RuleCops::ConceptReference.check(
+              full_data, category: 'things', path: subpath
+            )
           when 'has_properties'
             ::Gossamer::RuleCops::ConceptReference.check(
               full_data, category: 'properties', path: subpath
@@ -25,7 +29,7 @@ module Gossamer
               full_data, category: 'materials', path: subpath
             )
           else
-            [uhoh("don't know how to interpret #{key}")]
+            unknown(key)
           end
         end
       end

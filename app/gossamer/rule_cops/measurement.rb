@@ -20,7 +20,7 @@ module Gossamer
                 full_data, path: subpath
               )
             when 'conversions'
-              [note("'conversions' is not yet implemented")]
+              nyi(key)
             when 'format'
               ::Gossamer::RuleCops::UnitFormat.check(
                 full_data, path: subpath
@@ -42,8 +42,10 @@ module Gossamer
                 full_data, path: subpath
               )
             else
-              [uhoh("don't know how to interpret #{key}")]
+              unknown(key)
             end
+
+          assert { !log.nil? }
 
           log + verify_min_and_max
         end
@@ -58,11 +60,11 @@ module Gossamer
 
         if data.key?('is_a_kind_of')
           if data.key?('unit')
-            log += [uhoh("can't have both 'unit' and 'is_a_kind_of' keys")]
+            log += uhoh("can't have both 'unit' and 'is_a_kind_of' keys")
           end
         else
           unless data.key?('unit')
-            log += [uhoh("must have either a 'unit' or 'is_a_kind_of' key")]
+            log += uhoh("must have either a 'unit' or 'is_a_kind_of' key")
           end
         end
 
@@ -75,8 +77,8 @@ module Gossamer
         # TODO: Ensure that min < max (if both are present)
         if data.key?('max') && data.key?('min') &&
            data['max'] <= data['min']
-          log += [uhoh("'max' value #{max} is not larger than " \
-                       "'min' value #{min}")]
+          log += uhoh("'max' value #{max} is not larger than " \
+                      "'min' value #{min}")
         end
 
         # TODO: Ensure that min, max make sense for the type specified

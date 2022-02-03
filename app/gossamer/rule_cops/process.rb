@@ -16,18 +16,14 @@ module Gossamer
             ::Gossamer::RuleCops::BooleanData.check(
               full_data, path: subpath
             )
-          when 'conditions'
-            [note("'conditions' is not yet implemented")]
-          when 'effects'
-            [note("'effects' is not yet implemented")]
-          when 'inputs'
-            [note("'inputs' is not yet implemented")]
+          when 'conditions', 'effects', 'inputs'
+            nyi(key)
           when 'is_a_kind_of'
             ::Gossamer::RuleCops::ConceptReference.check(
               full_data, category: 'processes', path: subpath
             )
           else
-            [uhoh("don't know how to interpret #{key}")]
+            unknown(key)
           end
         end
       end

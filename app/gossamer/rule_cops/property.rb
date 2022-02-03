@@ -25,7 +25,7 @@ module Gossamer
               full_data, category: 'senses', path: subpath
             )
           else
-            [uhoh("don't know how to interpret #{key}")]
+            unknown(key)
           end
         end
 

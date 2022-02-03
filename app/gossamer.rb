@@ -6,7 +6,15 @@ require 'zeitwerk'
 
 # The namespace for all game code.
 module Gossamer
-  VERSION = '0.1.0'
+  # @todo Find a way to specify this dynamically
+  def development?
+    true
+  end
+
+  # @todo Find a way to specify this dynamically
+  def test?
+    false
+  end
 end
 
 # require_relative '../app/gossamer/main_window'

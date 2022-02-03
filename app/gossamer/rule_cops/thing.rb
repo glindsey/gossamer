@@ -20,6 +20,8 @@ module Gossamer
             ::Gossamer::RuleCops::Always.check(
               full_data, path: subpath
             )
+          when 'has_parts', 'has_properties'
+            uhoh("#{key} must be under 'always' or 'usually'")
           when 'is_a_kind_of'
             ::Gossamer::RuleCops::ConceptReference.check(
               full_data, category: 'things', path: subpath
@@ -29,7 +31,7 @@ module Gossamer
               full_data, path: subpath
             )
           else
-            [uhoh("don't know how to interpret #{key}")]
+            unknown(key)
           end
         end
       end

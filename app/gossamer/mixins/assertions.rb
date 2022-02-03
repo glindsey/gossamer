@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+require 'pry'
+require 'pry-byebug'
+require 'pry-stack_explorer'
+require 'sourcify'
+
 module Gossamer
   module Mixins
     # Mixin to add assertions when running in a non-production environment.
@@ -13,7 +18,17 @@ module Gossamer
 
         return if result
 
-        raise "Assertion failed: #{block_to_source(&block)}"
+        str = <<~TEXT
+          Assertion failed:
+            #{block_to_source(&block)}
+        TEXT
+
+        if ::Gossamer.development?
+          warn "*** #{str}"
+          binding.pry # rubocop:disable Lint/Debugger
+        elsif ::Gossamer.test?
+          raise str
+        end
       end
 
       def block_to_source(&block)

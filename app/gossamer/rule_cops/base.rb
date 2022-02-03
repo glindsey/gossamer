@@ -4,13 +4,16 @@ module Gossamer
   module RuleCops
     # Base class for all data sanity checkers.
     class Base
-      attr_reader :full_data, :path
+      attr_reader :full_data, :path, :options
 
       include ::Gossamer::Mixins::Assertions
 
-      def initialize(full_data, path: [])
+      def initialize(full_data, path: [], **options)
         @full_data = full_data
         @path = path
+        @options = options
+
+        set_default_options
       end
 
       def check
@@ -45,11 +48,31 @@ module Gossamer
       end
 
       def note(description)
-        "   NOTE: While checking \"#{pathname}\": #{description}"
+        if @options[:note]
+          ["   NOTE: While checking \"#{pathname}\": #{description}"]
+        else
+          []
+        end
+      end
+
+      def todo(description)
+        if @options[:todo]
+          ["   TODO: While checking \"#{pathname}\": #{description}"]
+        else
+          []
+        end
       end
 
       def uhoh(description)
-        "WARNING: While checking \"#{pathname}\": #{description}"
+        ["WARNING: While checking \"#{pathname}\": #{description}"]
+      end
+
+      def nyi(key)
+        todo("'#{key}' is not yet implemented")
+      end
+
+      def unknown(key)
+        uhoh("don't know how to interpret '#{key}'")
       end
 
       private
@@ -65,9 +88,7 @@ module Gossamer
             ).check
           end
         else
-          log.push(
-            uhoh("Expected a hash but got a #{data.class}")
-          )
+          log += uhoh("Expected a hash but got a #{data.class}")
         end
 
         log
@@ -82,15 +103,20 @@ module Gossamer
 
         case data
         when TrueClass
-          log.push(note('Converting "true" to an empty hash'))
+          log += note('Converting "true" to an empty hash')
           replace_data_with({})
         when Hash
           data.each do |(key, value)|
             result = yield(key, value) if block_given?
-            log += result if result.present?
+            case result
+            when Array
+              log += result if result.present?
+            else
+              log += [result] if result.present?
+            end
           end
         else
-          log.push(uhoh("Expected a hash or 'true', but got #{data.inspect}"))
+          log += uhoh("Expected a hash or 'true', but got #{data.inspect}")
         end
 
         log
@@ -98,7 +124,12 @@ module Gossamer
 
       def _check
         raise NotImplementedError,
-              uhoh("The class #{self.class} does not yet implement #_check")
+              "The class #{self.class} does not yet implement #_check"
+      end
+
+      def set_default_options
+        @options[:note] = true unless @options.key?(:note)
+        @options[:todo] = false unless @options.key?(:todo)
       end
     end
   end

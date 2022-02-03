@@ -31,13 +31,10 @@ module Gossamer
             when 'things'
               ::Gossamer::RuleCops::RootThings
             else
-              log.push(
-                "(root): \"#{key}\" is not recognized and will be ignored"
-              )
-              nil
+              log += unknown(key)
             end
 
-          log += checker_class&.new(full_data, path: [key])&.check
+          log += checker_class&.check(full_data, path: [key])
         end
 
         log

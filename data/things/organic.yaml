@@ -1,10 +1,38 @@
-insect:
-  abstract!: true
-  is_a_kind_of: lifeform
-
 lifeform:
   abstract!: true
   is_a_kind_of: tangible_object
   usually:
     has_properties:
       - alive
+
+amphibian:
+  abstract!: true
+  is_a_kind_of: lifeform
+
+fungus:
+  abstract!: true
+  is_a_kind_of: lifeform
+
+insect:
+  abstract!: true
+  is_a_kind_of: lifeform
+
+mammal:
+  abstract!: true
+  is_a_kind_of: lifeform
+
+plant:
+  abstract!: true
+  is_a_kind_of: lifeform
+
+reptile:
+  abstract!: true
+  is_a_kind_of: lifeform
+
+biped:
+  abstract!: true
+  is_a_kind_of: lifeform
+  usually:
+    has_parts:
+      - left_leg
+      - right_leg

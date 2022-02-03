@@ -12,6 +12,7 @@ group :development, :test do
   gem 'hirb'
   gem 'pry'
   gem 'pry-byebug'
+  gem 'pry-stack_explorer'
   gem 'rspec'
   gem 'rubocop'
   gem 'rubocop-performance'

@@ -17,15 +17,13 @@ module Gossamer
 
         case data
         when String
-          log.push(check_one(data))
+          log += check_one(data)
         when Array
           data.each { |subval| log.push(check_one(subval)) }
         when Hash
           data.each { |(key, value)| log.push(check_hash_pair(key, value)) }
         else
-          log.push(
-            uhoh("Expected a string or array, but got #{data}")
-          )
+          log += uhoh("Expected a string or array, but got #{data}")
         end
 
         log
@@ -38,20 +36,16 @@ module Gossamer
 
         case line
         when String
-          log.push(check_attr_name(line))
+          log += check_attr_name(line)
         when Hash
           if line.size != 1
-            log.push(
-              uhoh("Got #{line}, but a hash inside an array can only have one" \
-                   'key/value pair')
-            )
+            log += uhoh("Got #{line}, but a hash inside an array can only " \
+                   'have one key/value pair')
           end
 
-          log.push(check_hash_pair(line.keys.first, line.values.first))
+          log += check_hash_pair(line.keys.first, line.values.first)
         else
-          log.push(
-            uhoh("Expected a string or single-pair hash, but got #{data}")
-          )
+          log += uhoh("Expected a string or single-pair hash, but got #{data}")
         end
 
         log
@@ -60,7 +54,7 @@ module Gossamer
       def check_hash_pair(key, _value)
         log = []
 
-        log.push(check_attr_name(key))
+        log += check_attr_name(key)
         # TODO: check that the set value is valid for the attribute
 
         log
@@ -70,15 +64,11 @@ module Gossamer
         log = []
 
         unless attrs_data.key?(attr_name)
-          log.push(
-            uhoh("References 'attributes.#{attr_name}', " \
-                 'but that is not defined')
-          )
+          log += uhoh("References 'attributes.#{attr_name}', " \
+                      'but that is not defined')
         end
         if attr_name == path[-1]
-          log.push(
-            uhoh('References itself, but this is not allowed')
-          )
+          log += uhoh('References itself, but this is not allowed')
         end
 
         log

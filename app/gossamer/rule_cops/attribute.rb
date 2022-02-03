@@ -29,7 +29,7 @@ module Gossamer
               full_data, category: 'measurements', path: subpath
             )
           else
-            [uhoh("don't know how to interpret #{key}")]
+            unknown(key)
           end
         end
       end
