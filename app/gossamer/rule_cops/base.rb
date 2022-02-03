@@ -162,8 +162,6 @@ module Gossamer
 
       # Handle `inherits` tags.
       def process_inheritance
-        warn '-- Processing inheritance'
-
         return uhoh("Can't inherit at this hash level") unless path.size == 2
 
         log = []
@@ -195,17 +193,12 @@ module Gossamer
 
         inherited_data = full_data[category][key]
 
-        warn "-- Inherited data: #{inherited_data}"
-        warn "-- Key data: #{data}"
-
         replace_data_with(
           smart_merge(
             inherited_data.except('abstract!'),
             data.except('inherits')
           )
         )
-
-        warn "-- Merged data: #{data}"
 
         []
       end
