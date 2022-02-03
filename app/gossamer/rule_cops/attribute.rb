@@ -9,6 +9,10 @@ module Gossamer
       end
 
       def _check
+        # Process inheritance first.
+        # @todo Maybe also do `is_a_kind_of` here too? Unsure.
+        process_inheritance if data.key?('inherits_from')
+
         check_subkeys do |key, _|
           subpath = path + [key]
           case key
@@ -20,6 +24,8 @@ module Gossamer
             ::Gossamer::RuleCops::ConceptReference.check(
               full_data, category: 'properties', path: subpath
             )
+          when 'inherits_from'
+            # No problem, this was already handled above
           when 'is_a_kind_of'
             ::Gossamer::RuleCops::ConceptReference.check(
               full_data, category: 'attributes', path: subpath

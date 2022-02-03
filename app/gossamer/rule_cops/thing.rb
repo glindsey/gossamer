@@ -11,7 +11,7 @@ module Gossamer
       def _check
         # Process inheritance first.
         # @todo Maybe also do `is_a_kind_of` here too? Unsure.
-        process_inheritance if data.key?('inherits')
+        process_inheritance if data.key?('inherits_from')
 
         check_subkeys do |key, value|
           subpath = path + [key]
@@ -50,7 +50,7 @@ module Gossamer
             )
           when 'has_parts', 'has_properties'
             uhoh("#{key} must be under 'always' or 'usually'")
-          when 'inherits'
+          when 'inherits_from'
             # No problem, this was already handled above
           when 'is_a_kind_of'
             ::Gossamer::RuleCops::ConceptReference.check(

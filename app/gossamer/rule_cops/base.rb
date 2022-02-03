@@ -160,7 +160,7 @@ module Gossamer
         log
       end
 
-      # Handle `inherits` tags.
+      # Handle `inherits_from` tags.
       def process_inheritance
         return uhoh("Can't inherit at this hash level") unless path.size == 2
 
@@ -168,8 +168,8 @@ module Gossamer
 
         # @todo Double-check this. I'm pretty sure inheritance loops could cause
         #       an infinite loop here.
-        while data.key?('inherits')
-          targets = data['inherits']
+        while data.key?('inherits_from')
+          targets = data['inherits_from']
           category = path.first
           case targets
           when Array
@@ -196,7 +196,7 @@ module Gossamer
         replace_data_with(
           smart_merge(
             inherited_data.except('abstract!'),
-            data.except('inherits')
+            data.except('inherits_from')
           )
         )
 
