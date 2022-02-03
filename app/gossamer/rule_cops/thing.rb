@@ -9,24 +9,25 @@ module Gossamer
       end
 
       def _check
-        check_subkeys do |key, value|
+        check_subkeys do |key, _|
+          subpath = path + [key]
           case key
           when 'abstract!'
-            unless value.is_a?(TrueClass) || value.is_a?(FalseClass)
-              [uhoh("#{value} isn't a boolean value")]
-            end
+            ::Gossamer::RuleCops::BooleanData.check(
+              full_data, path: subpath
+            )
           when 'always'
-            ::Gossamer::RuleCops::Always.new(
-              full_data, path: path + [key]
-            ).check
+            ::Gossamer::RuleCops::Always.check(
+              full_data, path: subpath
+            )
           when 'is_a_kind_of'
-            ::Gossamer::RuleCops::ConceptReference.new(
-              full_data, category: 'things', path: path + [key]
-            ).check
+            ::Gossamer::RuleCops::ConceptReference.check(
+              full_data, category: 'things', path: subpath
+            )
           when 'usually'
-            ::Gossamer::RuleCops::Usually.new(
-              full_data, path: path + [key]
-            ).check
+            ::Gossamer::RuleCops::Usually.check(
+              full_data, path: subpath
+            )
           else
             [uhoh("don't know how to interpret #{key}")]
           end

@@ -26,38 +26,38 @@ module Gossamer
         case data
         when String
           unless category_data.key?(data)
-            log.push(
+            log += [
               uhoh("References '#{@category}.#{data}', " \
                    'but that is not defined')
-            )
+            ]
           end
           if data == path[-1]
-            log.push(
+            log += [
               uhoh('References itself, but this is not allowed')
-            )
+            ]
           end
         when Array
           data.each do |subval|
             next if category_data.key?(subval)
 
-            log.push(
+            log += [
               uhoh("References '#{@category}.#{subval}', " \
                    'but that is not defined')
-            )
+            ]
           end
         when Hash
           data.each do |key, _|
             next if category_data.key?(key)
 
-            log.push(
+            log += [
               uhoh("References '#{@category}.#{key}', " \
                    'but that is not defined')
-            )
+            ]
           end
         else
-          log.push(
+          log += [
             uhoh("Expected a string or array, but got #{data.inspect}")
-          )
+          ]
         end
 
         log

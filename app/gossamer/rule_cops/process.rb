@@ -9,12 +9,13 @@ module Gossamer
       end
 
       def _check
-        check_subkeys do |key, value|
+        check_subkeys do |key, _|
+          subpath = path + [key]
           case key
           when 'abstract!'
-            unless value.is_a?(TrueClass) || value.is_a?(FalseClass)
-              [uhoh("#{value} isn't a boolean value")]
-            end
+            ::Gossamer::RuleCops::BooleanData.check(
+              full_data, path: subpath
+            )
           when 'conditions'
             [note("'conditions' is not yet implemented")]
           when 'effects'
@@ -22,9 +23,9 @@ module Gossamer
           when 'inputs'
             [note("'inputs' is not yet implemented")]
           when 'is_a_kind_of'
-            ::Gossamer::RuleCops::ConceptReference.new(
-              full_data, category: 'processes', path: path + [key]
-            ).check
+            ::Gossamer::RuleCops::ConceptReference.check(
+              full_data, category: 'processes', path: subpath
+            )
           else
             [uhoh("don't know how to interpret #{key}")]
           end

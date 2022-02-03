@@ -9,6 +9,7 @@ module Gossamer
       end
 
       def _check
+        # @todo Checks that the format is valid; right now it just checks type
         return [] if data.is_a?(String)
 
         [uhoh("Expected a string, but got #{data}")]
