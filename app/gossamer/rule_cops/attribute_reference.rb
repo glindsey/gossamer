@@ -40,7 +40,7 @@ module Gossamer
         when Hash
           if line.size != 1
             log += uhoh("Got #{line}, but a hash inside an array can only " \
-                   'have one key/value pair')
+                        'have one key/value pair')
           end
 
           log += check_hash_pair(line.keys.first, line.values.first)
@@ -66,9 +66,7 @@ module Gossamer
         unless attrs_data.key?(attr_name)
           log += missing("attributes.#{attr_name}")
         end
-        if attr_name == path[-1]
-          log += selfref
-        end
+        log += selfref if attr_name == path[-1]
 
         log
       end

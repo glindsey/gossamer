@@ -62,7 +62,7 @@ RSpec.shared_examples('Component') do
       expect(component.dirty).to eq(true)
     end
 
-    context 'if the component has a parent' do
+    context 'when the component has a parent' do
       let(:parent) { described_class.new }
 
       before do

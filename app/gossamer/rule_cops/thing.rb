@@ -25,10 +25,13 @@ module Gossamer
               full_data, path: subpath
             )
 
+            # @todo It might be better to just auto-add things with this meta-
+            #       property set as properties in their own right, instead of
+            #       requiring them to be declared in the ruleset.
             if value == true && !full_data['properties'].key?(value)
               log += uhoh(
                 "`part_property!` is true, but '#{path[-1]}' is not defined " \
-                "as a property in the ruleset"
+                'as a property in the ruleset'
               )
             end
 

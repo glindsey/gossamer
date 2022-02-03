@@ -27,9 +27,7 @@ module Gossamer
         when String
           log += missing(data) unless category_data.key?(data)
 
-          if data == path[-1]
-            log += selfref
-          end
+          log += selfref if data == path[-1]
         when Array
           data.each do |subval|
             next if category_data.key?(subval)
