@@ -2,6 +2,8 @@
 # essentially a boolean attribute, but is treated separately from them in order
 # to allow for cleaner and more legible definitions.
 #
+# @todo Possibly also make "enumerated" values properties instead of attributes?
+#
 # In the data files, the existence of an property can be set directly in the
 # definition of a material/property/thing, or via a qualifier like "usually".
 # In the former case, the property is considered to be an "intrinsic" constant;
@@ -13,10 +15,14 @@ properties:
   acrid:
     senses: [smell]
 
-  alive: {}
+  alive:
+    excludes: [dead]
 
   bitter:
     senses: [smell, taste]
+
+  dead:
+    excludes: [alive]
 
   ductile:
     senses: [touch]

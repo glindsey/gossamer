@@ -2,14 +2,16 @@
 
 module Gossamer
   module SanityCheckers
-    # Sanity checker for root measurement unit data.
-    class RootUnits < Base
+    # Sanity checker for a string.
+    class StringData < Base
       def initialize(full_data, path: [])
         super
       end
 
       def _check
-        check_root_group(::Gossamer::SanityCheckers::Unit)
+        return [] if data.is_a?(String)
+
+        [uhoh("Expected a string, but got #{data.class}: #{data}")]
       end
     end
   end

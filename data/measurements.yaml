@@ -1,6 +1,91 @@
+# Standard built-ins:
+#   - int -- Integer number ranging from INT64_MIN to INT64_MAX.
+#            "fixed" is a synonym for int and equivalent to "fixed0".
+#   - fixedN -- Fixed-point number with N decimal places.
+#              Ranges from INT64_MIN/(10^N) to INT64_MAX/(10^N).
+#   - color -- 32-bit value in #AARRGGBB (alpha/red/green/blue) format.
+#   - string -- UTF-8 string of characters
+#   - id -- Object ID
+#   - list: <type> -- List of one of the above types
+#   - dictionary: <type> -- Dictionary relating strings to one of the above
+#                           types
+#
+# Fixed-point numbers should be written WITHOUT their decimal point in YAML
+# files; e.g. the fixed2 number "123.45" should be written "12345".
+#
+# Floating-point attributes might be added if there's a need for them.
+
 measurements:
-  distance: {}
-  fluid_volume: {}
-  mass: {}
-  percentage: {}
-  temperature: {}
+  distance:
+    unit: meter
+    type: fixed3
+    min: 0
+    format:
+      full: "# meters"
+      abbreviated: "# m"
+    conversions:
+      millimeter:
+        format:
+          full: "# millimeters"
+          abbreviated: "# mm"
+        multiply_by: 1000
+      centimeter:
+        format:
+          full: "# centimeters"
+          abbreviated: "# cm"
+        multiply_by: 100
+      kilometer:
+        format:
+          full: "# kilometers"
+          abbreviated: "# km"
+        divide_by: 1000
+
+  fluid_volume:
+    unit: liter
+    type: fixed3
+    min: 0
+    format:
+      full: "# liters"
+      abbreviated: "# L"
+    conversions:
+      milliliter:
+        format:
+          full: "# milliliters"
+          abbreviated: "# mL"
+        multiply_by: 1000
+
+  mass:
+    unit: gram
+    type: fixed3
+    min: 0
+    format:
+      full: "# grams"
+      abbreviated: "# g"
+    conversions:
+      milligram:
+        format:
+          full: "# milligrams"
+          abbreviated: "# mg"
+        multiply_by: 1000
+      kilogram:
+        format:
+          full: "# kilograms"
+          abbreviated: "# kg"
+        divide_by: 1000
+
+  percentage:
+    unit: percent
+    type: fixed2
+    min: 0
+    max: 10000
+    format:
+      full: "# percent"
+      abbreviated: "#%"
+
+  temperature:
+    unit: degree_celsius
+    type: fixed2
+    min: -27315
+    format:
+      full: "# degrees Celsius"
+      abbreviated: "#°C"

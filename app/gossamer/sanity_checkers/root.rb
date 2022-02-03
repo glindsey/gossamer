@@ -30,8 +30,6 @@ module Gossamer
               ::Gossamer::SanityCheckers::RootSenses
             when 'things'
               ::Gossamer::SanityCheckers::RootThings
-            when 'units'
-              ::Gossamer::SanityCheckers::RootUnits
             else
               log.push(
                 "(root): \"#{key}\" is not recognized and will be ignored"
