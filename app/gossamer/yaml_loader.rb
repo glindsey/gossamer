@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require COMMON
+require COMMON_INCLUDES
 
 module Gossamer
   # Utility methods that load YAML files from a directory and return the

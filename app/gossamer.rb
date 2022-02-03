@@ -3,7 +3,7 @@
 require 'zeitwerk'
 
 ROOT_DIR = __dir__
-COMMON = File.join(ROOT_DIR, 'common.rb')
+COMMON_INCLUDES = File.join(ROOT_DIR, 'common.rb')
 
 # Setup file for the Gossamer project.
 
