@@ -16,21 +16,21 @@ module Gossamer
       LOG_LEVEL = :warning
 
       LOG_LEVEL_MAP = {
-        fatal: 0,
-        error: 1,
+        fatal:   0,
+        error:   1,
         warning: 2,
-        info: 3,
-        debug: 4,
-        todo: 5
+        info:    3,
+        debug:   4,
+        todo:    5
       }.freeze
 
       LOG_TEXT_MAP = {
-        fatal:    '  FATAL',
-        error:    '  ERROR',
-        warning:  'WARNING',
-        info:     '   NOTE',
-        debug:    '  DEBUG',
-        todo:     '   TODO'
+        fatal:   '  FATAL',
+        error:   '  ERROR',
+        warning: 'WARNING',
+        info:    '   NOTE',
+        debug:   '  DEBUG',
+        todo:    '   TODO'
       }.freeze
 
       def log(message, level: :info)

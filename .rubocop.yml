@@ -24,7 +24,10 @@ Metrics/ClassLength:
 Metrics/CyclomaticComplexity:
   Max: 20
 
-Metrics/LineLength:
+Layout/HashAlignment:
+  EnforcedColonStyle: table
+
+Layout/LineLength:
   Max: 80
 
 Metrics/MethodLength:
