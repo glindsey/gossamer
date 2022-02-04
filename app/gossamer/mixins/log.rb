@@ -36,9 +36,13 @@ module Gossamer
       def log(message, level: :info)
         return unless LOG_LEVEL_MAP[level] <= LOG_LEVEL_MAP[LOG_LEVEL]
 
-        warn "[#{DateTime.now}] #{LOG_TEXT_MAP[level]}: #{message}"
+        warn "#{datetime_header} #{LOG_TEXT_MAP[level]}: #{message}"
 
         LOG_LEVEL_MAP[level] >= LOG_LEVEL_MAP[:info]
+      end
+
+      def datetime_header
+        "[#{DateTime.now.strftime('%Y-%m-%d %H:%M:%S')}]"
       end
     end
   end
