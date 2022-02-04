@@ -11,6 +11,7 @@ module Gossamer
   # nested under hashes with identical keys are merged, the result will be the
   # *union* of the two arrays, and not a concatenation of them.
   class YamlLoader
+    include Gossamer::Mixins::Log
     include Gossamer::Mixins::SmartMerge
 
     # The top-level "parse" command.
@@ -32,7 +33,7 @@ module Gossamer
       raise 'Path must be a String' unless path.is_a?(String)
 
       full_path = file.present? ? File.join(path, file) : path
-      warn "Parsing #{full_path}"
+      log "Parsing #{full_path}"
 
       data =
         if File.directory?(full_path)

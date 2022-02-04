@@ -4,6 +4,8 @@ module Gossamer
   module RuleCops
     # Sanity checker for a single thing.
     class Thing < Base
+      include Gossamer::Mixins::Log
+
       def initialize(full_data, path: [])
         super
       end
@@ -25,7 +27,7 @@ module Gossamer
           # set, because its parts should be considered a "human head", a
           # "human leg", et cetera.
           when 'part_property!'
-            log = ::Gossamer::RuleCops::BooleanData.check(
+            ::Gossamer::RuleCops::BooleanData.check(
               full_data, path: subpath
             )
 
@@ -37,19 +39,17 @@ module Gossamer
             #       should apply to subclass things, not the abstract thing.
             if value == true && !data.key?('abstract!') &&
                !full_data['properties'].key?(value)
-              log += uhoh(
-                "`part_property!` is true, but '#{path[-1]}' is not defined " \
-                'as a property in the ruleset'
-              )
+              check_log("`part_property!` is true, but '#{path[-1]}' is not " \
+                        'defined as a property in the ruleset',
+                        level: :warning)
             end
-
-            log
           when 'always'
             ::Gossamer::RuleCops::Always.check(
               full_data, path: subpath
             )
           when 'has_parts', 'has_properties'
-            uhoh("#{key} must be under 'always' or 'usually'")
+            check_log("#{key} must be under 'always' or 'usually'",
+                      level: :warning)
           when 'inherits_from', 'is_a_kind_of'
             # No problem, this was already handled above
           when 'usually'
@@ -57,7 +57,7 @@ module Gossamer
               full_data, path: subpath
             )
           else
-            unknown(key)
+            log_unknown(key)
           end
         end
       end

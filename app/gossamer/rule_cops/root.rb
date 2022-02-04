@@ -4,6 +4,8 @@ module Gossamer
   module RuleCops
     # Sanity checker for the root of the data tree.
     class Root < Base
+      include Gossamer::Mixins::Log
+
       def initialize(full_data, path: [])
         super
       end
@@ -11,8 +13,6 @@ module Gossamer
       protected
 
       def _check
-        log = []
-
         data.each do |(key, _)|
           checker_class =
             case key
@@ -31,13 +31,11 @@ module Gossamer
             when 'things'
               ::Gossamer::RuleCops::RootThings
             else
-              log += unknown(key)
+              log_unknown(key)
             end
 
-          log += checker_class&.check(full_data, path: [key])
+          checker_class&.check(full_data, path: [key])
         end
-
-        log
       end
     end
   end

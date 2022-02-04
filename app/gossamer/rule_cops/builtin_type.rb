@@ -4,6 +4,8 @@ module Gossamer
   module RuleCops
     # Sanity checker for a built-in type.
     class BuiltinType < Base
+      include Gossamer::Mixins::Log
+
       PATTERNS = [
         { regex: /^bool(ean)?$/, replacement: 'bool' },
         { regex: /^color$/, replacement: 'color' },
@@ -21,8 +23,6 @@ module Gossamer
       end
 
       def _check
-        log = []
-
         if data.is_a?(String)
           okay = false
           PATTERNS.each do |pattern|
@@ -34,12 +34,12 @@ module Gossamer
           end
 
           # TODO: more checking for lists, dictionaries
-          log += uhoh("Don't understand the type '#{data}'") unless okay
+          unless okay
+            check_log("Don't understand the type '#{data}'", level: :warning)
+          end
         else
-          expected(String)
+          log_expected(String)
         end
-
-        log
       end
     end
   end

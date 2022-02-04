@@ -9,6 +9,7 @@ module Gossamer
       attr_reader :full_data, :path, :options
 
       include ::Gossamer::Mixins::Assertions
+      include ::Gossamer::Mixins::Log
       include ::Gossamer::Mixins::SmartMerge
 
       def initialize(full_data, path: [], **options)
@@ -20,7 +21,7 @@ module Gossamer
       end
 
       def check
-        warn "Checking \"#{pathname}\"..."
+        log("Checking \"#{pathname}\"...")
         _check
       end
 
@@ -41,7 +42,7 @@ module Gossamer
 
         @data = path.present? ? @full_data.dig(*@path) : @full_data
 
-        uhoh('The dig attempt failed') if @data.nil?
+        check_log('The dig attempt failed', level: :error) if @data.nil?
 
         @data
       end
@@ -56,62 +57,47 @@ module Gossamer
         @data = nil # clear cached data so it is retrieved again on next request
       end
 
-      def note(description)
-        if @options[:note]
-          ["   NOTE: #{checking(description)}"]
-        else
-          []
-        end
-      end
-
-      def todo(description)
-        if @options[:todo]
-          ["   TODO: #{checking(description)}"]
-        else
-          []
-        end
-      end
-
-      def uhoh(description)
-        ["WARNING: #{checking(description)}"]
-      end
-
       def expect(type)
-        data.is_a?(type) ? [] : expected(type)
+        data.is_a?(type) ? [] : log_expected(type)
       end
 
       def expect_one_of(types)
         if types.any? { |type| data.is_a?(type) }
           []
         else
-          expected_one_of(types)
+          log_expected_one_of(types)
         end
       end
 
-      def expected(type)
-        uhoh("Expected #{type} but got #{data.class} " \
-             "(#{data.inspect})")
+      def check_log(message, level: :info)
+        log(checking(message), level: level)
       end
 
-      def expected_one_of(types)
-        uhoh("Expected one of #{types.inspect} but got #{data.class} " \
-             "(#{data.inspect})")
+      def log_expected(type)
+        check_log("Expected #{type} but got #{data.class} " \
+                  "(#{data.inspect})", level: :warning)
       end
 
-      def selfref
-        uhoh('References itself, but that is not allowed')
+      def log_expected_one_of(types)
+        check_log("Expected one of #{types.inspect} but got #{data.class} " \
+                  "(#{data.inspect})", level: :warning)
       end
 
-      def missing(key)
-        uhoh("References '#{key}', but that is not defined in the ruleset")
+      def log_selfref
+        check_log('References itself, but that is not allowed', level: :warning)
       end
 
-      def nyi(key)
-        todo("'#{key}' is not yet implemented")
+      def log_missing(key)
+        check_log("References '#{key}', but that is not defined in the ruleset",
+                  level: :warning)
       end
 
-      def unknown(key)
-        uhoh("don't know how to interpret '#{key}'")
+      def log_nyi(key)
+        check_log("'#{key}' is not yet implemented", level: :todo)
+      end
+
+      def log_unknown(key)
+        check_log("don't know how to interpret '#{key}'", level: :warning)
       end
 
       private
@@ -122,19 +108,15 @@ module Gossamer
 
       # Standard checks for root groups.
       def check_root_group(subkey_checker_class)
-        log = []
-
         if data.is_a?(Hash)
           data.each do |(unit, _)|
-            log += subkey_checker_class.new(
+            subkey_checker_class.new(
               full_data, path: path + [unit]
             ).check
           end
         else
-          expected(Hash)
+          log_expected(Hash)
         end
-
-        log
       end
 
       # Performs standard type checks. If the data is a hash, iterates over the
@@ -142,27 +124,15 @@ module Gossamer
       def check_subkeys
         raise 'No block provided to #check_subkeys' unless block_given?
 
-        log = []
-
         case data
         when TrueClass
-          log += note('Converting "true" to an empty hash')
+          check_log('Converting "true" to an empty hash')
           replace_data_with({})
         when Hash
-          data.each do |(key, value)|
-            result = yield(key, value) if block_given?
-            case result
-            when Array
-              log += result if result.present?
-            else
-              log += [result] if result.present?
-            end
-          end
+          data.each { |(key, value)| yield(key, value) }
         else
-          expected([Hash, TrueClass])
+          log_expected([Hash, TrueClass])
         end
-
-        log
       end
 
       # Handle `inherits_from` and `is_a_kind_of` tags.
@@ -170,12 +140,13 @@ module Gossamer
       # definition, while `is_a_kind_of` is retained.
       def process_inheritance
         unless %w[inherits_from is_a_kind_of].any? { |key| data.key?(key) }
-          return []
+          return
         end
 
-        return uhoh("Can't inherit at this hash level") unless path.size == 2
-
-        log = []
+        unless path.size == 2
+          check_log("Can't inherit at this hash level", level: :warning)
+          return
+        end
 
         replace_key_value_with(
           'inherits_from',
@@ -192,22 +163,21 @@ module Gossamer
           category = path.first
           case targets
           when Array
-            targets.each { |key| log += inherit_from(category, key) }
+            targets.each { |key| inherit_from(category, key) }
           when String
-            log += inherit_from(category, targets)
+            inherit_from(category, targets)
           else
-            log += expected_one_of([String, Array])
+            log_expected_one_of([String, Array])
           end
         end
-
-        log
       end
 
       def inherit_from(category, key)
-        warn "-- Merging data from #{category}.#{key} into #{pathname}"
+        check_log("-- Merging data from #{category}.#{key} into #{pathname}",
+                  level: :debug)
 
         unless full_data[category].key?(key)
-          return missing("#{category}.#{key}")
+          return log_missing("#{category}.#{key}")
         end
 
         inherited_data =

@@ -11,6 +11,7 @@ module Gossamer
     #
     # @todo Turn off assertions when in a non-production environment. Right now
     #       there's no way to distinguish "development" mode from "production".
+    #
     module Assertions
       # Raise an error if the passed-in block is not truthy.
       def assert(&block)

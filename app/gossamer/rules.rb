@@ -25,7 +25,7 @@ module Gossamer
 
       @data = mod_data
 
-      warn ::Gossamer::RuleCops::Root.check(@data)
+      ::Gossamer::RuleCops::Root.check(@data)
     end
 
     # @todo Everything below this probably needs to be rewritten

@@ -4,6 +4,8 @@ module Gossamer
   module RuleCops
     # Sanity checker for a unit format.
     class UnitFormat < Base
+      include Gossamer::Mixins::Log
+
       def initialize(full_data, path: [])
         super
       end
@@ -11,8 +13,9 @@ module Gossamer
       def _check
         unless data.is_a?(Hash)
           unless data.key?('full') || data.key?('abbreviated')
-            return uhoh(
-              "Format must have at least one of 'full' or 'abbreviated' forms"
+            check_log(
+              "Format must have at least one of 'full' or 'abbreviated' forms",
+              level: :warning
             )
           end
 

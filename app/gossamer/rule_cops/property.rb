@@ -4,6 +4,8 @@ module Gossamer
   module RuleCops
     # Sanity checker for a single property.
     class Property < Base
+      include Gossamer::Mixins::Log
+
       def initialize(full_data, path: [])
         super
       end
@@ -31,7 +33,7 @@ module Gossamer
               full_data, category: 'senses', path: subpath
             )
           else
-            unknown(key)
+            log_unknown(key)
           end
         end
 

@@ -4,6 +4,8 @@ module Gossamer
   module RuleCops
     # Sanity checker for rules that reference attributes.
     class AttributeReference < Base
+      include Gossamer::Mixins::Log
+
       def initialize(full_data, path: [])
         super
       end
@@ -13,62 +15,45 @@ module Gossamer
       end
 
       def _check
-        log = []
-
         case data
         when String
-          log += check_one(data)
+          check_one(data)
         when Array
-          data.each { |subval| log.push(check_one(subval)) }
+          data.each { |subval| check_one(subval) }
         when Hash
-          data.each { |(key, value)| log.push(check_hash_pair(key, value)) }
+          data.each { |(key, value)| check_hash_pair(key, value) }
         else
-          expected_one_of([String, Array, Hash])
+          log_expected_one_of([String, Array, Hash])
         end
-
-        log
       end
 
       private
 
       def check_one(line)
-        log = []
-
         case line
         when String
-          log += check_attr_name(line)
+          check_attr_name(line)
         when Hash
           if line.size != 1
-            log += uhoh("Got #{line}, but a hash inside an array can only " \
-                        'have one key/value pair')
+            check_log("Got #{line}, but a hash inside an array can only have " \
+                      'one key/value pair', level: :warning)
           end
 
-          log += check_hash_pair(line.keys.first, line.values.first)
+          check_hash_pair(line.keys.first, line.values.first)
         else
-          expected_one_of([String, Hash])
+          log_expected_one_of([String, Hash])
         end
-
-        log
       end
 
       def check_hash_pair(key, _value)
-        log = []
-
-        log += check_attr_name(key)
+        check_attr_name(key)
         # TODO: check that the set value is valid for the attribute
-
-        log
       end
 
       def check_attr_name(attr_name)
-        log = []
+        log_missing("attributes.#{attr_name}") unless attrs_data.key?(attr_name)
 
-        unless attrs_data.key?(attr_name)
-          log += missing("attributes.#{attr_name}")
-        end
-        log += selfref if attr_name == path[-1]
-
-        log
+        log_selfref if attr_name == path[-1]
       end
     end
   end

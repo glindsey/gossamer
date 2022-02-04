@@ -4,6 +4,8 @@ module Gossamer
   module RuleCops
     # Sanity checker for a "usually" clause.
     class Usually < Base
+      include Gossamer::Mixins::Log
+
       def initialize(full_data, path: [])
         super
       end
@@ -29,7 +31,7 @@ module Gossamer
               full_data, category: 'materials', path: subpath
             )
           else
-            unknown(key)
+            log_unknown(key)
           end
         end
       end

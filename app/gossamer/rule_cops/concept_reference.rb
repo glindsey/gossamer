@@ -4,6 +4,8 @@ module Gossamer
   module RuleCops
     # Sanity checker for rules that reference root concepts.
     class ConceptReference < Base
+      include Gossamer::Mixins::Log
+
       attr_reader :category
 
       def initialize(full_data, category:, path: [])
@@ -21,30 +23,26 @@ module Gossamer
       end
 
       def _check
-        log = []
-
         case data
         when String
-          log += missing(data) unless category_data.key?(data)
+          log_missing(data) unless category_data.key?(data)
 
-          log += selfref if data == path[-1]
+          log_selfref if data == path[-1]
         when Array
           data.each do |subval|
             next if category_data.key?(subval)
 
-            log += missing(subval)
+            log_missing(subval)
           end
         when Hash
           data.each do |key, _|
             next if category_data.key?(key)
 
-            log += missing(key)
+            log_missing(key)
           end
         else
-          expected_one_of([String, Array])
+          log_expected_one_of([String, Array])
         end
-
-        log
       end
     end
   end

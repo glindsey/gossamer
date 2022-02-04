@@ -4,6 +4,8 @@ module Gossamer
   module RuleCops
     # Sanity checker for a single material.
     class Material < Base
+      include Gossamer::Mixins::Log
+
       def initialize(full_data, path: [])
         super
       end
@@ -25,7 +27,7 @@ module Gossamer
               full_data, path: subpath
             )
           when 'has_refs'
-            nyi(key)
+            log_nyi(key)
           when 'inherits_from', 'is_a_kind_of'
             # No problem, this was already handled above
           when 'implies'
@@ -33,7 +35,7 @@ module Gossamer
               full_data, category: 'properties', path: subpath
             )
           else
-            unknown(key)
+            log_unknown(key)
           end
         end
       end

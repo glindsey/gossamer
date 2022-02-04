@@ -4,6 +4,8 @@ module Gossamer
   module RuleCops
     # Sanity checker for a single process.
     class Process < Base
+      include Gossamer::Mixins::Log
+
       def initialize(full_data, path: [])
         super
       end
@@ -21,11 +23,11 @@ module Gossamer
               full_data, path: subpath
             )
           when 'conditions', 'effects', 'inputs'
-            nyi(key)
+            log_nyi(key)
           when 'inherits_from', 'is_a_kind_of'
             # No problem, this was already handled above
           else
-            unknown(key)
+            log_unknown(key)
           end
         end
       end
