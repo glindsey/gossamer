@@ -8,7 +8,8 @@ module Gossamer
     def initialize
       # Load main data
       main_data = YamlLoader.new.parse(
-        File.expand_path(File.join(__dir__, '..', '..', 'data'))
+        File.expand_path(File.join(__dir__, '..', '..', 'data')),
+        directories_become_hashkeys: true
       )
 
       mod_data = main_data

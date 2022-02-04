@@ -19,7 +19,16 @@ module Gossamer
     #               to parse all entries in the directory.
     # @param prev   Previous data to merge this data into, if any.
     # @return       A `Hash` containing the data read.
-    def parse(path, file: '', prev: {})
+    #
+    # Options:
+    #   directories_become_hashkeys - If true, subdirectories under the path
+    #                                 are treated as hash keys, with their
+    #                                 contents as the corresponding values.
+    #                                 This method is used for the native "data"
+    #                                 directory, but not for mod directories
+    #                                 since people might want to organize mods
+    #                                 in whatever way they see fit.
+    def parse(path, file: '', prev: {}, **options)
       raise 'Path must be a String' unless path.is_a?(String)
 
       full_path = file.present? ? File.join(path, file) : path
@@ -27,10 +36,10 @@ module Gossamer
 
       data =
         if File.directory?(full_path)
-          if file.present?
-            { file => parse_dir(full_path) }
+          if file.present? && options[:directories_become_hashkeys]
+            { file => parse_dir(full_path, **options) }
           else
-            parse_dir(full_path)
+            parse_dir(full_path, **options)
           end
         else
           Psych.safe_load(File.read(full_path))
@@ -41,11 +50,11 @@ module Gossamer
 
     private
 
-    def parse_dir(path)
+    def parse_dir(path, **options)
       data = {}
 
       Dir.new(path).each_child do |child|
-        child_data = parse(path, file: child)
+        child_data = parse(path, file: child, **options)
         data = smart_merge(data, child_data)
       end
 

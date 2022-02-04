@@ -1,3 +1,5 @@
+# Example mod file to add a "worm" to the ruleset.
+
 things:
   worm:
     is_a_kind_of: insect
