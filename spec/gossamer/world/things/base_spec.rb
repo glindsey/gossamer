@@ -1,0 +1,113 @@
+# frozen_string_literal: true
+
+require 'active_support/concern'
+
+module Gossamer
+  module World
+    module Traits
+      module TestingTrait
+        extend ActiveSupport::Concern
+
+        def abstract?
+          false
+        end
+
+        def testing_method?
+          true
+        end
+      end
+    end
+  end
+end
+
+module Gossamer
+  module World
+    module Things
+      class TestingClass < Base
+        include ::Gossamer::World::Traits::TestingTrait
+      end
+    end
+  end
+end
+
+RSpec.describe Gossamer::World::Things::Base do
+  subject(:thing) { described_class.new }
+
+  it 'is marked as abstract' do
+    expect(described_class.is?(:abstract)).to eq(true)
+  end
+
+  it 'can NOT be instantiated (because it is abstract)' do
+    expect { thing }.to raise_error(RuntimeError)
+  end
+
+  context 'when provided a testing trait at instantiation' do
+    subject(:thing) do
+      described_class.new(
+        traits: :testing_trait
+      )
+    end
+
+    it 'can be instantiated' do
+      expect { thing }.not_to raise_error
+    end
+
+    it 'is not marked as abstract' do
+      expect(thing.is?(:abstract)).to eq(false)
+    end
+
+    it 'returns true when checked for the testing method' do
+      expect(thing.is?(:testing_method)).to eq(true)
+    end
+
+    it 'returns false when checked for the testing property' do
+      expect(thing.is?(:testing_property)).to eq(false)
+    end
+  end
+
+  context 'when provided a testing trait and property at instantiation' do
+    subject(:thing) do
+      described_class.new(
+        traits:     :testing_trait,
+        properties: :testing_property
+      )
+    end
+
+    it 'returns true when checked for the testing property' do
+      expect(thing.is?(:testing_property)).to eq(true)
+    end
+  end
+
+  context 'when provided a testing trait as part of a subclass' do
+    subject(:thing) { ::Gossamer::World::Things::TestingClass.new }
+
+    it 'can be instantiated' do
+      expect { thing }.not_to raise_error
+    end
+
+    it 'is not marked as abstract' do
+      expect(thing.is?(:abstract)).to eq(false)
+    end
+
+    it 'returns true when checked for the testing method' do
+      expect(thing.is?(:testing_method)).to eq(true)
+    end
+
+    it 'returns false when checked for the testing property' do
+      expect(thing.is?(:testing_property)).to eq(false)
+    end
+  end
+
+  context 'when provided a testing trait as part of a subclass and a ' \
+          'property at instantiation' do
+    subject(:thing) do
+      ::Gossamer::World::Things::TestingClass.new(
+        properties: :testing_property
+      )
+    end
+
+    it 'returns true when checked for the testing property' do
+      expect(thing.is?(:testing_property)).to eq(true)
+    end
+  end
+end

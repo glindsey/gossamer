@@ -26,4 +26,5 @@ end
 # Set up Zeitwerk.
 loader = Zeitwerk::Loader.new
 loader.push_dir('app')
+loader.push_dir('experimental')
 loader.setup # ready!

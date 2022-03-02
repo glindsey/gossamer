@@ -89,6 +89,8 @@ GEM
     webrick (1.7.0)
     yard (0.9.27)
       webrick (~> 1.7.0)
+    yard-rspec (0.1)
+      yard
     zeitwerk (2.5.4)
 
 PLATFORMS
@@ -110,6 +112,7 @@ DEPENDENCIES
   sourcify
   table_print
   yard
+  yard-rspec
   zeitwerk
 
 BUNDLED WITH

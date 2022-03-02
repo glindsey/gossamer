@@ -20,4 +20,5 @@ group :development, :test do
   gem 'sourcify'
   gem 'table_print'
   gem 'yard'
+  gem 'yard-rspec'
 end
