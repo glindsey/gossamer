@@ -18,7 +18,7 @@ module Gossamer
             ::Gossamer::RuleCops::AttributeReference.check(
               full_data, path: subpath
             )
-          when 'has_parts'
+          when 'has_parts', 'is_a_kind_of', 'is_one_of'
             ::Gossamer::RuleCops::ConceptReference.check(
               full_data, category: 'things', path: subpath
             )

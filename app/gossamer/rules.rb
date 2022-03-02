@@ -14,7 +14,7 @@ module Gossamer
 
       mod_data = main_data
 
-      %w[mods experimental].each do |dir|
+      ['mods', File.join('experimental', 'mods')].each do |dir|
         mod_data = YamlLoader.new.parse(
           File.expand_path(File.join(__dir__, '..', '..', dir)),
           prev: mod_data

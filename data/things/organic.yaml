@@ -5,13 +5,26 @@ lifeform:
     has_properties:
       - alive
 
+# Dimorph means both "possibly having male or female sexual characteristics",
+# as apposed to identifying as a particular gender.
+dimorph:
+  abstract!: true
+
+andromorph:
+  abstract!: true
+  is_a_kind_of: dimorph
+
+gynomorph:
+  abstract!: true
+  is_a_kind_of: dimorph
+
 species:
   abstract!: true
   part_property!: true
 
 amphibian:
   abstract!: true
-  is_a_kind_of: lifeform
+  is_a_kind_of: [dimorph, lifeform]
 
 fungus:
   abstract!: true
@@ -19,11 +32,11 @@ fungus:
 
 insect:
   abstract!: true
-  is_a_kind_of: lifeform
+  is_a_kind_of: [dimorph, lifeform]
 
 mammal:
   abstract!: true
-  is_a_kind_of: lifeform
+  is_a_kind_of: [dimorph, lifeform]
 
 plant:
   abstract!: true
@@ -31,7 +44,7 @@ plant:
 
 reptile:
   abstract!: true
-  is_a_kind_of: lifeform
+  is_a_kind_of: [dimorphic, lifeform]
 
 biped:
   abstract!: true
