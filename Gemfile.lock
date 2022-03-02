@@ -86,6 +86,9 @@ GEM
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
+    webrick (1.7.0)
+    yard (0.9.27)
+      webrick (~> 1.7.0)
     zeitwerk (2.5.4)
 
 PLATFORMS
@@ -106,6 +109,7 @@ DEPENDENCIES
   rubocop-rspec
   sourcify
   table_print
+  yard
   zeitwerk
 
 BUNDLED WITH

@@ -9,6 +9,17 @@ AllCops:
     - '.pryrc'
     - 'bin/rails'
 
+Layout/HashAlignment:
+  EnforcedColonStyle: table
+
+Layout/LineLength:
+  Max: 80
+
+# DISABLED because subclasses can define properties/attributes and then call the
+# superclass constructor
+Lint/DisjunctiveAssignmentInConstructor:
+  Enabled: false
+
 Metrics:
   Enabled: true
 
@@ -23,12 +34,6 @@ Metrics/ClassLength:
 
 Metrics/CyclomaticComplexity:
   Max: 20
-
-Layout/HashAlignment:
-  EnforcedColonStyle: table
-
-Layout/LineLength:
-  Max: 80
 
 Metrics/MethodLength:
   Max: 50

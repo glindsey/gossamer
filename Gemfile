@@ -19,4 +19,5 @@ group :development, :test do
   gem 'rubocop-rspec'
   gem 'sourcify'
   gem 'table_print'
+  gem 'yard'
 end
