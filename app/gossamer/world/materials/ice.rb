@@ -6,7 +6,7 @@ module Gossamer
   module World
     module Materials
       class Ice < Solid
-        include ::Gossamer::World::Materials::Traits::Meltable
+        include Materials::Traits::Meltable
 
         # has_refs:
         #   materials:
@@ -16,4 +16,3 @@ module Gossamer
     end
   end
 end
-

@@ -7,7 +7,12 @@ module Gossamer
     module Things
       # Definition of a basic "Thing" which all others derive from.
       class Base
-        attr_accessor :material
+        include World::Traits::HasAttributes
+        include World::Traits::HasConstraints
+        include World::Traits::HasMaterial
+        include World::Traits::HasParts
+        include World::Traits::HasProperties
+        using ::Gossamer::Refinements::ObjectToKeysOfHash
 
         # Instantiation of a Thing can only be done if it is not abstract.
         def initialize(**options)
@@ -23,88 +28,62 @@ module Gossamer
             end
           end
 
+          update_attributes(options)
           update_material(options)
           update_properties(options)
-          update_attributes(options)
 
           # After all that is done, verify that the thing is not abstract.
-          if is?(:abstract)
+          if property?(:abstract)
             raise "#{self.class} is abstract and cannot be instantiated"
           end
 
-          # Call final checks on the thing.
+          # Call constraint checks on the thing before instantiating parts.
           check_constraints
+
+          create_parts(options)
         end
 
-        def attributes
-          @attributes ||= {}
+        # Return whether this thing incorporates the requested part, or a part
+        # of the requested type (recursive).
+        def incorporates?(search_target)
+          search_target = thingify(search_target)
+
+          return false if search_target.nil?
+
+          return true if self == search_target || is_a?(search_target)
+
+          parts.any? { |part| part.incorporates?(search_target) }
         end
 
-        def attributes=(attrs)
-          unless attrs.is_a?(Hash)
-            raise "Attributes must be a Hash, but was provided #{attrs.inspect}"
-          end
-
-          @attributes = attrs
-        end
-
-        # TODO: update to include attributes from material
-        def attribute(attr)
-          attributes.key?(attr) ? attributes[attr] : nil
-        end
-
-        def attribute?(attr)
-          attributes.key?(attr)
-        end
-
-        def constraints
-          @constraints ||= []
-        end
-
-        def constraints=(cons)
-          unless cons.is_a?(Array)
-            raise 'Constraints must be an Array, but was provided ' \
-                  "#{cons.inspect}"
-          end
-
-          @constraints = cons
-        end
-
-        def properties
-          @properties ||= {}
-        end
-
-        def properties=(props)
-          case props
-          when Array
-            @properties = props.map { |prop| [prop, true] }.to_h
-          when Hash
-            @properties = props
-          else
-            raise 'Properties must be an Array or Hash, but was provided ' \
-                  "#{props.inspect}"
-          end
-
-          @properties = props
-        end
-
-        def material?
-          !material.nil?
-        end
-
-        # TODO: update to include traits of material
+        # Checks if this thing, its material, or any of its object attributes
+        # have the property requested.
         def is?(prop)
-          return properties[prop] if properties.key?(prop)
+          properties.fetch(
+            prop,
+            material&.properties&.fetch(
+              prop,
+              attributes.any? do |_, attrib|
+                attrib.respond_to?(:properties) &&
+                attrib.properties.fetch(prop, false)
+              end
+            )
+          ) || false
+        end
 
-          method_name = "#{prop}?".to_sym
+        # Override for Object#is_a?, allows for symbol conversion into thing
+        # or thing-trait names.
+        def is_a?(arg)
+          thing = thingify(arg)
 
-          return send(method_name) if respond_to?(method_name)
+          if thing.nil?
+            trait = thing_traitify(arg)
 
-          if self.class.respond_to?(method_name)
-            return self.class.send(method_name)
+            return false if trait.nil?
+
+            self.class <= trait
+          else
+            super(thing)
           end
-
-          false
         end
 
         def not?(prop)
@@ -112,17 +91,19 @@ module Gossamer
         end
 
         class << self
-          # A Thing is abstract by default, and cannot be instantiated.
-          def abstract?
-            true
-          end
-
+          # Checks if this thing, its default material, or any of its default
+          # object attributes have the property requested.
           def is?(prop)
-            method_name = "#{prop}?".to_sym
-
-            return send(method_name) if respond_to?(method_name)
-
-            false
+            properties.fetch(
+              prop,
+              default_material&.properties&.fetch(
+                prop,
+                default_attributes.any? do |_, attrib|
+                  attrib.respond_to?(:properties) &&
+                  attrib.properties.fetch(prop, false)
+                end
+              )
+            ) || false
           end
 
           def not?(prop)
@@ -132,25 +113,28 @@ module Gossamer
 
         private
 
-        def check_constraints
-          constraints.each do |function|
-            result = function&.call(self)
-            if result.is_a?(String)
-              raise "Object #{inspect} failed creation constraint: #{result}"
+        def create_parts(options)
+          # Get the default part options.
+          part_instructions = self.class.default_parts.deep_dup
+
+          # Merge in the instructions passed via options, if necessary.
+          if options.key?(:parts)
+            options[:parts].each do |(part, part_options)|
+              part_symbol = dethingify(part)
+              part_instructions[part_symbol] ||= {}
+              part_instructions[part_symbol].deep_merge!(part_options)
             end
           end
-        end
 
-        def update_material(options)
-          return unless options.key?(:material)
+          # Instantiate each part according to the instructions.
+          part_instructions.each do |(part_symbol, part_options)|
+            part = thingify(part_symbol)
 
-          mat = options[:material]
-          if mat.is_a?(Symbol)
-            mat = "::Gossamer::World::Materials::#{mat.to_s.camelize}"
-                  .safe_constantize
+            parts[part_symbol] = part.new(**part_options)
+          rescue StandardError => e
+            raise "Unable to create the #{part_symbol.inspect} part: " \
+                  "#{e.inspect}"
           end
-
-          self.material = mat
         end
 
         def update_attributes(options)
@@ -166,6 +150,18 @@ module Gossamer
           end
         end
 
+        def update_material(options)
+          return unless options.key?(:material)
+
+          mat = options[:material]
+          if mat.is_a?(Symbol)
+            mat = "::Gossamer::World::Materials::#{mat.to_s.camelize}"
+                  .safe_constantize
+          end
+
+          self.material = mat
+        end
+
         def update_properties(options)
           return unless options.key?(:properties)
 
@@ -173,7 +169,7 @@ module Gossamer
 
           case props
           when Array
-            props = props.map { |prop| [prop, true] }.to_h
+            props = props.to_h { |prop| [prop, true] }
           when Hash
             pass
           else

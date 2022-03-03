@@ -10,4 +10,3 @@ module Gossamer
     end
   end
 end
-

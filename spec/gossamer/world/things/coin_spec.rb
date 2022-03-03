@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe Gossamer::World::Things::Coin do
-
   context 'when not provided a shape or material' do
     subject(:thing) { described_class.new }
 

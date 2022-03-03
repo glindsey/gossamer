@@ -6,11 +6,10 @@ module Gossamer
   module World
     module Materials
       class Oil < Liquid
-        include ::Gossamer::World::Materials::Traits::Burnable
+        include Materials::Traits::Flammable
 
         # has_refs: material: burn_result: smoke
       end
     end
   end
 end
-

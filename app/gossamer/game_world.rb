@@ -8,7 +8,7 @@ module Gossamer
     attr_reader :rules
 
     def initialize
-      @rules = ::Gossamer::Rules.new(__dir__)
+      # TODO: write me
     end
   end
 end

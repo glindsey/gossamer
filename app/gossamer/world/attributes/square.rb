@@ -7,7 +7,7 @@ module Gossamer
     module Attributes
       # Definition of a square shape.
       class Square < Polygon
-        include ::Gossamer::World::Traits::Concrete
+        include World::Traits::Concrete
       end
     end
   end

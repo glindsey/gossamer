@@ -26,5 +26,18 @@ end
 # Set up Zeitwerk.
 loader = Zeitwerk::Loader.new
 loader.push_dir('app')
-loader.push_dir('experimental')
-loader.setup # ready!
+
+# Load all the mod directories.
+[File.join(ROOT_DIR, '..', 'mods')].each do |dir|
+  loader.push_dir(dir)
+end
+
+[File.join(ROOT_DIR, '..', 'experimental', 'mods')].each do |dir|
+  loader.push_dir(dir)
+end
+
+# Ready to go!
+loader.setup
+
+# This slows startup down, but verifies that I didn't screw anything up majorly
+loader.eager_load

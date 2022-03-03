@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# NOTE: As with all `bin` scripts, run this from the project root, not from the
+#       `bin` directory.
+
+bundle exec yard

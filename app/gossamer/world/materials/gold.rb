@@ -7,9 +7,8 @@ module Gossamer
     module Materials
       # Definition of gold as a material.
       class Gold < Metal
-        include ::Gossamer::World::Traits::Concrete
+        include World::Traits::Concrete
       end
     end
   end
 end
-

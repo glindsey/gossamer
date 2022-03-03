@@ -3,14 +3,13 @@
 module Gossamer
   module World
     module Traits
-      # Mixin for things that can be instantiated.
+      # Global mixin for things that can be instantiated.
       module Concrete
         extend ActiveSupport::Concern
+        include World::Traits::HasProperties
 
-        class_methods do
-          def abstract?
-            false
-          end
+        included do
+          global_properties[:abstract] = false
         end
       end
     end

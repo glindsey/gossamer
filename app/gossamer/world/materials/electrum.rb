@@ -6,10 +6,9 @@ module Gossamer
   module World
     module Materials
       class Electrum < Alloy
-        include ::Gossamer::World::Traits::Concrete
-        include ::Gossamer::World::Materials::Traits::Oxidizable # ???
+        include World::Traits::Concrete
+        include Materials::Traits::Oxidizable # ???
       end
     end
   end
 end
-

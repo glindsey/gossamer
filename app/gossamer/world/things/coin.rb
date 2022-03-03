@@ -5,13 +5,10 @@ module Gossamer
     module Things
       # Definition of a coin.
       class Coin < Base
-        include Traits::Concrete
+        include World::Traits::Concrete
 
         def initialize(**options)
-          warn 'Coin initialize called'
-
-          self.constraints ||= []
-          self.constraints += [
+          self.local_constraints |= [
             lambda { |obj|
               shape = obj.attribute(:shape)
 

@@ -1,3 +1,0 @@
-human:
-  inherits_from: species
-  is_a_kind_of: [biped, mammal]

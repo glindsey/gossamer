@@ -1,9 +1,0 @@
-coin:
-  is_a_kind_of:
-    - currency
-    - tangible_object
-  always:
-    has_properties:
-      - shaped
-  usually:
-    is_made_of: metal

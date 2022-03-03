@@ -1,1 +1,1 @@
---plugin rspec app/**/*
+--plugin rspec 'app/**/*.rb'

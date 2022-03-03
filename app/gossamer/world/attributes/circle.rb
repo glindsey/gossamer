@@ -6,7 +6,7 @@ module Gossamer
   module World
     module Attributes
       class Circle < Shape
-        include ::Gossamer::World::Traits::Concrete
+        include World::Traits::Concrete
       end
     end
   end

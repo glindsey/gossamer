@@ -7,16 +7,10 @@ module Gossamer
     module Attributes
       # Base class for attributes.
       class Base
+        include World::Traits::HasProperties
+
         def is?(prop)
-          method_name = "#{prop}?".to_sym
-
-          return send(method_name) if respond_to?(method_name)
-
-          if self.class.respond_to?(method_name)
-            return self.class.send(method_name)
-          end
-
-          false
+          properties.fetch(prop, false)
         end
 
         def not?(prop)
@@ -24,17 +18,8 @@ module Gossamer
         end
 
         class << self
-          # An Attribute is abstract by default, and cannot be instantiated.
-          def abstract?
-            true
-          end
-
           def is?(prop)
-            method_name = "#{prop}?".to_sym
-
-            return send(method_name) if respond_to?(method_name)
-
-            false
+            properties.fetch(prop, false)
           end
 
           def not?(prop)
