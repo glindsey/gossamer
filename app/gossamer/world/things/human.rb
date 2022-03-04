@@ -9,19 +9,14 @@ module Gossamer
         include Traits::Humanoid
         include Traits::Mammal
 
-        class << self
-
-          def class_default_parts
-            super.deep_merge(
-              {
-                left_arm:  {},
-                right_arm: {},
-                torso:     {},
-                abdomen:   {},
-                head:      {}
-              }
-            )
-          end
+        def default_instructions
+          {
+            left_arm:  {},
+            right_arm: {},
+            torso:     {},
+            abdomen:   {},
+            head:      {}
+          }
         end
       end
     end

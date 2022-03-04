@@ -11,10 +11,14 @@ module Gossamer
           included do
             global_properties[:bipedal] = true
 
-            mixin_parts.deep_merge!(
-              {
-                left_leg:  {},
-                right_leg: {}
+            mixin_after.append(
+              lambda { |instr|
+                instr.deep_merge(
+                  {
+                    left_leg:  {},
+                    right_leg: {}
+                  }
+                )
               }
             )
           end

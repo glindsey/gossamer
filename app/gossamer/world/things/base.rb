@@ -12,6 +12,7 @@ module Gossamer
         include World::Traits::HasMaterial
         include World::Traits::HasParts
         include World::Traits::HasProperties
+        include Things::Traits::PhysicallyRelatable
         using ::Gossamer::Refinements::ObjectToKeysOfHash
 
         # Instantiation of a Thing can only be done if it is not abstract.
@@ -47,7 +48,6 @@ module Gossamer
         # of the requested type (recursive).
         def incorporates?(search_target)
           search_target = thingify(search_target)
-
           return false if search_target.nil?
 
           return true if self == search_target || is_a?(search_target)
@@ -77,7 +77,6 @@ module Gossamer
 
           if thing.nil?
             trait = thing_traitify(arg)
-
             return false if trait.nil?
 
             self.class <= trait
@@ -115,7 +114,7 @@ module Gossamer
 
         def create_parts(options)
           # Get the default part options.
-          part_instructions = self.class.default_parts.deep_dup
+          part_instructions = assembly_instructions.deep_dup
 
           # Merge in the instructions passed via options, if necessary.
           if options.key?(:parts)
@@ -131,6 +130,7 @@ module Gossamer
             part = thingify(part_symbol)
 
             parts[part_symbol] = part.new(**part_options)
+            parts[part_symbol].physical_relation = { part_of: self }
           rescue StandardError => e
             raise "Unable to create the #{part_symbol.inspect} part: " \
                   "#{e.inspect}"

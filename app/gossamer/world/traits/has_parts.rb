@@ -43,17 +43,31 @@ module Gossamer
           end
         end
 
+        def assembly_instructions
+          # Start with the superclass's assembly instructions, if any.
+          # Modify them using any existing `mixin_before` lambdas.
+          # Deep merge the class's default assembly instructions.
+          # Modify the result using any existing `mixin_after` lambdas.
+          # Return the final result.
+          self.class.mixin_after.inject(
+            self.class.mixin_before.inject(
+              defined?(super) ? super : {}
+            ) { |memo, func| func.call(memo) }
+                        .deep_merge(default_instructions)
+          ) { |memo, func| func.call(memo) }
+        end
+
+        def default_instructions
+          {}
+        end
+
         class_methods do
-          def mixin_parts
-            @mixin_parts ||= {}
+          def mixin_before
+            @mixin_before ||= []
           end
 
-          def default_parts
-            class_default_parts.deep_merge(mixin_parts)
-          end
-
-          def class_default_parts
-            {}
+          def mixin_after
+            @mixin_after ||= []
           end
         end
       end
