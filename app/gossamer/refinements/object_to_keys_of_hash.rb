@@ -17,7 +17,7 @@ module Gossamer
       end
 
       refine ::Hash do
-        def to_keys_of_hash(_)
+        def to_keys_of_hash(*)
           self
         end
       end

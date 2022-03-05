@@ -10,13 +10,11 @@ module Gossamer
         include World::Traits::HasProperties
 
         def self.included(mod)
-          warn "#{self.inspect} included in #{mod.inspect}"
           mod.global_properties[:abstract] = false
           mod.global_properties[:testing] = true
         end
 
         def self.extended(mod)
-          warn "#{self.inspect} extended in #{mod.inspect}"
           mod.local_properties[:abstract] = false
           mod.local_properties[:testing] = true
         end

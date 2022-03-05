@@ -7,6 +7,7 @@ module Gossamer
     module Things
       # Definition of a basic "Thing" which all others derive from.
       class Base
+        include Concerns::SmartMerge
         include World::Traits::HasAttributes
         include World::Traits::HasConstraints
         include World::Traits::HasMaterial
@@ -123,7 +124,9 @@ module Gossamer
             options[:parts].each do |(part, part_options)|
               part_symbol = dethingify(part)
               part_instructions[part_symbol] ||= {}
-              part_instructions[part_symbol].deep_merge!(part_options)
+
+              part_instructions[part_symbol] =
+                smart_merge(part_instructions[part_symbol], part_options)
             end
           end
 

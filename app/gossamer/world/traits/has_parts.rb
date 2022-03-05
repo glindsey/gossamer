@@ -49,8 +49,8 @@ module Gossamer
           # Deep merge the class's default assembly instructions.
           # Modify the result using any existing `mixin_after` lambdas.
           # Return the final result.
-          self.class.mixin_after.inject(
-            self.class.mixin_before.inject(
+          self.class.mixin_instructions_after.inject(
+            self.class.mixin_instructions_before.inject(
               defined?(super) ? super : {}
             ) { |memo, func| func.call(memo) }
                         .deep_merge(default_instructions)
@@ -62,12 +62,12 @@ module Gossamer
         end
 
         class_methods do
-          def mixin_before
-            @mixin_before ||= []
+          def mixin_instructions_before
+            @mixin_instructions_before ||= []
           end
 
-          def mixin_after
-            @mixin_after ||= []
+          def mixin_instructions_after
+            @mixin_instructions_after ||= []
           end
         end
       end
