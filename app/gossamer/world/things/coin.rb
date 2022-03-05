@@ -7,8 +7,8 @@ module Gossamer
       class Coin < Base
         include World::Traits::Concrete
 
-        def initialize(**options)
-          self.local_constraints |= [
+        def default_constraints
+          [
             lambda { |obj|
               shape = obj.attribute(:shape)
 
@@ -25,8 +25,6 @@ module Gossamer
               end
             }
           ]
-
-          super(**options)
         end
       end
     end

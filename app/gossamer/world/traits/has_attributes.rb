@@ -24,12 +24,33 @@ module Gossamer
         end
 
         def attributes
-          self.class.default_attributes.merge(local_attributes).freeze
+          local_attrs =
+            (defined?(super) ? super : {})
+              .merge(local_attributes)
+
+          self.class.attributes.merge(local_attributes)
+        end
+
+        def update_attributes(options)
+          return unless options.key?(:attributes)
+
+          options[:attributes].each do |(k, v)|
+            if v.is_a?(Symbol)
+              v = "::Gossamer::World::Attributes::#{v.to_s.camelize}"
+                  .safe_constantize
+            end
+
+            local_attributes[k] = v
+          end
         end
 
         class_methods do
-          def default_attributes
-            @default_attributes ||= {}
+          def attributes
+            (defined?(super) ? super : {}).merge(global_attributes)
+          end
+
+          def global_attributes
+            @global_attributes ||= {}
           end
         end
       end

@@ -22,8 +22,10 @@ module Gossamer
             traits = options[:traits]
             traits = [traits] unless traits.is_a?(Array)
             traits.each do |trait_sym|
-              trait = "::Gossamer::World::Traits::#{trait_sym.to_s.camelize}"
+              trait_str = trait_sym.to_s.camelize
+              trait = "::Gossamer::World::Traits::#{trait_str}"
                       .safe_constantize
+              raise "Trait #{trait_str.inspect} does not exist" unless trait
 
               extend(trait) if trait
             end
@@ -97,7 +99,7 @@ module Gossamer
               prop,
               default_material&.properties&.fetch(
                 prop,
-                default_attributes.any? do |_, attrib|
+                global_attributes.any? do |_, attrib|
                   attrib.respond_to?(:properties) &&
                   attrib.properties.fetch(prop, false)
                 end
@@ -137,19 +139,6 @@ module Gossamer
           end
         end
 
-        def update_attributes(options)
-          return unless options.key?(:attributes)
-
-          options[:attributes].each do |(k, v)|
-            if v.is_a?(Symbol)
-              v = "::Gossamer::World::Attributes::#{v.to_s.camelize}"
-                  .safe_constantize
-            end
-
-            attributes[k] = v
-          end
-        end
-
         def update_material(options)
           return unless options.key?(:material)
 
@@ -160,23 +149,6 @@ module Gossamer
           end
 
           self.material = mat
-        end
-
-        def update_properties(options)
-          return unless options.key?(:properties)
-
-          props = options[:properties]
-
-          case props
-          when Array
-            props = props.to_h { |prop| [prop, true] }
-          when Hash
-            pass
-          else
-            props = { props => true }
-          end
-
-          properties.merge!(props)
         end
       end
     end

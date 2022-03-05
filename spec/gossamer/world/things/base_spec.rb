@@ -7,13 +7,18 @@ module Gossamer
     module Traits
       module TestingTrait
         extend ActiveSupport::Concern
+        include World::Traits::HasProperties
 
-        def abstract?
-          false
+        def self.included(mod)
+          warn "#{self.inspect} included in #{mod.inspect}"
+          mod.global_properties[:abstract] = false
+          mod.global_properties[:testing] = true
         end
 
-        def testing_method?
-          true
+        def self.extended(mod)
+          warn "#{self.inspect} extended in #{mod.inspect}"
+          mod.local_properties[:abstract] = false
+          mod.local_properties[:testing] = true
         end
       end
     end
@@ -56,11 +61,11 @@ RSpec.describe Gossamer::World::Things::Base do
       expect(thing.is?(:abstract)).to eq(false)
     end
 
-    it 'returns true when checked for the testing method' do
-      expect(thing.is?(:testing_method)).to eq(true)
+    it 'returns true when checked for the "testing" property' do
+      expect(thing.is?(:testing)).to eq(true)
     end
 
-    it 'returns false when checked for the testing property' do
+    it 'returns false when checked for the "testing_property" property' do
       expect(thing.is?(:testing_property)).to eq(false)
     end
   end
@@ -89,11 +94,11 @@ RSpec.describe Gossamer::World::Things::Base do
       expect(thing.is?(:abstract)).to eq(false)
     end
 
-    it 'returns true when checked for the testing method' do
-      expect(thing.is?(:testing_method)).to eq(true)
+    it 'returns true when checked for the "testing" property' do
+      expect(thing.is?(:testing)).to eq(true)
     end
 
-    it 'returns false when checked for the testing property' do
+    it 'returns false when checked for the "testing_property" property' do
       expect(thing.is?(:testing_property)).to eq(false)
     end
   end

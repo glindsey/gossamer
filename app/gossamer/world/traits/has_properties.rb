@@ -21,19 +21,34 @@ module Gossamer
         end
 
         def properties
-          self.class.properties.merge(local_properties).freeze
+          local_props =
+            (defined?(super) ? super : {})
+              .merge(local_properties)
+
+          self.class.properties.merge(local_props)
+        end
+
+        def update_properties(options)
+          return unless options.key?(:properties)
+
+          props = options[:properties]
+
+          case props
+          when Array
+            props = props.to_h { |prop| [prop, true] }
+          when Hash
+            pass
+          else
+            props = { props => true }
+          end
+
+          local_properties.merge!(props)
         end
 
         class_methods do
           def properties
-            super_properties =
-              if superclass.respond_to?(:properties)
-                superclass.properties
-              else
-                { abstract: true }
-              end
-
-            super_properties.merge(global_properties).freeze
+            (defined?(super) ? super : { abstract: true })
+              .merge(global_properties)
           end
 
           def global_properties

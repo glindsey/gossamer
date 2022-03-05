@@ -18,17 +18,19 @@ module Gossamer
           end
         end
 
-        def local_constraints
-          @local_constraints ||= []
+        def default_constraints
+          @default_constraints ||= []
         end
 
         def constraints
-          (self.class.default_constraints | local_constraints).freeze
+          defined?(super) ? super : [] |
+            default_constraints |
+            self.class.mixin_constraints
         end
 
         class_methods do
-          def default_constraints
-            @default_constraints ||= []
+          def mixin_constraints
+            @mixin_constraints ||= []
           end
         end
       end
