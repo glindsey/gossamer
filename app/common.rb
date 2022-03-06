@@ -8,6 +8,7 @@ require 'active_support/core_ext/module/delegation'
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/object/deep_dup'
 require 'active_support/core_ext/string/inflections'
+require 'awesome_print'
 require 'psych'
 
 # Shut Zeitwerk up for now, figure out how to "officially" satisfy it later

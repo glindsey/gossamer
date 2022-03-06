@@ -10,18 +10,24 @@ module Gossamer
           extend ActiveSupport::Concern
 
           included do
-            global_properties[:bipedal] = true
-
-            mixin_instructions_after.append(
-              lambda { |instr|
-                smart_merge(instr,
+            mixin_config_funcs_after.append(
+              lambda { |opts|
+                smart_merge(
+                  opts,
                   {
-                    left_leg:  {},
-                    right_leg: {}
+                    properties: {
+                      steve: true
+                    },
+                    parts:      {
+                      left_leg:  {},
+                      right_leg: {}
+                    }
                   }
                 )
               }
             )
+
+            global_properties[:bipedal] = true
           end
 
           # TODO: write me

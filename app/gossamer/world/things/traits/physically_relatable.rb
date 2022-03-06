@@ -14,12 +14,12 @@ module Gossamer
         module PhysicallyRelatable
           extend ActiveSupport::Concern
 
-          RELATIONS = [
-            :contained_by,
-            :held_by,
-            :supported_by,
-            :part_of,
-            :worn_by
+          RELATIONS = %i[
+            contained_by
+            held_by
+            supported_by
+            part_of
+            worn_by
           ].freeze
 
           def physical_relation

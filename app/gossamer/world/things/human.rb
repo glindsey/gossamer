@@ -9,14 +9,18 @@ module Gossamer
         include Traits::Humanoid
         include Traits::Mammal
 
-        def default_instructions
-          {
-            left_arm:  {},
-            right_arm: {},
-            torso:     {},
-            abdomen:   {},
-            head:      {}
-          }
+        class << self
+          def default_config
+            {
+              parts: {
+                left_arm:  {},
+                right_arm: {},
+                torso:     {},
+                abdomen:   {},
+                head:      {}
+              }
+            }
+          end
         end
       end
     end

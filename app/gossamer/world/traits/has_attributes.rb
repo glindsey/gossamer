@@ -24,14 +24,16 @@ module Gossamer
         end
 
         def attributes
-          local_attrs =
-            (defined?(super) ? super : {})
-              .merge(local_attributes)
-
-          self.class.attributes.merge(local_attributes)
+          smart_merge(
+            self.class.attributes,
+            smart_merge(
+              defined?(super) ? super : {},
+              local_attributes
+            )
+          )
         end
 
-        def update_attributes(options)
+        def create_attributes_from(options)
           return unless options.key?(:attributes)
 
           options[:attributes].each do |(k, v)|
@@ -46,7 +48,10 @@ module Gossamer
 
         class_methods do
           def attributes
-            (defined?(super) ? super : {}).merge(global_attributes)
+            smart_merge(
+              defined?(super) ? super : {},
+              global_attributes
+            )
           end
 
           def global_attributes

@@ -7,6 +7,7 @@ module Gossamer
     module Things
       # Definition of a basic "Thing" which all others derive from.
       class Base
+        include Concerns::Log
         include Concerns::SmartMerge
         include World::Traits::HasAttributes
         include World::Traits::HasConstraints
@@ -32,9 +33,12 @@ module Gossamer
             end
           end
 
-          update_attributes(options)
-          update_material(options)
-          update_properties(options)
+          # Call any mixin option lambdas and merge them into options.
+          options = self.class.merge_with_default_config(options)
+
+          create_attributes_from(options)
+          create_material_from(options)
+          create_properties_from(options)
 
           # After all that is done, verify that the thing is not abstract.
           if property?(:abstract)
@@ -45,17 +49,6 @@ module Gossamer
           check_constraints
 
           create_parts(options)
-        end
-
-        # Return whether this thing incorporates the requested part, or a part
-        # of the requested type (recursive).
-        def incorporates?(search_target)
-          search_target = thingify(search_target)
-          return false if search_target.nil?
-
-          return true if self == search_target || is_a?(search_target)
-
-          parts.any? { |part| part.incorporates?(search_target) }
         end
 
         # Checks if this thing, its material, or any of its object attributes
@@ -111,13 +104,45 @@ module Gossamer
           def not?(prop)
             !is?(prop)
           end
+
+          def merge_with_default_config(opts)
+            # Look at this functional programming nightmare. LOOK at it.
+            mixin_config_funcs_after.inject(
+              smart_merge(
+                mixin_config_funcs_before.inject(
+                  defined?(super) ? super : recursive_default_config
+                ) { |memo, func| func.call(memo) },
+                opts || {}
+              )
+            ) { |memo, func| func.call(memo) }
+          end
+
+          def recursive_default_config
+            if defined?(super)
+              smart_merge(super, default_config)
+            else
+              default_config
+            end
+          end
+
+          def default_config
+            {}
+          end
+
+          def mixin_config_funcs_before
+            @mixin_config_funcs_before ||= []
+          end
+
+          def mixin_config_funcs_after
+            @mixin_config_funcs_after ||= []
+          end
         end
 
         private
 
         def create_parts(options)
-          # Get the default part options.
-          part_instructions = assembly_instructions.deep_dup
+          # Get the part options.
+          part_instructions = options[:parts].deep_dup || {}
 
           # Merge in the instructions passed via options, if necessary.
           if options.key?(:parts)
@@ -134,6 +159,9 @@ module Gossamer
           part_instructions.each do |(part_symbol, part_options)|
             part = thingify(part_symbol)
 
+            log("*** Creating part #{part_symbol.inspect} " \
+                "with options #{part_options.inspect}")
+
             parts[part_symbol] = part.new(**part_options)
             parts[part_symbol].physical_relation = { part_of: self }
           rescue StandardError => e
@@ -142,7 +170,7 @@ module Gossamer
           end
         end
 
-        def update_material(options)
+        def create_material_from(options)
           return unless options.key?(:material)
 
           mat = options[:material]

@@ -21,14 +21,16 @@ module Gossamer
         end
 
         def properties
-          local_props =
-            (defined?(super) ? super : {})
-              .merge(local_properties)
-
-          self.class.properties.merge(local_props)
+          smart_merge(
+            self.class.properties,
+            smart_merge(
+              defined?(super) ? super : {},
+              local_properties
+            )
+          )
         end
 
-        def update_properties(options)
+        def create_properties_from(options)
           return unless options.key?(:properties)
 
           props = options[:properties]
@@ -37,7 +39,7 @@ module Gossamer
           when Array
             props = props.to_h { |prop| [prop, true] }
           when Hash
-            pass
+            # do nothing
           else
             props = { props => true }
           end

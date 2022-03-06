@@ -23,9 +23,13 @@ module Gossamer
         end
 
         def constraints
-          defined?(super) ? super : [] |
-            default_constraints |
-            self.class.mixin_constraints
+          if defined?(super)
+            super
+          else
+            [] |
+              default_constraints |
+              self.class.mixin_constraints
+          end
         end
 
         class_methods do

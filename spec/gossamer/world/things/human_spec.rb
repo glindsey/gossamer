@@ -28,12 +28,8 @@ RSpec.describe Gossamer::World::Things::Human do
       expect(human.is_a?(:lifeform)).to eq(true)
     end
 
-    it 'has a left leg' do
-      expect(human.parts?(:left_leg)).to eq(true)
-    end
-
-    it 'has a right leg' do
-      expect(human.parts?(:right_leg)).to eq(true)
+    it 'is steve' do
+      expect(human.is?(:steve)).to eq(true)
     end
 
     it 'has a left leg and a right leg' do
@@ -54,6 +50,10 @@ RSpec.describe Gossamer::World::Things::Human do
 
     it 'has a head' do
       expect(human.part?(:head)).to eq(true)
+    end
+
+    it 'incorporates a left eye and a right eye' do
+      expect(human.incorporates?(:left_eye, :right_eye)).to eq(true)
     end
   end
 end
