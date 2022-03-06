@@ -8,8 +8,10 @@ module Gossamer
         module Plant
           extend ActiveSupport::Concern
 
-          included do
-            global_properties.merge!({ vegetative: true })
+          class_methods do
+            def vegetative?
+              true
+            end
           end
 
           # TODO: write me

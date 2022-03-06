@@ -8,8 +8,10 @@ module Gossamer
         module Fungus
           extend ActiveSupport::Concern
 
-          included do
-            global_properties.merge!({ fungal: true })
+          class_methods do
+            def fungal?
+              true
+            end
           end
 
           # TODO: write me

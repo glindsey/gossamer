@@ -9,14 +9,14 @@ module Gossamer
         extend ActiveSupport::Concern
         include World::Traits::HasProperties
 
-        def self.included(mod)
-          mod.global_properties[:abstract] = false
-          mod.global_properties[:testing] = true
-        end
+        class_methods do
+          def abstract?
+            false
+          end
 
-        def self.extended(mod)
-          mod.local_properties[:abstract] = false
-          mod.local_properties[:testing] = true
+          def testing?
+            true
+          end
         end
       end
     end
@@ -46,7 +46,7 @@ RSpec.describe Gossamer::World::Things::Base do
 
   context 'when provided a testing trait at instantiation' do
     subject(:thing) do
-      described_class.new(
+      described_class.create(
         traits: :testing_trait
       )
     end
@@ -70,7 +70,7 @@ RSpec.describe Gossamer::World::Things::Base do
 
   context 'when provided a testing trait and property at instantiation' do
     subject(:thing) do
-      described_class.new(
+      described_class.create(
         traits:     :testing_trait,
         properties: :testing_property
       )

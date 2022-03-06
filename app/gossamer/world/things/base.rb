@@ -17,22 +17,34 @@ module Gossamer
         include Things::Traits::PhysicallyRelatable
         using ::Gossamer::Refinements::ObjectToKeysOfHash
 
-        # Instantiation of a Thing can only be done if it is not abstract.
-        def initialize(**options)
-          # Mix any provided traits into the newly-created object.
-          if options.key?(:traits)
-            traits = options[:traits]
-            traits = [traits] unless traits.is_a?(Array)
-            traits.each do |trait_sym|
-              trait_str = trait_sym.to_s.camelize
-              trait = "::Gossamer::World::Traits::#{trait_str}"
-                      .safe_constantize
-              raise "Trait #{trait_str.inspect} does not exist" unless trait
+        class << self
+          def create(**options)
+            # Mix any provided traits into the newly-created object.
+            # This has to be done by creating a new class and then including the
+            # trait into that class.
+            # TODO: keep a hash associating classes to mixins, so we don't
+            #       create a bunch of duplicate classes
+            if options.key?(:traits)
+              traits = options[:traits]
+              Class.new(self) do
+                traits = [traits] unless traits.is_a?(Array)
+                traits.each do |trait_sym|
+                  trait_str = trait_sym.to_s.camelize
+                  trait = "::Gossamer::World::Traits::#{trait_str}"
+                          .safe_constantize
+                  raise "Trait #{trait_str.inspect} does not exist" unless trait
 
-              extend(trait) if trait
+                  include(trait)
+                end
+              end.new(**options)
+            else
+              new(**options)
             end
           end
+        end
 
+        # Instantiation of a Thing can only be done if it is not abstract.
+        def initialize(**options)
           # Call any mixin option lambdas and merge them into options.
           options = self.class.merge_with_default_config(options)
 
@@ -54,16 +66,15 @@ module Gossamer
         # Checks if this thing, its material, or any of its object attributes
         # have the property requested.
         def is?(prop)
-          properties.fetch(
-            prop,
-            material&.properties&.fetch(
-              prop,
-              attributes.any? do |_, attrib|
-                attrib.respond_to?(:properties) &&
-                attrib.properties.fetch(prop, false)
-              end
-            )
-          ) || false
+          return property?(prop) if property_exists?(prop)
+
+          return material.property?(prop) if material&.property_exists?(prop)
+
+          return attributes.any? do |_, attrib|
+            attrib.property_exists?(prop) && attrib.property?(prop)
+          end
+
+          false
         end
 
         # Override for Object#is_a?, allows for symbol conversion into thing
@@ -89,16 +100,21 @@ module Gossamer
           # Checks if this thing, its default material, or any of its default
           # object attributes have the property requested.
           def is?(prop)
-            properties.fetch(
-              prop,
-              default_material&.properties&.fetch(
-                prop,
-                global_attributes.any? do |_, attrib|
-                  attrib.respond_to?(:properties) &&
-                  attrib.properties.fetch(prop, false)
-                end
-              )
-            ) || false
+            meth_sym = "#{prop.to_s}?".to_sym
+
+            return send(meth_sym) if respond_to?(meth_sym)
+
+            if default_material.respond_to?(meth_sym)
+              return default_material.send(meth_sym)
+            end
+
+            global_attributes.each do |_, attrib|
+              if attrib.respond_to?(:meth_sym)
+                return attrib.send(meth_sym)
+              end
+            end
+
+            false
           end
 
           def not?(prop)

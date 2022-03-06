@@ -8,8 +8,10 @@ module Gossamer
         module Andromorph
           extend ActiveSupport::Concern
 
-          included do
-            global_properties.merge!({ andromorphic: true })
+          class_methods do
+            def andromorphic?
+              true
+            end
           end
 
           # TODO: write me

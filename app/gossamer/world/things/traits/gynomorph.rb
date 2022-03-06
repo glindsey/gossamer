@@ -8,8 +8,10 @@ module Gossamer
         module Gynomorph
           extend ActiveSupport::Concern
 
-          included do
-            global_properties.merge!({ gynomorphic: true })
+          class_methods do
+            def gynomorphic?
+              true
+            end
           end
 
           # TODO: write me

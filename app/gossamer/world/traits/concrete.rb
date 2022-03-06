@@ -8,12 +8,10 @@ module Gossamer
         extend ActiveSupport::Concern
         include World::Traits::HasProperties
 
-        def self.included(mod)
-          mod.global_properties[:abstract] = false
-        end
-
-        def self.extended(mod)
-          mod.local_properties[:abstract] = false
+        class_methods do
+          def abstract?
+            false
+          end
         end
       end
     end

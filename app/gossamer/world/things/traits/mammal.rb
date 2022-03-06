@@ -10,22 +10,25 @@ module Gossamer
           include Things::Traits::Dimorph
 
           included do
-            global_properties[:mammalian] = true
-
             mixin_config_funcs_after.append(
               lambda { |opts|
-                # A mammal typically has two eyes.
+                # A mammal typically has two eyes, a nose, and a mouth.
                 # TODO: Forward-facing or side-facing depending on prey or
                 #       predator
                 head = opts.dig(:parts, :head)
                 if head
-                  opts[:parts][:head] = smart_merge(head,
-                                                    {
-                                                      parts: {
-                                                        left_eye:  {},
-                                                        right_eye: {}
-                                                      }
-                                                    })
+                  opts[:parts][:head] =
+                    smart_merge(
+                      head,
+                      {
+                        parts: {
+                          left_eye:  {},
+                          right_eye: {},
+                          nose: {},
+                          mouth: {}
+                        }
+                      }
+                    )
                 else
                   warn "!!! Mammal #{inspect} does not have a head!"
                 end
@@ -33,6 +36,12 @@ module Gossamer
                 opts
               }
             )
+          end
+
+          class_methods do
+            def mammalian?
+              true
+            end
           end
 
           # TODO: write me

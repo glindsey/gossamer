@@ -9,8 +9,10 @@ module Gossamer
           extend ActiveSupport::Concern
           include Things::Traits::Dimorph
 
-          included do
-            global_properties.merge!({ insectoid: true })
+          class_methods do
+            def insectoid?
+              true
+            end
           end
 
           # TODO: write me

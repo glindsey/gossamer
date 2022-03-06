@@ -26,8 +26,12 @@ module Gossamer
                 )
               }
             )
+          end
 
-            global_properties[:bipedal] = true
+          class_methods do
+            def bipedal?
+              true
+            end
           end
 
           # TODO: write me

@@ -9,8 +9,10 @@ module Gossamer
         module Dimorph
           extend ActiveSupport::Concern
 
-          included do
-            global_properties.merge!({ dimorphic: true })
+          class_methods do
+            def dimorphic?
+              true
+            end
           end
 
           # TODO: write me

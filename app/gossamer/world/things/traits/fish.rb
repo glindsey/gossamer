@@ -9,8 +9,10 @@ module Gossamer
           extend ActiveSupport::Concern
           include Things::Traits::Dimorph
 
-          included do
-            global_properties.merge!({ piscine: true })
+          class_methods do
+            def piscine?
+              true
+            end
           end
 
           # TODO: write me

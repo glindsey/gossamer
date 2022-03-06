@@ -6,28 +6,37 @@ module Gossamer
       # Indicates that a class and its instantiated objects have properties that
       # can be read/written/queried. Properties are always boolean true/false
       # values.
+      # Object properties are saved as a hash of keys to booleans.
+      # Class properties, on the other hand, are implemented as class methods
+      # that return true/false values.
+      # When a property is requested, it is looked up via the following rules:
+      # - Return the requested object property if it exists
+      # - Return the requested class property if it exists
+      # - Return false
+      #
       # By default, the "abstract" property is set on any class including this
       # trait.
       module HasProperties
         extend ActiveSupport::Concern
         using ::Gossamer::Refinements::ObjectToKeysOfHash
 
-        def local_properties
-          @local_properties ||= {}
+        def properties
+          @properties ||= {}
+        end
+
+        def property_exists?(prop)
+          properties.key?(prop) ||
+            self.class.respond_to?("#{prop.to_s}?".to_sym)
         end
 
         def property?(prop)
-          properties.key?(prop) && properties[prop]
-        end
+          return properties[prop] if properties.key?(prop)
 
-        def properties
-          smart_merge(
-            self.class.properties,
-            smart_merge(
-              defined?(super) ? super : {},
-              local_properties
-            )
-          )
+          meth_sym = "#{prop.to_s}?".to_sym
+
+          return self.class.send(meth_sym) if self.class.respond_to?(meth_sym)
+
+          false
         end
 
         def create_properties_from(options)
@@ -44,17 +53,34 @@ module Gossamer
             props = { props => true }
           end
 
-          local_properties.merge!(props)
+          properties.merge!(props)
+        end
+
+        # Default implementation; checks object properties, and then class
+        # properties.
+        def is?(prop)
+          properties.fetch(prop,
+            self.class.is?(prop)
+          )
+        end
+
+        def not?(prop)
+          !is?(prop)
         end
 
         class_methods do
-          def properties
-            (defined?(super) ? super : { abstract: true })
-              .merge(global_properties)
+          def abstract?
+            true
           end
 
-          def global_properties
-            @global_properties ||= {}
+          def is?(prop)
+            meth_sym = "#{prop.to_s}?".to_sym
+
+            respond_to?(meth_sym) ? send(meth_sym) : false
+          end
+
+          def not?(prop)
+            !is?(prop)
           end
         end
       end

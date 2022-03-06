@@ -10,12 +10,13 @@ module Gossamer
           extend ActiveSupport::Concern
           include Things::Traits::Biped
 
-          # TODO: write me
-          included do
-            # This will be at the CLASS level.
-
-            global_properties.merge!({ humanoid: true })
+          class_methods do
+            def humanoid?
+              true
+            end
           end
+
+          # TODO: write me
         end
       end
     end

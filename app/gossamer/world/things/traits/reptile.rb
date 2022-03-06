@@ -9,8 +9,10 @@ module Gossamer
           extend ActiveSupport::Concern
           include Things::Traits::Dimorph
 
-          included do
-            global_properties.merge!({ reptilian: true })
+          class_methods do
+            def reptilian?
+              true
+            end
           end
 
           # TODO: write me
