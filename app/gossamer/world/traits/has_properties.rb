@@ -26,13 +26,13 @@ module Gossamer
 
         def property_exists?(prop)
           properties.key?(prop) ||
-            self.class.respond_to?("#{prop.to_s}?".to_sym)
+            self.class.respond_to?("#{prop}?".to_sym)
         end
 
         def property?(prop)
           return properties[prop] if properties.key?(prop)
 
-          meth_sym = "#{prop.to_s}?".to_sym
+          meth_sym = "#{prop}?".to_sym
 
           return self.class.send(meth_sym) if self.class.respond_to?(meth_sym)
 
@@ -60,8 +60,7 @@ module Gossamer
         # properties.
         def is?(prop)
           properties.fetch(prop,
-            self.class.is?(prop)
-          )
+                           self.class.is?(prop))
         end
 
         def not?(prop)
@@ -74,7 +73,7 @@ module Gossamer
           end
 
           def is?(prop)
-            meth_sym = "#{prop.to_s}?".to_sym
+            meth_sym = "#{prop}?".to_sym
 
             respond_to?(meth_sym) ? send(meth_sym) : false
           end

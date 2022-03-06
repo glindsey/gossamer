@@ -70,11 +70,9 @@ module Gossamer
 
           return material.property?(prop) if material&.property_exists?(prop)
 
-          return attributes.any? do |_, attrib|
+          attributes.any? do |_, attrib|
             attrib.property_exists?(prop) && attrib.property?(prop)
           end
-
-          false
         end
 
         # Override for Object#is_a?, allows for symbol conversion into thing
@@ -100,7 +98,7 @@ module Gossamer
           # Checks if this thing, its default material, or any of its default
           # object attributes have the property requested.
           def is?(prop)
-            meth_sym = "#{prop.to_s}?".to_sym
+            meth_sym = "#{prop}?".to_sym
 
             return send(meth_sym) if respond_to?(meth_sym)
 
@@ -109,9 +107,7 @@ module Gossamer
             end
 
             global_attributes.each do |_, attrib|
-              if attrib.respond_to?(:meth_sym)
-                return attrib.send(meth_sym)
-              end
+              return attrib.send(meth_sym) if attrib.respond_to?(:meth_sym)
             end
 
             false

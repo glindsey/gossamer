@@ -11,26 +11,20 @@ module Gossamer
         extend ActiveSupport::Concern
         using ::Gossamer::Refinements::ObjectToKeysOfHash
 
-        def local_attributes
-          @local_attributes ||= {}
-        end
-
-        def attribute(attr)
-          attributes.key?(attr) ? attributes[attr] : nil
-        end
-
-        def attribute?(attr)
-          attributes.key?(attr)
-        end
-
         def attributes
-          smart_merge(
-            self.class.attributes,
-            smart_merge(
-              defined?(super) ? super : {},
-              local_attributes
-            )
-          )
+          @attributes ||= {}
+        end
+
+        def attribute?(attrib)
+          attributes.key?(attrib) || self.class.respond_to?(attrib)
+        end
+
+        def attribute(attrib)
+          return attributes[attrib] if attributes.key?(attrib)
+
+          return self.class.send(attrib) if self.class.respond_to?(attrib)
+
+          nil
         end
 
         def create_attributes_from(options)
@@ -42,20 +36,7 @@ module Gossamer
                   .safe_constantize
             end
 
-            local_attributes[k] = v
-          end
-        end
-
-        class_methods do
-          def attributes
-            smart_merge(
-              defined?(super) ? super : {},
-              global_attributes
-            )
-          end
-
-          def global_attributes
-            @global_attributes ||= {}
+            attributes[k] = v
           end
         end
       end

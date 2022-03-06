@@ -24,8 +24,8 @@ module Gossamer
                         parts: {
                           left_eye:  {},
                           right_eye: {},
-                          nose: {},
-                          mouth: {}
+                          nose:      {},
+                          mouth:     {}
                         }
                       }
                     )
