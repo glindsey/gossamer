@@ -24,7 +24,8 @@ module Gossamer
                 torso:     {},
                 abdomen:   {},
                 head:      {}
-              }
+              },
+              tags:  [:human]
             }
           end
         end

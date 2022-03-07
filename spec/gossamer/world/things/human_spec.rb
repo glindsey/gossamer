@@ -2,7 +2,9 @@
 
 RSpec.describe Gossamer::World::Things::Human do
   context 'when created without options' do
-    subject(:human) { described_class.new }
+    subject(:human) { pool.create(described_class) }
+
+    let(:pool) { ::Gossamer::World::ThingPool.new }
 
     it 'can be instantiated' do
       expect { human }.not_to raise_error
@@ -28,6 +30,10 @@ RSpec.describe Gossamer::World::Things::Human do
       expect(human.is_a?(:lifeform)).to eq(true)
     end
 
+    it 'has a left leg' do
+      expect(human.parts?(:left_leg)).to eq(true)
+    end
+
     it 'has a left leg and a right leg (searched by symbol)' do
       expect(human.parts?(:left_leg, :right_leg)).to eq(true)
     end
@@ -36,7 +42,7 @@ RSpec.describe Gossamer::World::Things::Human do
       expect(human.part?(:leg) { |part| part.tag?(:left) }).to eq(true)
     end
 
-    it 'does not have a middle leg (searched by type and criteria)' do
+    it 'does not have a middle leg' do
       expect(human.part?(:leg) { |part| part.tag?(:middle) }).to eq(false)
     end
 
@@ -54,6 +60,10 @@ RSpec.describe Gossamer::World::Things::Human do
 
     it 'has a head' do
       expect(human.part?(:head)).to eq(true)
+    end
+
+    it 'has a head which has a left eye and right eye' do
+      expect(human.part(:head).parts?(:left_eye, :right_eye)).to eq(true)
     end
 
     it 'incorporates a left eye and a right eye (searched by symbol)' do

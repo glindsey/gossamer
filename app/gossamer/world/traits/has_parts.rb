@@ -22,8 +22,12 @@ module Gossamer
         include Concerns::SymbolToGossamerClass
         using Refinements::ObjectToKeysOfHash
 
+        def part_ids
+          @part_ids ||= {}
+        end
+
         def parts
-          @parts ||= {}
+          part_ids.transform_values { |uuid| pool[uuid] }.freeze
         end
 
         # Return whether this thing incorporates all the requested parts.
@@ -41,7 +45,7 @@ module Gossamer
           when Symbol, String, Class
             parts.fetch(degossamerify(search_target), nil)
           else
-            parts.value?(search_target)
+            parts.values.any?(search_target)
           end
         end
 

@@ -34,7 +34,7 @@ module Gossamer
 end
 
 RSpec.describe Gossamer::World::Things::Base do
-  subject(:thing) { described_class.new }
+  subject(:thing) { described_class.new(nil, pool: nil) }
 
   it 'is marked as abstract' do
     expect(described_class.is?(:abstract)).to eq(true)
@@ -44,45 +44,10 @@ RSpec.describe Gossamer::World::Things::Base do
     expect { thing }.to raise_error(RuntimeError)
   end
 
-  context 'when provided a testing trait at instantiation' do
-    subject(:thing) do
-      described_class.create(
-        traits: :testing_trait
-      )
-    end
-
-    it 'can be instantiated' do
-      expect { thing }.not_to raise_error
-    end
-
-    it 'is not marked as abstract' do
-      expect(thing.is?(:abstract)).to eq(false)
-    end
-
-    it 'returns true when checked for the "testing" property' do
-      expect(thing.is?(:testing)).to eq(true)
-    end
-
-    it 'returns false when checked for the "testing_property" property' do
-      expect(thing.is?(:testing_property)).to eq(false)
-    end
-  end
-
-  context 'when provided a testing trait and property at instantiation' do
-    subject(:thing) do
-      described_class.create(
-        traits:     :testing_trait,
-        properties: :testing_property
-      )
-    end
-
-    it 'returns true when checked for the testing property' do
-      expect(thing.is?(:testing_property)).to eq(true)
-    end
-  end
-
   context 'when provided a testing trait as part of a subclass' do
-    subject(:thing) { ::Gossamer::World::Things::TestingClass.new }
+    subject(:thing) do
+      ::Gossamer::World::Things::TestingClass.new(nil, pool: nil)
+    end
 
     it 'can be instantiated' do
       expect { thing }.not_to raise_error
@@ -105,6 +70,7 @@ RSpec.describe Gossamer::World::Things::Base do
           'property at instantiation' do
     subject(:thing) do
       ::Gossamer::World::Things::TestingClass.new(
+        nil, pool: nil,
         properties: :testing_property
       )
     end

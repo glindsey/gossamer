@@ -18,34 +18,16 @@ module Gossamer
         include Things::Traits::PhysicallyRelatable
         using ::Gossamer::Refinements::ObjectToKeysOfHash
 
-        class << self
-          def create(**options)
-            # Mix any provided traits into the newly-created object.
-            # This has to be done by creating a new class and then including the
-            # trait into that class.
-            # TODO: keep a hash associating classes to mixins, so we don't
-            #       create a bunch of duplicate classes
-            if options.key?(:traits)
-              traits = options[:traits]
-              Class.new(self) do
-                traits = [traits] unless traits.is_a?(Array)
-                traits.each do |trait_sym|
-                  trait_str = trait_sym.to_s.camelize
-                  trait = "::Gossamer::World::Traits::#{trait_str}"
-                          .safe_constantize
-                  raise "Trait #{trait_str.inspect} does not exist" unless trait
-
-                  include(trait)
-                end
-              end.new(**options)
-            else
-              new(**options)
-            end
-          end
-        end
+        attr_reader :id, :pool
 
         # Instantiation of a Thing can only be done if it is not abstract.
-        def initialize(**options)
+        def initialize(uuid, pool:, **options)
+          log("Creating #{self.class.name}, uuid #{uuid.inspect}, " \
+              "pool = #{pool.inspect}, options = #{options.inspect}")
+
+          @id = uuid
+          @pool = pool
+
           # Call any mixin option lambdas and merge them into options.
           options = self.class.merge_with_default_config(options)
 
@@ -159,18 +141,19 @@ module Gossamer
 
           return part_instr unless options.key?(:parts)
 
-          # Get this part's tags, which will be merged into the new part's
-          # instructions.
-          our_tags = { tags: options[:tags].dup } if options.key?(:tags)
-
           # Merge in the instructions passed via options, if necessary.
           options[:parts].each_with_object(part_instr) do |(part, opts), instr|
             part_symbol = degossamerify(part)
             instr[part_symbol] ||= {}
 
-            instr[part_symbol] = smart_merge(instr[part_symbol], opts)
+            # Merge in incorporator's tags, if any.
+            if options.key?(:tags)
+              instr[part_symbol][:tags] ||= []
+              instr[part_symbol][:tags] =
+                instr[part_symbol][:tags] | options[:tags]
+            end
 
-            instr[part_symbol][:tags].merge(our_tags) if our_tags.present?
+            instr[part_symbol] = smart_merge(instr[part_symbol], opts)
           end
         end
 
@@ -192,8 +175,9 @@ module Gossamer
             log("*** #{part_symbol.inspect}: Creating part #{part.inspect} " \
                 "with options #{part_options.inspect}")
 
-            parts[part_symbol] = part.new(**part_options)
-            parts[part_symbol].physical_relation = { part_of: self }
+            new_part = pool.create(part, **part_options)
+            new_part.physical_relation = { part_of: id }
+            part_ids[part_symbol] = new_part.id
           rescue StandardError => e
             raise "Unable to create the #{part_symbol.inspect} part: " \
                   "#{e.inspect}"

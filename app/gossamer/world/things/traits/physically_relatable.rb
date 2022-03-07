@@ -6,7 +6,7 @@ module Gossamer
       module Traits
         # Represents possible physical relationships to another object:
         # - contained by
-        # - held by (as in grasped)
+        # - held by (as in grasped, wielded)
         # - supported by (as in "on top of")
         # - part of
         # - worn by
@@ -42,8 +42,8 @@ module Gossamer
               raise "Relation key must be nil or one of #{RELATIONS.inspect}"
             end
 
-            unless value.is_a?(:physically_relatable)
-              raise 'Relation value must nil or be a physically relatable thing'
+            unless value.is_a?(String)
+              raise 'Relation value must be nil or a UUID'
             end
 
             @physical_relation = rel

@@ -2,7 +2,7 @@
 
 RSpec.describe Gossamer::World::Things::Coin do
   context 'when not provided a shape or material' do
-    subject(:thing) { described_class.new }
+    subject(:thing) { described_class.new(nil, pool: nil) }
 
     it 'can NOT be instantiated' do
       expect { thing }.to raise_error(RuntimeError)
@@ -10,7 +10,9 @@ RSpec.describe Gossamer::World::Things::Coin do
   end
 
   context 'when provided a shape but no material' do
-    subject(:thing) { described_class.new(attributes: { shape: :circle }) }
+    subject(:thing) do
+      described_class.new(nil, pool: nil, attributes: { shape: :circle })
+    end
 
     it 'can NOT be instantiated' do
       expect { thing }.to raise_error(RuntimeError)
@@ -18,7 +20,7 @@ RSpec.describe Gossamer::World::Things::Coin do
   end
 
   context 'when provided a material but no shape' do
-    subject(:thing) { described_class.new(material: :gold) }
+    subject(:thing) { described_class.new(nil, pool: nil, material: :gold) }
 
     it 'can NOT be instantiated' do
       expect { thing }.to raise_error(RuntimeError)
@@ -28,7 +30,10 @@ RSpec.describe Gossamer::World::Things::Coin do
   context 'when provided a material and a shape' do
     context 'when the material is abstract' do
       subject(:thing) do
-        described_class.new(material: :metal, attributes: { shape: :square })
+        described_class.new(
+          nil, pool: nil,
+          material: :metal, attributes: { shape: :square }
+        )
       end
 
       it 'can NOT be instantiated' do
@@ -38,7 +43,10 @@ RSpec.describe Gossamer::World::Things::Coin do
 
     context 'when the shape is abstract' do
       subject(:thing) do
-        described_class.new(material: :gold, attributes: { shape: :polygon })
+        described_class.new(
+          nil, pool: nil,
+          material: :gold, attributes: { shape: :polygon }
+        )
       end
 
       it 'can NOT be instantiated' do
@@ -48,7 +56,10 @@ RSpec.describe Gossamer::World::Things::Coin do
 
     context 'when the material and shape are both concrete' do
       subject(:thing) do
-        described_class.new(material: :gold, attributes: { shape: :square })
+        described_class.new(
+          nil, pool: nil,
+          material: :gold, attributes: { shape: :square }
+        )
       end
 
       it 'can be instantiated' do
