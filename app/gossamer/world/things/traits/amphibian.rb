@@ -7,7 +7,7 @@ module Gossamer
         # Definition of an amphibian.
         module Amphibian
           extend ActiveSupport::Concern
-          include Things::Traits::Dimorph
+          include Things::Traits::Polymorph
 
           class_methods do
             def amphibian?

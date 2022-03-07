@@ -7,7 +7,7 @@ module Gossamer
         # Definition of a mammal.
         module Mammal
           extend ActiveSupport::Concern
-          include Things::Traits::Dimorph
+          include Things::Traits::Polymorph
 
           included do
             mixin_config_funcs_after.append(

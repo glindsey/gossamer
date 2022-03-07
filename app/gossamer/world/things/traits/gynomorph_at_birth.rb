@@ -4,12 +4,12 @@ module Gossamer
   module World
     module Things
       module Traits
-        # Andromorph means "possessing male sexual characteristics".
-        module Andromorph
+        # Gynomorph means "possessing female sexual characteristics".
+        module GynomorphAtBirth
           extend ActiveSupport::Concern
 
           class_methods do
-            def andromorphic?
+            def gynomorphic_at_birth?
               true
             end
           end

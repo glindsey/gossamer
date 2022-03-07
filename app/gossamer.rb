@@ -33,10 +33,7 @@ mod_directories =
   Dir[File.join(ROOT_DIR, '..', 'experimental', 'mods', '*')]
 
 mod_directories.each do |dir|
-  if File.directory?(dir)
-    warn "Including #{dir} in autoloader..."
-    loader.push_dir(dir)
-  end
+  loader.push_dir(dir) if File.directory?(dir)
 end
 
 # Ready to go!

@@ -7,7 +7,7 @@ module Gossamer
         # Definition of a reptile.
         module Reptile
           extend ActiveSupport::Concern
-          include Things::Traits::Dimorph
+          include Things::Traits::Polymorph
 
           class_methods do
             def reptilian?

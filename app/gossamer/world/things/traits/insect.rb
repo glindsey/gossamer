@@ -7,7 +7,7 @@ module Gossamer
         # Definition of an insect.
         module Insect
           extend ActiveSupport::Concern
-          include Things::Traits::Dimorph
+          include Things::Traits::Polymorph
 
           class_methods do
             def insectoid?

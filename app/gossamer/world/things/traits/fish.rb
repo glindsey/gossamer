@@ -7,7 +7,7 @@ module Gossamer
         # Definition of a fish.
         module Fish
           extend ActiveSupport::Concern
-          include Things::Traits::Dimorph
+          include Things::Traits::Polymorph
 
           class_methods do
             def piscine?
