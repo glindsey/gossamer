@@ -15,7 +15,13 @@ module Gossamer
 
       def create(thing_type, **options)
         unless [Symbol, Class].any? { |type| thing_type.is_a?(type) }
-          raise 'Thing type must be a Symbol or Class'
+          msg = 'Thing type must be a Symbol or Class, but was ' \
+                "#{thing_type.inspect}"
+          if thing_type.nil?
+            msg += " (probably missing a Thing class definition)"
+          end
+
+          raise msg
         end
 
         thing_class = thingify(thing_type)
@@ -25,7 +31,7 @@ module Gossamer
       end
 
       def delete(id)
-        raise 'Index must be a String' unless id.is_a?(String)
+        raise 'Provided parameter must be a String' unless id.is_a?(String)
 
         @pool.delete(id)
       end
