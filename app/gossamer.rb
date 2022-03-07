@@ -28,12 +28,15 @@ loader = Zeitwerk::Loader.new
 loader.push_dir('app')
 
 # Load all the mod directories.
-[File.join(ROOT_DIR, '..', 'mods')].each do |dir|
-  loader.push_dir(dir)
-end
+mod_directories =
+  Dir[File.join(ROOT_DIR, '..', 'mods', '*')] |
+  Dir[File.join(ROOT_DIR, '..', 'experimental', 'mods', '*')]
 
-[File.join(ROOT_DIR, '..', 'experimental', 'mods')].each do |dir|
-  loader.push_dir(dir)
+mod_directories.each do |dir|
+  if File.directory?(dir)
+    warn "Including #{dir} in autoloader..."
+    loader.push_dir(dir)
+  end
 end
 
 # Ready to go!
