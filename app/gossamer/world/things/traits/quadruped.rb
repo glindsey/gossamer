@@ -4,8 +4,9 @@ module Gossamer
   module World
     module Things
       module Traits
-        # A biped has a left leg and a right leg by default.
-        module Biped
+        # A quadruped has left-front, left-rear, right-front, and right-rear
+        # legs by default.
+        module Quadruped
           include Concerns::SmartMerge
           extend ActiveSupport::Concern
 
@@ -15,9 +16,11 @@ module Gossamer
                 smart_merge(
                   opts,
                   {
-                    parts:      {
-                      left_leg:  { type: :leg },
-                      right_leg: { type: :leg }
+                    parts: {
+                      left_front_leg:  { type: :leg },
+                      left_rear_leg:   { type: :leg },
+                      right_front_leg: { type: :leg },
+                      right_rear_leg:  { type: :leg }
                     }
                   }
                 )
@@ -26,7 +29,7 @@ module Gossamer
           end
 
           class_methods do
-            def bipedal?
+            def quadrupedal?
               true
             end
           end

@@ -13,8 +13,8 @@ module Gossamer
           def default_config
             {
               parts: {
-                left_arm:  {},
-                right_arm: {},
+                left_arm:  { type: :arm },
+                right_arm: { type: :arm },
                 torso:     {},
                 abdomen:   {},
                 head:      {}

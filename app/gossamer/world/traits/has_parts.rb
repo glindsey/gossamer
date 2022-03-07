@@ -7,10 +7,16 @@ module Gossamer
       # are also instantiated at the time of creation.
       #
       # Parts work somewhat differently than attributes/properties/etc. because
-      # they are instantiated at the time of creation. As a result, the
-      # `default_parts` class instance variable is a map of symbols to options
-      # to use upon instantiation, but the `parts` instance variable is a map of
-      # symbols to actual instances of the classes.
+      # they are instantiated at the time of creation. As a result, the `parts`
+      # map contained within instantiation options is a map of symbols to
+      # options to use upon instantiation, but the `parts` instance variable is
+      # a map of symbols to actual instances of the classes.
+      #
+      # By default, the part that is instantiated is defined by the symbol that
+      # names it; for example, `head: {}` will create a part of type
+      # `World::Things::Head`. However, in some cases we want multiple instances
+      # of the same part, such as a left leg and a right leg. In those cases, we
+      # can use the option `type:` to specify the part to create.
       module HasParts
         extend ActiveSupport::Concern
         include Concerns::SymbolToGossamerClass

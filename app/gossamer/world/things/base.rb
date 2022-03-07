@@ -169,9 +169,15 @@ module Gossamer
 
           # Instantiate each part according to the instructions.
           part_instructions.each do |(part_symbol, part_options)|
-            part = thingify(part_symbol)
+            part = thingify(
+              if part_options.key?(:type)
+                part_options[:type]
+              else
+                part_symbol
+              end
+            )
 
-            log("*** Creating part #{part_symbol.inspect} " \
+            log("*** #{part_symbol.inspect}: Creating part #{part.inspect} " \
                 "with options #{part_options.inspect}")
 
             parts[part_symbol] = part.new(**part_options)
