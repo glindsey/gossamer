@@ -20,6 +20,10 @@ RSpec.describe Gossamer::World::ThingPool do
   describe '#create' do
     let(:dummy) { pool.create(:dummy) }
 
+    it 'raises an error if passed something other than a Symbol or Class' do
+      expect { pool.create(42) }.to raise_error(RuntimeError)
+    end
+
     it 'can create a dummy object' do
       expect(dummy).to be_a(::Gossamer::World::Things::Dummy)
     end
@@ -32,6 +36,44 @@ RSpec.describe Gossamer::World::ThingPool do
       expect(dummy.id).to match(
         /\h{8}-\h{4}-\h{4}-\h{4}-\h{12}/
       )
+    end
+  end
+
+  describe '#[]' do
+    it 'raises an error if not provided a string' do
+      expect { pool[42] }.to raise_error(RuntimeError)
+    end
+
+    it 'can locate created items by UUID' do
+      dummy = pool.create(:dummy)
+
+      expect(pool[dummy.id]).to eq(dummy)
+    end
+
+    it 'returns nil when a UUID is not found' do
+      pool.create(:dummy)
+
+      expect(pool['blah']).to eq(nil)
+    end
+  end
+
+  describe '#delete' do
+    it 'raises an error if not provided a string' do
+      expect { pool.delete(42) }.to raise_error(RuntimeError)
+    end
+
+    it 'deletes an item when provided a valid UUID' do
+      dummy = pool.create(:dummy)
+
+      pool.delete(dummy.id)
+
+      expect(pool[dummy.id]).to eq(nil)
+    end
+
+    it 'does not raise an error when provided a nonexistent UUID' do
+      pool.create(:dummy)
+
+      expect { pool.delete('blah') }.not_to raise_error
     end
   end
 end

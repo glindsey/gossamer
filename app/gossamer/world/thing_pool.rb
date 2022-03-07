@@ -8,10 +8,16 @@ module Gossamer
       include Concerns::SymbolToGossamerClass
 
       def [](id)
+        raise 'Index must be a String' unless id.is_a?(String)
+
         @pool.fetch(id, nil)
       end
 
       def create(thing_type, **options)
+        unless [Symbol, Class].any? { |type| thing_type.is_a?(type) }
+          raise 'Thing type must be a Symbol or Class'
+        end
+
         thing_class = thingify(thing_type)
         id = SecureRandom.uuid
 
@@ -19,6 +25,8 @@ module Gossamer
       end
 
       def delete(id)
+        raise 'Index must be a String' unless id.is_a?(String)
+
         @pool.delete(id)
       end
 
