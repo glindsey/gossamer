@@ -17,10 +17,22 @@ module Gossamer
                   opts,
                   {
                     parts: {
-                      left_front_leg:  { type: :leg },
-                      left_rear_leg:   { type: :leg },
-                      right_front_leg: { type: :leg },
-                      right_rear_leg:  { type: :leg }
+                      left_front_leg:  {
+                        type: :leg,
+                        tags: %i[left front]
+                      },
+                      left_rear_leg:   {
+                        type: :leg,
+                        tags: %i[left rear]
+                      },
+                      right_front_leg: {
+                        type: :leg,
+                        tags: %i[right front]
+                      },
+                      right_rear_leg:  {
+                        type: :leg,
+                        tags: %i[right rear]
+                      }
                     }
                   }
                 )

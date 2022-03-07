@@ -14,6 +14,7 @@ module Gossamer
         include World::Traits::HasMaterial
         include World::Traits::HasParts
         include World::Traits::HasProperties
+        include World::Traits::HasTags
         include Things::Traits::PhysicallyRelatable
         using ::Gossamer::Refinements::ObjectToKeysOfHash
 
@@ -51,6 +52,7 @@ module Gossamer
           create_attributes_from(options)
           create_material_from(options)
           create_properties_from(options)
+          create_tags_from(options)
 
           # After all that is done, verify that the thing is not abstract.
           if property?(:abstract)

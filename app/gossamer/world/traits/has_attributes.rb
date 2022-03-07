@@ -3,10 +3,13 @@
 module Gossamer
   module World
     module Traits
-      # Indicates that a class and its instantiated objects have attributes that
+      # Indicates that the instantiated objects of a class have attributes that
       # can be read/written/queried. Attributes can be a number of things, but
       # if they are symbols, they are automatically converted into references to
       # the corresponding `World::Attributes` class.
+      #
+      # Eventually this may be extended to support class-level attributes, but
+      # for now I don't think that's necessary.
       module HasAttributes
         extend ActiveSupport::Concern
         include Concerns::SymbolToGossamerClass

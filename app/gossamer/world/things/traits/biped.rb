@@ -15,9 +15,15 @@ module Gossamer
                 smart_merge(
                   opts,
                   {
-                    parts:      {
-                      left_leg:  { type: :leg },
-                      right_leg: { type: :leg }
+                    parts: {
+                      left_leg:  {
+                        type: :leg,
+                        tags: [:left]
+                      },
+                      right_leg: {
+                        type: :leg,
+                        tags: [:right]
+                      }
                     }
                   }
                 )
