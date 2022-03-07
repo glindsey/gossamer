@@ -154,20 +154,30 @@ module Gossamer
 
         private
 
-        def create_parts(options)
-          # Get the part options.
-          part_instructions = options[:parts].deep_dup || {}
+        def finalize_part_instructions(part_instr, options)
+          part_instr ||= {}
+
+          return part_instr unless options.key?(:parts)
+
+          # Get this part's tags, which will be merged into the new part's
+          # instructions.
+          our_tags = { tags: options[:tags].dup } if options.key?(:tags)
 
           # Merge in the instructions passed via options, if necessary.
-          if options.key?(:parts)
-            options[:parts].each do |(part, part_options)|
-              part_symbol = degossamerify(part)
-              part_instructions[part_symbol] ||= {}
+          options[:parts].each_with_object(part_instr) do |(part, opts), instr|
+            part_symbol = degossamerify(part)
+            instr[part_symbol] ||= {}
 
-              part_instructions[part_symbol] =
-                smart_merge(part_instructions[part_symbol], part_options)
-            end
+            instr[part_symbol] = smart_merge(instr[part_symbol], opts)
+
+            instr[part_symbol][:tags].merge(our_tags) if our_tags.present?
           end
+        end
+
+        def create_parts(options)
+          # Get the part options.
+          part_instructions =
+            finalize_part_instructions(part_instructions, options)
 
           # Instantiate each part according to the instructions.
           part_instructions.each do |(part_symbol, part_options)|

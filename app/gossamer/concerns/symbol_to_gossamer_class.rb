@@ -52,10 +52,10 @@ module Gossamer
           case obj
           when Symbol, String
             obj.to_sym
-          when Class
-            demodulize(obj.name.to_s).underscore.to_sym
+          when Class, Module
+            obj.name.to_s.demodulize.underscore.to_sym
           when Object
-            demodulize(obj.class.name.to_s).underscore.to_sym
+            obj.class.name.to_s.demodulize.underscore.to_sym
           else
             raise "Don't know how to degossamerify #{obj.inspect}"
           end

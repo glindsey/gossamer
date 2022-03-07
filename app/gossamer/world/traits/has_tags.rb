@@ -6,6 +6,10 @@ module Gossamer
       # Indicates that the instantiated objects of a class have tags that can be
       # read/written/queried. Tags are always symbols.
       #
+      # Unlike attributes or properties, tags are *inherited* by subparts of
+      # a thing. For example, if a "left leg" has a "foot" subpart, it will be
+      # a "left foot" when created.
+      #
       # Eventually this may be extended to support class-level tags, but for now
       # I don't think that's necessary.
       module HasTags
@@ -17,7 +21,7 @@ module Gossamer
           @tags ||= Set.new
         end
 
-        def tag?(tags)
+        def tag?(tag)
           tags.include?(tag)
         end
 

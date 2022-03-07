@@ -31,39 +31,64 @@ module Gossamer
           search_targets.all? { |target| part?(target) }
         end
 
-        # Return the requested part. If the part does not exist, return nil.
+        # Return the part matching the requested symbol, class, or object.
+        # If the part does not exist, return nil.
+        #
         # (Functionally similar to `parts[]` or `parts.fetch()`, except that one
         # can pass in a class instead of a symbol.)
         def part(search_target)
-          parts.fetch(degossamerify(search_target), nil)
-        end
-
-        # Return whether this thing incorporates the requested part, or a part
-        # of the requested type. (Non-recursive.)
-        def part?(search_target)
           case search_target
           when Symbol, String, Class
-            parts.key?(degossamerify(search_target))
+            parts.fetch(degossamerify(search_target), nil)
           else
             parts.value?(search_target)
           end
         end
 
         # Return whether this thing incorporates the requested part, or a part
-        # of the requested type (recursive).
-        def incorporates?(*search_targets)
+        # of the requested type. Optionally, search criteria can be passed in
+        # as a block which can be checked against. (Non-recursive.)
+        def part?(search_target, &block)
+          matching_parts = [part(search_target)].compact
+
+          case search_target
+          when Symbol, String, Class
+            if matching_parts.blank?
+              search_sym = degossamerify(search_target)
+              matching_parts = parts.values.select do |checked_part|
+                part_sym = degossamerify(checked_part)
+                search_sym == part_sym
+              end
+            end
+          end
+
+          return matching_parts.present? if matching_parts.blank? || !block
+
+          matching_parts.any?(&block)
+        end
+
+        # Return whether this thing incorporates the requested part, or a part
+        # of the requested type (recursive). Optionally, search criteria can be
+        # passed in as a block which can be checked against.
+        def incorporates?(*search_targets, &block)
           search_targets.all? do |search_target|
             case search_target
             when String, Symbol
-              parts.key?(search_target) ||
-                parts.values.any? { |part| part.incorporates?(search_target) }
+              part?(search_target, &block) ||
+                parts.values.any? do |part|
+                  part.incorporates?(search_target, &block)
+                end
             else
               search_target = thingify(search_target)
               return false if search_target.nil?
 
-              return true if self == search_target || is_a?(search_target)
+              if self == search_target || is_a?(search_target)
+                return block ? yield(self) : true
+              end
 
-              parts.values.any? { |part| part.incorporates?(search_target) }
+              parts.values.any? do |part|
+                part.incorporates?(search_target, &block)
+              end
             end
           end
         end

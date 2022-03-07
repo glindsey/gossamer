@@ -28,8 +28,16 @@ RSpec.describe Gossamer::World::Things::Human do
       expect(human.is_a?(:lifeform)).to eq(true)
     end
 
-    it 'has a left leg and a right leg' do
+    it 'has a left leg and a right leg (searched by symbol)' do
       expect(human.parts?(:left_leg, :right_leg)).to eq(true)
+    end
+
+    it 'has a left leg (searched by type and criteria)' do
+      expect(human.part?(:leg) { |part| part.tag?(:left) }).to eq(true)
+    end
+
+    it 'does not have a middle leg (searched by type and criteria)' do
+      expect(human.part?(:leg) { |part| part.tag?(:middle) }).to eq(false)
     end
 
     it 'has a left arm and a right arm' do
@@ -48,8 +56,18 @@ RSpec.describe Gossamer::World::Things::Human do
       expect(human.part?(:head)).to eq(true)
     end
 
-    it 'incorporates a left eye and a right eye' do
+    it 'incorporates a left eye and a right eye (searched by symbol)' do
       expect(human.incorporates?(:left_eye, :right_eye)).to eq(true)
+    end
+
+    it 'incorporates a left eye (searched by type and criteria)' do
+      expect(human.incorporates?(:eye) { |part| part.tag?(:left) }).to eq(true)
+    end
+
+    it 'does not incorporate a middle eye' do
+      expect(
+        human.incorporates?(:eye) { |part| part.tag?(:middle) }
+      ).to eq(false)
     end
   end
 end
