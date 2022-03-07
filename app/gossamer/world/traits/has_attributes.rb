@@ -9,7 +9,8 @@ module Gossamer
       # the corresponding `World::Attributes` class.
       module HasAttributes
         extend ActiveSupport::Concern
-        using ::Gossamer::Refinements::ObjectToKeysOfHash
+        include Concerns::SymbolToGossamerClass
+        using Refinements::ObjectToKeysOfHash
 
         def attributes
           @attributes ||= {}
@@ -30,14 +31,7 @@ module Gossamer
         def create_attributes_from(options)
           return unless options.key?(:attributes)
 
-          options[:attributes].each do |(k, v)|
-            if v.is_a?(Symbol)
-              v = "::Gossamer::World::Attributes::#{v.to_s.camelize}"
-                  .safe_constantize
-            end
-
-            attributes[k] = v
-          end
+          options[:attributes].each { |(k, v)| attributes[k] = attributify(v) }
         end
       end
     end

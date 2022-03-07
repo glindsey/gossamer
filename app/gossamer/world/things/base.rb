@@ -159,7 +159,7 @@ module Gossamer
           # Merge in the instructions passed via options, if necessary.
           if options.key?(:parts)
             options[:parts].each do |(part, part_options)|
-              part_symbol = dethingify(part)
+              part_symbol = degossamerify(part)
               part_instructions[part_symbol] ||= {}
 
               part_instructions[part_symbol] =

@@ -29,7 +29,7 @@ module Gossamer
         # (Functionally similar to `parts[]` or `parts.fetch()`, except that one
         # can pass in a class instead of a symbol.)
         def part(search_target)
-          parts.fetch(dethingify(search_target), nil)
+          parts.fetch(degossamerify(search_target), nil)
         end
 
         # Return whether this thing incorporates the requested part, or a part
@@ -37,7 +37,7 @@ module Gossamer
         def part?(search_target)
           case search_target
           when Symbol, String, Class
-            parts.key?(dethingify(search_target))
+            parts.key?(degossamerify(search_target))
           else
             parts.value?(search_target)
           end
