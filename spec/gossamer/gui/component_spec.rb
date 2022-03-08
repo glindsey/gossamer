@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.shared_examples('Component') do
-  subject(:component) { described_class.new(width: width, height: height) }
+  subject(:component) { described_class.new(width:, height:) }
 
   let(:width) { 10 }
   let(:height) { 20 }

@@ -18,14 +18,14 @@ module Gossamer
       extend ActiveSupport::Concern
 
       # Raise an error if the passed-in block is not truthy.
-      def assert(&block)
+      def assert(&)
         result = yield
 
         return if result
 
         str = <<~TEXT
           Assertion failed:
-            #{block_to_source(&block)}
+            #{block_to_source(&)}
         TEXT
 
         if ::Gossamer.development?

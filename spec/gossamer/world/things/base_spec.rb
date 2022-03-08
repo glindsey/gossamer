@@ -70,8 +70,8 @@ RSpec.describe Gossamer::World::Things::Base do
           'property at instantiation' do
     subject(:thing) do
       ::Gossamer::World::Things::TestingClass.new(
-        nil, pool: nil,
-        properties: :testing_property
+        nil, pool:       nil,
+             properties: :testing_property
       )
     end
 

@@ -8,8 +8,8 @@ module Gossamer
     class RootWindow < ParentComponent
       # Does the actual drawing of the component.
       def _draw(x: 0, y: 0, **draw_options)
-        _draw_background_layer(x: x, y: y, **draw_options)
-        _draw_foreground_layer(x: x, y: y, **draw_options)
+        _draw_background_layer(x:, y:, **draw_options)
+        _draw_foreground_layer(x:, y:, **draw_options)
       end
 
       protected

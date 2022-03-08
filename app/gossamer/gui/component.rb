@@ -28,7 +28,7 @@ module Gossamer
       def draw(x: 0, y: 0, **draw_options)
         return unless @dirty
 
-        _draw(x: x, y: y, **draw_options)
+        _draw(x:, y:, **draw_options)
 
         @dirty = false
       end
@@ -41,8 +41,8 @@ module Gossamer
 
       # Does the actual drawing of the component.
       def _draw(x: 0, y: 0, **draw_options)
-        _draw_background_layer(x: x, y: y, **draw_options)
-        _draw_foreground_layer(x: x, y: y, **draw_options)
+        _draw_background_layer(x:, y:, **draw_options)
+        _draw_foreground_layer(x:, y:, **draw_options)
       end
 
       protected

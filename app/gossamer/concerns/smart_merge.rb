@@ -21,15 +21,15 @@ module Gossamer
               return new_data
             end
 
-            smart_merge_into_hash(old_data, new_data, strict: strict)
+            smart_merge_into_hash(old_data, new_data, strict:)
           when Array
             if old_data.blank? && new_data.is_a?(Array) && !strict
               return new_data
             end
 
-            smart_merge_into_array(old_data, new_data, strict: strict)
+            smart_merge_into_array(old_data, new_data, strict:)
           else
-            smart_merge_into_scalar(old_data, new_data, strict: strict)
+            smart_merge_into_scalar(old_data, new_data, strict:)
           end
         end
 
@@ -49,7 +49,7 @@ module Gossamer
                           new_data.key?(key) &&
                           !new_data[key].nil?
                          smart_merge(
-                           old_data[key], new_data[key], strict: strict
+                           old_data[key], new_data[key], strict:
                          )
                        elsif old_data.key?(key)
                          old_data[key]

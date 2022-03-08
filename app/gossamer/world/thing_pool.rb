@@ -18,7 +18,7 @@ module Gossamer
           msg = 'Thing type must be a Symbol or Class, but was ' \
                 "#{thing_type.inspect}"
           if thing_type.nil?
-            msg += " (probably missing a Thing class definition)"
+            msg += ' (probably missing a Thing class definition)'
           end
 
           raise msg

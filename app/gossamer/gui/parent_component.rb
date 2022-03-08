@@ -10,7 +10,7 @@ module Gossamer
 
       # x, y, width, height are relative to the parent component when drawn
       def initialize(width: 0, height: 0, **options)
-        super(width: width, height: height, **options)
+        super(width:, height:, **options)
 
         @children = []
       end
@@ -41,9 +41,9 @@ module Gossamer
       # don't have locations within the parent component, so they're all drawn
       # at (0, 0).
       def _draw(x: 0, y: 0, **draw_options)
-        _draw_background_layer(x: x, y: y, **draw_options)
-        _draw_children(x: x, y: y, **draw_options)
-        _draw_foreground_layer(x: x, y: y, **draw_options)
+        _draw_background_layer(x:, y:, **draw_options)
+        _draw_children(x:, y:, **draw_options)
+        _draw_foreground_layer(x:, y:, **draw_options)
       end
 
       protected
@@ -54,7 +54,7 @@ module Gossamer
       # all drawn at the parent's origin.
       def _draw_children(x: 0, y: 0, **draw_options)
         children.each do |child|
-          child._draw(x: x, y: y, **draw_options)
+          child._draw(x:, y:, **draw_options)
         end
       end
 
