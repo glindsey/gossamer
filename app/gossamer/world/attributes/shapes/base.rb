@@ -5,7 +5,9 @@ require COMMON_INCLUDES
 module Gossamer
   module World
     module Attributes
-      class Round < Shape; end
+      module Shapes
+        class Base < World::Attributes::Base; end
+      end
     end
   end
 end

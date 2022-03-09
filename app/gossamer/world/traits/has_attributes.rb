@@ -16,15 +16,23 @@ module Gossamer
         using Refinements::ObjectToKeysOfHash
 
         def attributes
-          @attributes ||= {}
+          _attributes.freeze
+        end
+
+        def attribute_keys
+          _attributes.keys
+        end
+
+        def attribute_set(key, value)
+          _attributes[key] = attributify(key, value)
         end
 
         def attribute?(attrib)
-          attributes.key?(attrib) || self.class.respond_to?(attrib)
+          _attributes.key?(attrib) || self.class.respond_to?(attrib)
         end
 
         def attribute(attrib)
-          return attributes[attrib] if attributes.key?(attrib)
+          return _attributes[attrib] if _attributes.key?(attrib)
 
           return self.class.send(attrib) if self.class.respond_to?(attrib)
 
@@ -34,7 +42,15 @@ module Gossamer
         def create_attributes_from(options)
           return unless options.key?(:attributes)
 
-          options[:attributes].each { |(k, v)| attributes[k] = attributify(v) }
+          options[:attributes].each do |(k, v)|
+            attribute_set(k, v)
+          end
+        end
+
+        private
+
+        def _attributes
+          @_attributes ||= {}
         end
       end
     end

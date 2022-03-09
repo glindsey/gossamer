@@ -5,8 +5,8 @@ require COMMON_INCLUDES
 module Gossamer
   module World
     module Attributes
-      class Circle < Shape
-        include World::Traits::Concrete
+      module Colors
+        class Base < World::Attributes::Base; end
       end
     end
   end

@@ -13,8 +13,10 @@ module Gossamer
                to: :class
 
       class_methods do
-        def attributify(obj)
-          gossamerify(obj, 'Attributes')
+        def attributify(category, obj)
+          obj = :base if obj == category
+
+          gossamerify(obj, "Attributes::#{category.to_s.pluralize.camelize}")
         end
 
         def materialify(obj)
@@ -38,16 +40,23 @@ module Gossamer
         def gossamerify(obj, prefix)
           case obj
           when Symbol, String
-            "::Gossamer::World::#{prefix}::#{obj.to_s.camelize}"
-              .safe_constantize
+            gossamer_string(obj, prefix).safe_constantize
           else
             obj
           end
         end
 
+        def gossamer_string(obj, prefix)
+          "::Gossamer::World::#{prefix}::#{obj.to_s.camelize}"
+        end
+
         # A rather stupid method that turns the very end of a class or object
         # name into a symbol. It doesn't check to see what category the class or
         # object is (i.e. a thing, trait, etc.).
+        #
+        # @todo At the moment this doesn't work with namespaced attributes. It
+        #       should be doable by checking for "::Base" and stripping it off
+        #       of the name.
         def degossamerify(obj)
           case obj
           when Symbol, String

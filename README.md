@@ -46,13 +46,13 @@ Example: A "human" is a subclass of "lifeform", but it has the traits "concrete"
 
 ### Attributes
 
-An attribute consists of a symbol key -- its name -- and a value. The value can be one of several types (the details of most still to be defined), but one type is special: if the value is a symbol, it is cast to a subclass of the `Attributes::Base` class type.
+An attribute consists of a symbol key -- its name -- and a value. The value can be one of several types (the details of most still to be defined), but one type is special: if the value is a symbol, it is cast to a subclass of the `Attributes::(Name)::Base` class type, where `(Name)` is the symbol name.
 
 #### Class Attributes
 
-Default attribute values for an entire Thing class are specified by simply creating a class method with the name of the attribute; this value will be used for any instance of that Thing unless explicitly set for that instance. The only caveat to note here is that class methods referencing symbolic attributes must reference the class itself, not just the symbol (e.g. `World::Attributes::Square`, not just `:square`).
+Default attribute values for an entire Thing class are specified by simply creating a class method with the name of the attribute; this value will be used for any instance of that Thing unless explicitly set for that instance. The only caveat to note here is that class methods referencing symbolic attributes must reference the class itself, not just the symbol (e.g. the value for an attribute named `shape` must be `World::Attributes::Shapes::Square`, not just `:square`).
 
-Example: Including `def self.shape; World::Attributes::Circle; end` in the Coin class will make all created coins be circular by default, unless explicitly specified at creation (or during gameplay).
+Example: Including `def self.shape; World::Attributes::Shapes::Circle; end` in the Coin class will make all created coins be circular by default, unless explicitly specified at creation (or during gameplay).
 
 #### Object Attributes
 
@@ -128,8 +128,6 @@ A non-exhaustive list (obviously).
 ### Attributes
 
 - Attribute constraints, such as min/max values.
-
-- Namespacing of attributes. `{ shape: :circle }` should be cast to `Attributes::Shape::Circle` instead of simply `Attributes::Circle`, particularly to avoid naming collisions.
 
 - Direct access of the `Thing#attributes` hash is probably a bad idea, since it won't allow for checking future attribute constraints, or converting symbols into symbolic attributes. (Also, reading them via that hash doesn't fall back to class attributes if they don't exist.)
 

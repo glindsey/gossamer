@@ -5,7 +5,9 @@ require COMMON_INCLUDES
 module Gossamer
   module World
     module Attributes
-      class Polygon < Shape; end
+      module Shapes
+        class Round < Base; end
+      end
     end
   end
 end
