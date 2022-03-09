@@ -10,7 +10,7 @@ module Gossamer
         using ::Gossamer::Refinements::ObjectToKeysOfHash
 
         def check_constraints
-          constraints.each do |function|
+          self.class.constraints.each do |function|
             result = function&.call(self)
             if result.is_a?(String)
               raise "Object #{inspect} failed creation constraint: #{result}"
@@ -18,21 +18,21 @@ module Gossamer
           end
         end
 
-        def default_constraints
-          @default_constraints ||= []
-        end
-
-        def constraints
-          if defined?(super)
-            super
-          else
-            [] |
-              default_constraints |
-              self.class.mixin_constraints
-          end
-        end
-
         class_methods do
+          attr_writer :mixin_constraints
+
+          def constraints
+            if defined?(super)
+              super
+            else
+              [] | class_constraints | mixin_constraints
+            end
+          end
+
+          def class_constraints
+            []
+          end
+
           def mixin_constraints
             @mixin_constraints ||= []
           end
