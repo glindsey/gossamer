@@ -21,6 +21,10 @@ module Gossamer
           @tags ||= Set.new
         end
 
+        def tags?(checked_tags)
+          checked_tags.all? { |tag| tag?(tag) }
+        end
+
         def tag?(tag)
           tags.include?(tag)
         end

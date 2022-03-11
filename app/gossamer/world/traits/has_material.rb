@@ -11,11 +11,11 @@ module Gossamer
         using Refinements::ObjectToKeysOfHash
 
         def material
-          @material ||= self.class.default_material # no deep_dup needed here
+          @material ||= self.class.default_material&.new
         end
 
         def material=(mat)
-          @material = materialify(mat)
+          @material = materialify(mat)&.new
         end
 
         def material?
@@ -23,10 +23,8 @@ module Gossamer
         end
 
         class_methods do
-          attr_reader :default_material
-
-          def default_material=(mat)
-            @default_material = materialify(mat)
+          def default_material
+            nil
           end
 
           def default_material?

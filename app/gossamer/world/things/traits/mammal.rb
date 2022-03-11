@@ -22,14 +22,10 @@ module Gossamer
                       head,
                       {
                         parts: {
-                          left_eye:  {
-                            type: :eye,
-                            tags: [:left]
-                          },
-                          right_eye: {
-                            type: :eye,
-                            tags: [:right]
-                          },
+                          left_ear:  { type: :ear, tags: [:left] },
+                          right_ear: { type: :ear, tags: [:right] },
+                          left_eye:  { type: :eye, tags: [:left] },
+                          right_eye: { type: :eye, tags: [:right] },
                           nose:      {},
                           mouth:     {}
                         }

@@ -7,26 +7,24 @@ module Gossamer
       class Coin < Base
         include World::Traits::Concrete
 
-        class << self
-          def class_constraints
-            [
-              lambda { |obj|
-                shape = obj.attribute(:shape)
+        def self.class_constraints
+          [
+            lambda { |obj|
+              shape = obj.attribute(:shape)
 
-                unless shape&.not?(:abstract)
-                  'A coin must have a non-abstract shape, but ' \
-                    "#{shape.inspect} is abstract or missing"
-                end
-              },
-              lambda { |obj|
-                mat = obj.material
-                unless mat&.not?(:abstract)
-                  'A coin must be made of a non-abstract material, but ' \
-                    "#{mat.inspect} is abstract or missing"
-                end
-              }
-            ]
-          end
+              unless shape&.not?(:abstract)
+                'A coin must have a non-abstract shape, but ' \
+                  "#{shape.inspect} is abstract or missing"
+              end
+            },
+            lambda { |obj|
+              mat = obj.material
+              unless mat&.not?(:abstract)
+                'A coin must be made of a non-abstract material, but ' \
+                  "#{mat.inspect} is abstract or missing"
+              end
+            }
+          ]
         end
       end
     end

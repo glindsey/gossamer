@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+def incorporates_pair(subject, part_sym)
+  %i[left right].all? do |adj|
+    subject.incorporates?(part_sym) { |part| part.tag?(adj) }
+  end
+end
+
 RSpec.describe Gossamer::World::Things::Human do
   context 'when created without options' do
     subject(:human) { pool.create(described_class) }
@@ -30,32 +36,46 @@ RSpec.describe Gossamer::World::Things::Human do
       expect(human.is_a?(:lifeform)).to eq(true)
     end
 
-    it 'has a left leg' do
-      expect(human.parts?(:left_leg)).to eq(true)
-    end
-
-    it 'has a left leg and a right leg (searched by symbol)' do
-      expect(human.parts?(:left_leg, :right_leg)).to eq(true)
-    end
-
-    it 'has a left leg (searched by type and criteria)' do
-      expect(human.part?(:leg) { |part| part.tag?(:left) }).to eq(true)
-    end
-
-    it 'does not have a middle leg' do
-      expect(human.part?(:leg) { |part| part.tag?(:middle) }).to eq(false)
-    end
-
-    it 'has a left arm and a right arm' do
-      expect(human.parts?(:left_arm, :right_arm)).to eq(true)
-    end
-
     it 'has a torso' do
       expect(human.part?(:torso)).to eq(true)
     end
 
+    it 'incorporates left and right arms' do
+      expect(human.incorporates_a_pair_of?(:arms)).to eq(true)
+    end
+
+    it 'incorporates a left hand and a right hand' do
+      expect(
+        %i[left right].all? do |adj|
+          human.incorporates?(:hand) { |part| part.tag?(adj) }
+        end
+      ).to eq(true)
+    end
+
     it 'has an abdomen' do
       expect(human.part?(:abdomen)).to eq(true)
+    end
+
+    it 'incorporates a left leg' do
+      expect(human.incorporates?(:left_leg)).to eq(true)
+    end
+
+    it 'incorporates a left leg and a right leg (searched by symbol)' do
+      expect(human.incorporates?(:left_leg, :right_leg)).to eq(true)
+    end
+
+    it 'incorporates left and right legs (searched by type and criteria)' do
+      expect(incorporates_pair(human, :leg)).to eq(true)
+    end
+
+    it 'does not incorporate a middle leg' do
+      expect(
+        human.incorporates?(:leg) { |part| part.tag?(:middle) }
+      ).to eq(false)
+    end
+
+    it 'incorporates left and right feet' do
+      expect(incorporates_pair(human, :foot)).to eq(true)
     end
 
     it 'has a head' do
@@ -66,12 +86,20 @@ RSpec.describe Gossamer::World::Things::Human do
       expect(human.part(:head).parts?(:left_eye, :right_eye)).to eq(true)
     end
 
-    it 'incorporates a left eye and a right eye (searched by symbol)' do
-      expect(human.incorporates?(:left_eye, :right_eye)).to eq(true)
+    it 'incorporates left and right eyes' do
+      expect(incorporates_pair(human, :eye)).to eq(true)
     end
 
-    it 'incorporates a left eye (searched by type and criteria)' do
-      expect(human.incorporates?(:eye) { |part| part.tag?(:left) }).to eq(true)
+    it 'incorporates left and right ears' do
+      expect(incorporates_pair(human, :ear)).to eq(true)
+    end
+
+    it 'incorporates a nose' do
+      expect(human.incorporates?(:nose)).to eq(true)
+    end
+
+    it 'incorporates a mouth' do
+      expect(human.incorporates?(:mouth)).to eq(true)
     end
 
     it 'does not incorporate a middle eye' do

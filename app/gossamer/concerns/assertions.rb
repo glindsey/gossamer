@@ -5,7 +5,7 @@ require 'pry-byebug'
 require 'pry-stack_explorer'
 require 'sourcify'
 
-require COMMON_INCLUDES
+require COMMON_REQUIRES
 
 module Gossamer
   module Concerns

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require COMMON_INCLUDES
+require COMMON_REQUIRES
 
 module Gossamer
   module World

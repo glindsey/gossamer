@@ -5,10 +5,8 @@ module Gossamer
     module Things
       # Definition of a part of a lifeform's body.
       class BodyPart < Base
-        class << self
-          def severable?
-            true
-          end
+        def self.severable?
+          true
         end
       end
     end

@@ -27,6 +27,10 @@ module Gossamer
           _attributes[key] = attributify(key, value)
         end
 
+        def attribute_reset(key)
+          _attributes.erase(key)
+        end
+
         def attribute?(attrib)
           _attributes.key?(attrib) || self.class.respond_to?(attrib)
         end

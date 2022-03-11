@@ -84,7 +84,7 @@ Example: Say you want a "doohickey" to have an "volume" attribute that ranges be
 
 ### Materials
 
-Materials are static classes that describe what individual thing instances are made of. (This will probably change to be actual instances of materials, so the materials themselves can keep track of attributes such as burn/corrosion/etc. amount.)
+Materials are classes that describe what individual thing instances are made of. When created, a thing gets a new instance of its material; this allows the material instance to keep track of attributes such as burn/corrosion/etc. amount.
 
 (TODO: Add more details here)
 
@@ -131,7 +131,3 @@ A non-exhaustive list (obviously).
 
 - Direct access of the `Thing#attributes` hash is probably a bad idea, since it won't allow for checking future attribute constraints, or converting symbols into symbolic attributes. (Also, reading them via that hash doesn't fall back to class attributes if they don't exist.)
 
-### Materials
-
-- Thing instances should probably have Material instances, instead of class references.
- 

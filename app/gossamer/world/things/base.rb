@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require COMMON_INCLUDES
+require COMMON_REQUIRES
 
 module Gossamer
   module World
@@ -47,6 +47,49 @@ module Gossamer
           create_parts(options)
         end
 
+        def attributes
+          smart_merge((material&.attributes || {}), _attributes).freeze
+        end
+
+        def attribute_keys
+          (material&.attribute_keys || []) | _attributes.keys
+        end
+
+        def attribute_set(key, value)
+          if material&.attribute?(key)
+            material&.attribute_set(key, value)
+          else
+            _attributes[key] = attributify(key, value)
+          end
+        end
+
+        def attribute_reset(key)
+          if material&.attribute?(key)
+            material&.attribute_reset(key)
+          else
+            _attributes.erase(key)
+          end
+        end
+
+        # Checks if this thing or its material have the attribute requested.
+        def attribute?(attrib)
+          material&.attribute?(attrib) ||
+            _attributes.key?(attrib) ||
+            self.class.respond_to?(attrib)
+        end
+
+        # Checks the thing or its material for the attribute requested, and
+        # returns the value.
+        def attribute(attrib)
+          return material&.attribute(attrib) if material&.attribute?(attrib)
+
+          return _attributes[attrib] if _attributes.key?(attrib)
+
+          return self.class.send(attrib) if self.class.respond_to?(attrib)
+
+          nil
+        end
+
         # Checks if this thing, its material, or any of its object attributes
         # have the property requested.
         def is?(prop)
@@ -55,7 +98,7 @@ module Gossamer
           return material.property?(prop) if material&.property_exists?(prop)
 
           attributes.any? do |_, attrib|
-            attrib.property_exists?(prop) && attrib.property?(prop)
+            return attrib.property?(prop) if attrib.property_exists?(prop)
           end
         end
 
@@ -146,9 +189,12 @@ module Gossamer
             part_symbol = degossamerify(part)
             instr[part_symbol] ||= {}
 
-            # Merge in incorporator's tags, if any.
+            # Merge in our own tags, if any.
+            instr[part_symbol][:tags] ||= []
+            instr[part_symbol][:tags] |= tags.to_a
+
+            # Merge in option tags, if any.
             if options.key?(:tags)
-              instr[part_symbol][:tags] ||= []
               instr[part_symbol][:tags] =
                 instr[part_symbol][:tags] | options[:tags]
             end

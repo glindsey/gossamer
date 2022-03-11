@@ -8,50 +8,29 @@ module Gossamer
         include World::Traits::Concrete
         include Traits::Humanoid
         include Traits::Mammal
+        include Traits::HasFeet
+        include Traits::HasHands
 
-        class << self
-          def default_config
-            {
-              parts: {
-                abdomen:   {},
-                left_arm:  {
-                  type:  :arm,
-                  tags:  [:left],
-                  parts: {
-                    left_hand: {
-                      type: :hand
-                    }
+        def self.default_config
+          {
+            parts: {
+              abdomen: {},
+              torso:   {
+                parts: {
+                  left_arm:  {
+                    type: :arm,
+                    tags: [:left]
+                  },
+                  right_arm: {
+                    type: :arm,
+                    tags: [:right]
                   }
-                },
-                right_arm: {
-                  type:  :arm,
-                  tags:  [:right],
-                  parts: {
-                    right_hand: {
-                      type: :hand
-                    }
-                  }
-                },
-                head:      {},
-                left_leg:  {
-                  parts: {
-                    left_foot: {
-                      type: :foot
-                    }
-                  }
-                },
-                right_leg: {
-                  parts: {
-                    right_foot: {
-                      type: :foot
-                    }
-                  }
-                },
-                torso:     {}
+                }
               },
-              tags:  [:human]
-            }
-          end
+              head:    {}
+            },
+            tags:  [:human]
+          }
         end
       end
     end

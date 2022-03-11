@@ -51,8 +51,9 @@ module Gossamer
 
         # Return whether this thing incorporates the requested part, or a part
         # of the requested type. Optionally, search criteria can be passed in
-        # as a block which can be checked against. (Non-recursive.)
-        def part?(search_target, &block)
+        # as a list of required tags and/or a block which can be checked
+        # against. (Non-recursive.)
+        def part?(search_target, required_tags: [], &block)
           matching_parts = [part(search_target)].compact
 
           case search_target
@@ -61,7 +62,7 @@ module Gossamer
               search_sym = degossamerify(search_target)
               matching_parts = parts.values.select do |checked_part|
                 part_sym = degossamerify(checked_part)
-                search_sym == part_sym
+                search_sym == part_sym && checked_part.tags?(required_tags)
               end
             end
           end
@@ -72,26 +73,58 @@ module Gossamer
         end
 
         # Return whether this thing incorporates the requested part, or a part
-        # of the requested type (recursive). Optionally, search criteria can be
-        # passed in as a block which can be checked against.
-        def incorporates?(*search_targets, &block)
+        # of the requested type. Optionally, search criteria can be passed in as
+        # a list of required tags and/or a block which can be checked against.
+        def incorporates?(*search_targets, required_tags: [], &block)
           search_targets.all? do |search_target|
             case search_target
             when String, Symbol
-              part?(search_target, &block) ||
+              part?(search_target, required_tags:, &block) ||
                 parts.values.any? do |part|
-                  part.incorporates?(search_target, &block)
+                  part.incorporates?(
+                    search_target, required_tags:, &block
+                  )
                 end
             else
               search_target = thingify(search_target)
-              return false if search_target.nil?
-
-              if self == search_target || is_a?(search_target)
-                return block ? yield(self) : true
+              if search_target.nil?
+                false
+              elsif self == search_target || is_a?(search_target)
+                tags?(required_tags) && block ? yield(self) : true
+              else
+                parts.values.any? do |part|
+                  part.incorporates?(
+                    search_target, required_tags:, &block
+                  )
+                end
               end
+            end
+          end
+        end
 
-              parts.values.any? do |part|
-                part.incorporates?(search_target, &block)
+        # Return whether this thing incorporates a left/right pair of the
+        # requested part, or a part of the requested type. Optionally, search
+        # criteria can be passed in as a list of required tags and/or a block
+        # which can be checked against.
+        def incorporates_a_pair_of?(*search_targets, required_tags: [], &block)
+          search_targets.all? do |search_pair|
+            search_target = search_pair.to_s.singularize.to_sym
+            case search_pair
+            when String, Symbol
+              search_pair.to_s.singularize.to_sym
+            else
+              thingify(search_target)
+            end
+
+            if search_target.nil?
+              false
+            else
+              %i[left right].all? do |adj|
+                incorporates?(
+                  search_target,
+                  required_tags: required_tags | [adj],
+                  &block
+                )
               end
             end
           end
