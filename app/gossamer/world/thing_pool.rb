@@ -4,7 +4,11 @@ module Gossamer
   module World
     # A pool that relates things to UUIDs, allowing for much easier
     # serialization/deserialization of data.
+    #
+    # Also contains a relations pool which is tied to it.
     class ThingPool
+      attr_reader :relations
+
       include Concerns::SymbolToGossamerClass
 
       def [](id)
@@ -36,8 +40,14 @@ module Gossamer
         @pool.delete(id)
       end
 
+      # Raw pool relating UUIDs to Things.
       def pool
         @pool ||= {}
+      end
+
+      # RelationPool instance.
+      def relations
+        @relations ||= RelationPool.new(thing_pool: self)
       end
     end
   end

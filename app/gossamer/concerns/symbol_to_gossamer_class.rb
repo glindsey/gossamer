@@ -23,6 +23,10 @@ module Gossamer
           gossamerify(obj, 'Materials')
         end
 
+        def thing_relationify(obj)
+          gossamerify(obj, 'Things::Relations')
+        end
+
         def thingify(obj)
           gossamerify(obj, 'Things')
         end

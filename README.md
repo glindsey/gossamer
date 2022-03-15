@@ -125,6 +125,13 @@ Trait mixins can add to arrays of configuration functions which can modify the t
 
 A non-exhaustive list (obviously).
 
+### Areas
+
+- How to represent the physical space that things are in?
+- A hierarchical space is logical but can be overly complicated for things unless they are carried, worn, inside a container, et cetera. 
+- For now, have everything not "contained" by something else have a location inside a global physical space (the "universe").
+- The "universe" has X/Y/Z dimensions, but no dimensional limits (e.g. it is an infinitely large container).
+
 ### Attributes
 
 - Attribute constraints, such as min/max values.
