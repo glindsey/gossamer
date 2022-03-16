@@ -8,11 +8,7 @@ gem 'zeitwerk'
 
 group :development, :test do
   gem 'awesome_print'
-  gem 'byebug'
   gem 'hirb'
-  gem 'pry'
-  gem 'pry-byebug'
-  gem 'pry-stack_explorer'
   gem 'rspec'
   gem 'rubocop'
   gem 'rubocop-performance'

@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
-require 'pry-byebug'
-require 'pry-stack_explorer'
 require 'sourcify'
 
 require COMMON_REQUIRES
@@ -28,10 +25,7 @@ module Gossamer
             #{block_to_source(&)}
         TEXT
 
-        if ::Gossamer.development?
-          warn "*** #{str}"
-          binding.pry # rubocop:disable Lint/Debugger
-        elsif ::Gossamer.test?
+        if ::Gossamer.development? || ::Gossamer.test?
           raise str
         end
       end
