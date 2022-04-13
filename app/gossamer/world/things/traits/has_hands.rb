@@ -6,7 +6,7 @@ module Gossamer
       module Traits
         # Definition of a being that has hands at the ends of its arms.
         module HasHands
-          extend ActiveSupport::Concern
+          extend World::Traits::Base
           include Concerns::Log
 
           included do

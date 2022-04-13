@@ -6,7 +6,7 @@ module Gossamer
       module Traits
         # Gynomorph means "possessing female sexual characteristics".
         module GynomorphAtBirth
-          extend ActiveSupport::Concern
+          extend World::Traits::Base
 
           class_methods do
             def gynomorphic_at_birth?

@@ -13,7 +13,7 @@ module Gossamer
       # Eventually this may be extended to support class-level tags, but for now
       # I don't think that's necessary.
       module HasTags
-        extend ActiveSupport::Concern
+        extend World::Traits::Base
         include Concerns::SymbolToGossamerClass
         using Refinements::ObjectToKeysOfHash
 

@@ -17,7 +17,7 @@ module Gossamer
       # By default, the "abstract" property is set on any class including this
       # trait.
       module HasProperties
-        extend ActiveSupport::Concern
+        extend World::Traits::Base
         using ::Gossamer::Refinements::ObjectToKeysOfHash
 
         def properties

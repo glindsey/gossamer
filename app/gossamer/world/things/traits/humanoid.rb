@@ -7,7 +7,7 @@ module Gossamer
         # "Humanoid" implies that a thing will have two legs, two arms, a torso,
         # an abdomen, and a head when created.
         module Humanoid
-          extend ActiveSupport::Concern
+          extend World::Traits::Base
           include Things::Traits::Biped
 
           class_methods do

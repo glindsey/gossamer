@@ -6,7 +6,7 @@ module Gossamer
       module Traits
         # Cookable is any substance that can be cooked.
         module Cookable
-          extend ActiveSupport::Concern
+          extend World::Traits::Base
 
           # has_attributes: cooked_percentage
         end

@@ -11,7 +11,7 @@ module Gossamer
       # Eventually this may be extended to support class-level attributes, but
       # for now I don't think that's necessary.
       module HasAttributes
-        extend ActiveSupport::Concern
+        extend World::Traits::Base
         include Concerns::SymbolToGossamerClass
         using Refinements::ObjectToKeysOfHash
 

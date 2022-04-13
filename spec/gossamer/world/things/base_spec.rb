@@ -6,7 +6,7 @@ module Gossamer
   module World
     module Traits
       module TestingTrait
-        extend ActiveSupport::Concern
+        extend World::Traits::Base
         include World::Traits::HasProperties
 
         class_methods do

@@ -18,7 +18,7 @@ module Gossamer
       # of the same part, such as a left leg and a right leg. In those cases, we
       # can use the option `type:` to specify the part to create.
       module HasParts
-        extend ActiveSupport::Concern
+        extend World::Traits::Base
         include Concerns::SymbolToGossamerClass
         using Refinements::ObjectToKeysOfHash
 

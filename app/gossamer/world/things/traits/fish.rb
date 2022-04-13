@@ -6,7 +6,7 @@ module Gossamer
       module Traits
         # Definition of a fish.
         module Fish
-          extend ActiveSupport::Concern
+          extend World::Traits::Base
           include Things::Traits::Polymorph
 
           class_methods do

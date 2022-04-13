@@ -5,7 +5,6 @@ module Gossamer
     # Methods to convert symbols into Gossamer classes when needed.
     module SymbolToGossamerClass
       extend ActiveSupport::Concern
-
       include Concerns::Log
 
       delegate :attributify, :materialify, :thingify, :thing_traitify,

@@ -7,7 +7,7 @@ module Gossamer
         # Burnable indicates a substance that can burn.
         # It may also have a flash point.
         module Burnable
-          extend ActiveSupport::Concern
+          extend World::Traits::Base
 
           # has_attributes: burn_percentage, flash_point*
           # has_refs: material: burn_result

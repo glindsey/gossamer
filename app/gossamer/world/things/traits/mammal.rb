@@ -6,7 +6,7 @@ module Gossamer
       module Traits
         # Definition of a mammal.
         module Mammal
-          extend ActiveSupport::Concern
+          extend World::Traits::Base
           include Things::Traits::Polymorph
 
           included do

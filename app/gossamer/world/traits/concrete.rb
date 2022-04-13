@@ -7,7 +7,7 @@ module Gossamer
       # This does NOT mean they are "concrete" in a physical sense, only that
       # they can exist as independent objects.
       module Concrete
-        extend ActiveSupport::Concern
+        extend World::Traits::Base
 
         class_methods do
           def abstract?

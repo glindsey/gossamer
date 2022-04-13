@@ -12,7 +12,7 @@ module Gossamer
         # - worn by
         # These statuses are exclusive to each other.
         module PhysicallyRelatable
-          extend ActiveSupport::Concern
+          extend World::Traits::Base
 
           RELATIONS = %i[
             contained_by

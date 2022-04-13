@@ -6,7 +6,7 @@ module Gossamer
       module Traits
         # Corrodable is any substance that can corrode.
         module Corrodable
-          extend ActiveSupport::Concern
+          extend World::Traits::Base
 
           # has_attributes: corrosion
           # has_refs: material: corrode_result

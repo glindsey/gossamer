@@ -6,8 +6,7 @@ module Gossamer
       module Traits
         # Definition of a being that has feet at the ends of its legs.
         module HasFeet
-          extend ActiveSupport::Concern
-          include Concerns::Log
+          extend World::Traits::Base
 
           included do
             mixin_config_funcs_after.append(

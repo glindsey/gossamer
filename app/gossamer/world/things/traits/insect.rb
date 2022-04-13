@@ -6,7 +6,7 @@ module Gossamer
       module Traits
         # Definition of an insect.
         module Insect
-          extend ActiveSupport::Concern
+          extend World::Traits::Base
           include Things::Traits::Polymorph
 
           class_methods do

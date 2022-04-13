@@ -6,7 +6,7 @@ module Gossamer
       # Indicates that a class and its instantiated objects have a material that
       # can be read/written/queried.
       module HasMaterial
-        extend ActiveSupport::Concern
+        extend World::Traits::Base
         include Concerns::SymbolToGossamerClass
         using Refinements::ObjectToKeysOfHash
 
