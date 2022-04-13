@@ -7,36 +7,23 @@ module Gossamer
         # Definition of a being that has feet at the ends of its legs.
         module HasFeet
           include World::Traits::Base
+          using Refinements::AssemblyInstructions
           using Refinements::SmartMerge
 
           included do
             mixin_config_funcs_after.append(
               lambda { |opts|
-                # Get refs to torso and abdomen.
-                torso = opts.dig(:parts, :torso)
-                abdomen = opts.dig(:parts, :abdomen)
-
-                if [torso, abdomen].all?(&:blank?)
-                  Services::Logger.log(
-                    'While trying to add feet: ' \
-                    "#{inspect} does not have a torso or abdomen!",
-                    level: :warning
-                  )
-
-                  return opts
-                end
-
-                [torso, abdomen].each do |big_part|
+                opts.each_part(parts: %i[torso abdomen]) do |_, part|
                   # Iterate through all legs attached to this part.
 
-                  parts = big_part.fetch(:parts, nil)
+                  subparts = part.fetch(:parts, nil)
 
-                  next unless parts
+                  next unless subparts
 
-                  parts.each do |(part_name, part)|
-                    if parts[part_name][:type] == :leg
-                      parts[part_name] =
-                        part.smart_merge({ parts: { foot: {} } })
+                  subparts.each do |(subpart_name, subpart)|
+                    if subparts[subpart_name][:type] == :leg
+                      subparts[subpart_name] =
+                        subpart.smart_merge({ parts: { foot: {} } })
                     end
                   end
                 end
