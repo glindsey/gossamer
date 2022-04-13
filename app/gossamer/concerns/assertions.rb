@@ -25,9 +25,7 @@ module Gossamer
             #{block_to_source(&)}
         TEXT
 
-        if ::Gossamer.development? || ::Gossamer.test?
-          raise str
-        end
+        raise str if ::Gossamer.development? || ::Gossamer.test?
       end
 
       def block_to_source(&block)

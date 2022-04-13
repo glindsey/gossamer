@@ -7,8 +7,6 @@ module Gossamer
     #
     # Also contains a relations pool which is tied to it.
     class ThingPool
-      attr_reader :relations
-
       include Concerns::SymbolToGossamerClass
 
       def [](id)

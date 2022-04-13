@@ -53,7 +53,7 @@ RSpec.describe Gossamer::World::ThingPool do
     it 'returns nil when a UUID is not found' do
       pool.create(:dummy)
 
-      expect(pool['blah']).to eq(nil)
+      expect(pool['blah']).to be_nil
     end
   end
 
@@ -67,7 +67,7 @@ RSpec.describe Gossamer::World::ThingPool do
 
       pool.delete(dummy.id)
 
-      expect(pool[dummy.id]).to eq(nil)
+      expect(pool[dummy.id]).to be_nil
     end
 
     it 'does not raise an error when provided a nonexistent UUID' do

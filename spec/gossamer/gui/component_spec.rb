@@ -16,7 +16,7 @@ RSpec.shared_examples('Component') do
     end
 
     it 'has no parent component' do
-      expect(component.parent).to eq(nil)
+      expect(component.parent).to be_nil
     end
   end
 
@@ -50,7 +50,7 @@ RSpec.shared_examples('Component') do
       it 'unmarks the component as dirty' do
         component.draw
 
-        expect(component.dirty).to eq(false)
+        expect(component.dirty).to be(false)
       end
     end
   end
@@ -59,7 +59,7 @@ RSpec.shared_examples('Component') do
     it 'sets the dirty flag for the component' do
       component.mark_as_dirty
 
-      expect(component.dirty).to eq(true)
+      expect(component.dirty).to be(true)
     end
 
     context 'when the component has a parent' do

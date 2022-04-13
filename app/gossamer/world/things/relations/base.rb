@@ -4,6 +4,7 @@ module Gossamer
   module World
     module Things
       module Relations
+        # Base class for a relation between two things.
         class Base
           def initialize(id, thing_a, thing_b, pool:)
             @id = id

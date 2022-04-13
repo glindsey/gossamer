@@ -37,7 +37,7 @@ RSpec.describe Gossamer::World::Things::Base do
   subject(:thing) { described_class.new(nil, pool: nil) }
 
   it 'is marked as abstract' do
-    expect(described_class.is?(:abstract)).to eq(true)
+    expect(described_class.is?(:abstract)).to be(true)
   end
 
   it 'can NOT be instantiated (because it is abstract)' do
@@ -54,15 +54,15 @@ RSpec.describe Gossamer::World::Things::Base do
     end
 
     it 'is not marked as abstract' do
-      expect(thing.is?(:abstract)).to eq(false)
+      expect(thing.is?(:abstract)).to be(false)
     end
 
     it 'returns true when checked for the "testing" property' do
-      expect(thing.is?(:testing)).to eq(true)
+      expect(thing.is?(:testing)).to be(true)
     end
 
     it 'returns false when checked for the "testing_property" property' do
-      expect(thing.is?(:testing_property)).to eq(false)
+      expect(thing.is?(:testing_property)).to be(false)
     end
   end
 
@@ -76,7 +76,7 @@ RSpec.describe Gossamer::World::Things::Base do
     end
 
     it 'returns true when checked for the testing property' do
-      expect(thing.is?(:testing_property)).to eq(true)
+      expect(thing.is?(:testing_property)).to be(true)
     end
   end
 end

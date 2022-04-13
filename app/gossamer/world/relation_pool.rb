@@ -18,7 +18,7 @@ module Gossamer
         @pool.fetch(id, nil)
       end
 
-      def create(thing_a, relation_type, thing_b, **options)
+      def create(thing_a, relation_type, thing_b, **_options)
         thing_a = get_from_pool(thing_a)
         thing_b = get_from_pool(thing_b)
         relation_class = relationify(relation_type)

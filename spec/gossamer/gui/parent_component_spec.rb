@@ -113,7 +113,7 @@ RSpec.shared_examples('ParentComponent') do
       end
 
       it "sets the child's parent to nil" do
-        expect(child2.parent).to eq(nil)
+        expect(child2.parent).to be_nil
       end
     end
   end

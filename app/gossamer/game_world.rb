@@ -7,8 +7,8 @@ module Gossamer
   class GameWorld
     attr_reader :rules
 
-    def initialize
-      # TODO: write me
-    end
+    # def initialize
+    #   # TODO: write me
+    # end
   end
 end
