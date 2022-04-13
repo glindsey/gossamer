@@ -8,31 +8,24 @@ module Gossamer
         # legs by default.
         module Quadruped
           include World::Traits::Base
-          using Refinements::SmartMerge
+          using Refinements::AssemblyInstructions
 
           included do
             mixin_config_funcs_after.append(
               lambda { |opts|
-                opts.smart_merge(
-                  {
-                    parts: {
-                      left_front_leg:  {
-                        type: :leg,
-                        tags: %i[left front]
-                      },
-                      left_rear_leg:   {
-                        type: :leg,
-                        tags: %i[left rear]
-                      },
-                      right_front_leg: {
-                        type: :leg,
-                        tags: %i[right front]
-                      },
-                      right_rear_leg:  {
-                        type: :leg,
-                        tags: %i[right rear]
-                      }
-                    }
+                opts.add_part(
+                  to:    [:abdomen],
+                  parts: {
+                    left_rear_leg:  { type: :leg, tags: [:left]  },
+                    right_rear_leg: { type: :leg, tags: [:right] }
+                  }
+                )
+
+                opts.add_part(
+                  to:    [:torso],
+                  parts: {
+                    left_front_leg:  { type: :leg, tags: [:left]  },
+                    right_front_leg: { type: :leg, tags: [:right] }
                   }
                 )
               }

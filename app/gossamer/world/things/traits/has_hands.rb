@@ -39,6 +39,8 @@ module Gossamer
                 end
 
                 torso_parts.each do |(part_name, part)|
+                  next unless torso_parts[part_name][:type] == :arm
+
                   torso_parts[part_name] =
                     part.smart_merge({ parts: { hand: {} } })
                 end

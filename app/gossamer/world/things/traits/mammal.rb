@@ -8,7 +8,7 @@ module Gossamer
         module Mammal
           include World::Traits::Base
           include Things::Traits::Polymorph
-          using Refinements::SmartMerge
+          using Refinements::AssemblyInstructions
 
           included do
             mixin_config_funcs_after.append(
@@ -16,26 +16,17 @@ module Gossamer
                 # A mammal typically has two eyes, a nose, and a mouth.
                 # TODO: Forward-facing or side-facing depending on prey or
                 #       predator
-                head = opts.dig(:parts, :head)
-                if head
-                  opts[:parts][:head] =
-                    head.smart_merge(
-                      {
-                        parts: {
-                          left_ear:  { type: :ear, tags: [:left] },
-                          right_ear: { type: :ear, tags: [:right] },
-                          left_eye:  { type: :eye, tags: [:left] },
-                          right_eye: { type: :eye, tags: [:right] },
-                          nose:      {},
-                          mouth:     {}
-                        }
-                      }
-                    )
-                else
-                  warn "!!! Mammal #{inspect} does not have a head!"
-                end
-
-                opts
+                opts.add_part(
+                  to: [:head],
+                  parts: {
+                    left_ear:  { type: :ear, tags: [:left] },
+                    right_ear: { type: :ear, tags: [:right] },
+                    left_eye:  { type: :eye, tags: [:left] },
+                    right_eye: { type: :eye, tags: [:right] },
+                    nose:      {},
+                    mouth:     {}
+                  }
+                )
               }
             )
           end
