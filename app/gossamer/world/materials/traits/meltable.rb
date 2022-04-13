@@ -7,7 +7,7 @@ module Gossamer
         # Meltable indicates a substance that can melt, versus one that only
         # burns.
         module Meltable
-          extend World::Traits::Base
+          include World::Traits::Base
 
           # has_attributes: melting_point, sublimation_point
         end

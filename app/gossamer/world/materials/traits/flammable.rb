@@ -7,7 +7,7 @@ module Gossamer
         # Flammable indicates a substance that not only burns, but also has a
         # flash point where it spontaneously bursts into flame.
         module Flammable
-          extend World::Traits::Base
+          include World::Traits::Base
           include Materials::Traits::Burnable
 
           # has_attributes: flash_point

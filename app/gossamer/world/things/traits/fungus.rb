@@ -6,7 +6,7 @@ module Gossamer
       module Traits
         # Definition of a fungus.
         module Fungus
-          extend World::Traits::Base
+          include World::Traits::Base
 
           class_methods do
             def fungal?

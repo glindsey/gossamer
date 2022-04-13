@@ -6,7 +6,7 @@ module Gossamer
       module Traits
         # Definition of an amphibian.
         module Amphibian
-          extend World::Traits::Base
+          include World::Traits::Base
           include Things::Traits::Polymorph
 
           class_methods do

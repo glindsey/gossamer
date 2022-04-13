@@ -6,7 +6,7 @@ module Gossamer
       module Traits
         # Organic indicates a substance such as wood, flesh, bone, etc.
         module Organic
-          extend World::Traits::Base
+          include World::Traits::Base
         end
       end
     end

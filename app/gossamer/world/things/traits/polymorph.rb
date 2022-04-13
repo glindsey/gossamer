@@ -8,7 +8,7 @@ module Gossamer
         # markers", and has nothing to do with self-identified gender. (It also
         # has nothing to do with the classic roguelike/D&D "polymorph".)
         module Polymorph
-          extend World::Traits::Base
+          include World::Traits::Base
 
           class_methods do
             def polymorphic?

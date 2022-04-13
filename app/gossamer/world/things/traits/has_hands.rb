@@ -6,8 +6,9 @@ module Gossamer
       module Traits
         # Definition of a being that has hands at the ends of its arms.
         module HasHands
-          extend World::Traits::Base
+          include World::Traits::Base
           include Concerns::Log
+          using Refinements::SmartMerge
 
           included do
             mixin_config_funcs_after.append(
@@ -39,7 +40,7 @@ module Gossamer
 
                 torso_parts.each do |(part_name, part)|
                   torso_parts[part_name] =
-                    smart_merge(part, { parts: { hand: {} } })
+                    part.smart_merge({ parts: { hand: {} } })
                 end
 
                 opts

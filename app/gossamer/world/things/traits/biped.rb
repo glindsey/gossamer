@@ -6,29 +6,17 @@ module Gossamer
       module Traits
         # A default biped has a left leg and a right leg as part of an abdomen.
         module Biped
-          extend World::Traits::Base
-          include Concerns::SmartMerge
+          include World::Traits::Base
+          using Refinements::AssemblyInstructions
 
           included do
             mixin_config_funcs_after.append(
               lambda { |opts|
-                smart_merge(
-                  opts,
-                  {
-                    parts: {
-                      abdomen: {
-                        parts: {
-                          left_leg:  {
-                            type: :leg,
-                            tags: [:left]
-                          },
-                          right_leg: {
-                            type: :leg,
-                            tags: [:right]
-                          }
-                        }
-                      }
-                    }
+                opts.add_part(
+                  to:    [:abdomen],
+                  parts: {
+                    left_leg:  { type: :leg, tags: [:left]  },
+                    right_leg: { type: :leg, tags: [:right] }
                   }
                 )
               }

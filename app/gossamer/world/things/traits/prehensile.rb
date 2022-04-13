@@ -6,7 +6,7 @@ module Gossamer
       module Traits
         # Definition of a prehensile part (e.g. one that can grasp things).
         module Prehensile
-          extend World::Traits::Base
+          include World::Traits::Base
 
           class_methods do
             def prehensile?

@@ -35,13 +35,14 @@ module Gossamer
       # I don't think that's necessary.
       class Base
         include Concerns::Log
-        include Concerns::SmartMerge
         include Concerns::SymbolToGossamerClass
         include World::Traits::HasAttributes
         include World::Traits::HasConstraints
         include World::Traits::HasProperties
         include Things::Traits::PhysicallyRelatable
-        using ::Gossamer::Refinements::ObjectToKeysOfHash
+        using Refinements::AssemblyInstructions
+        using Refinements::ObjectToKeysOfHash
+        using Refinements::SmartMerge
 
         attr_reader :id, :pool
 
@@ -88,7 +89,7 @@ module Gossamer
         end
 
         def attributes
-          smart_merge((material&.attributes || {}), _attributes).freeze
+          (material&.attributes || {}).smart_merge(_attributes).freeze
         end
 
         def attribute_keys
@@ -335,12 +336,9 @@ module Gossamer
           def merge_with_default_config(opts)
             # Look at this functional programming nightmare. LOOK at it.
             mixin_config_funcs_after.inject(
-              smart_merge(
-                mixin_config_funcs_before.inject(
-                  defined?(super) ? super : recursive_default_config
-                ) { |memo, func| func.call(memo) },
-                opts || {}
-              )
+              mixin_config_funcs_before.inject(
+                defined?(super) ? super : recursive_default_config
+              ) { |memo, func| func.call(memo) }.smart_merge(opts || {})
             ) { |memo, func| func.call(memo) }
           end
 
@@ -358,7 +356,7 @@ module Gossamer
 
           def recursive_default_config
             if defined?(super)
-              smart_merge(super, default_config)
+              super.smart_merge(default_config)
             else
               default_config
             end
@@ -443,7 +441,7 @@ module Gossamer
                 instr[part_symbol][:tags] | options[:tags]
             end
 
-            instr[part_symbol] = smart_merge(instr[part_symbol], opts)
+            instr[part_symbol] = instr[part_symbol].smart_merge(opts)
           end
         end
 

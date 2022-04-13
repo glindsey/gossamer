@@ -6,8 +6,9 @@ module Gossamer
       module Traits
         # Definition of a mammal.
         module Mammal
-          extend World::Traits::Base
+          include World::Traits::Base
           include Things::Traits::Polymorph
+          using Refinements::SmartMerge
 
           included do
             mixin_config_funcs_after.append(
@@ -18,8 +19,7 @@ module Gossamer
                 head = opts.dig(:parts, :head)
                 if head
                   opts[:parts][:head] =
-                    smart_merge(
-                      head,
+                    head.smart_merge(
                       {
                         parts: {
                           left_ear:  { type: :ear, tags: [:left] },

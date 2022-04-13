@@ -6,7 +6,7 @@ module Gossamer
       module Traits
         # Definition of a plant.
         module Plant
-          extend World::Traits::Base
+          include World::Traits::Base
 
           class_methods do
             def vegetative?

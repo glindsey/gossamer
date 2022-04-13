@@ -7,14 +7,13 @@ module Gossamer
         # A quadruped has left-front, left-rear, right-front, and right-rear
         # legs by default.
         module Quadruped
-          extend World::Traits::Base
-          include Concerns::SmartMerge
+          include World::Traits::Base
+          using Refinements::SmartMerge
 
           included do
             mixin_config_funcs_after.append(
               lambda { |opts|
-                smart_merge(
-                  opts,
+                opts.smart_merge(
                   {
                     parts: {
                       left_front_leg:  {

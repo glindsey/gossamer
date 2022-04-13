@@ -6,7 +6,7 @@ module Gossamer
       module Traits
         # Andromorph means "possessing male sexual characteristics".
         module AndromorphAtBirth
-          extend World::Traits::Base
+          include World::Traits::Base
 
           class_methods do
             def andromorphic_at_birth?

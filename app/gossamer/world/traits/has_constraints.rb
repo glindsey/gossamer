@@ -6,7 +6,7 @@ module Gossamer
       # Indicates that a class has constraints that are checked when an object
       # is created.
       module HasConstraints
-        extend World::Traits::Base
+        include World::Traits::Base
         using ::Gossamer::Refinements::ObjectToKeysOfHash
 
         def check_constraints

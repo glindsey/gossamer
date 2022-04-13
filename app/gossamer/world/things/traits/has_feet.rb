@@ -6,7 +6,8 @@ module Gossamer
       module Traits
         # Definition of a being that has feet at the ends of its legs.
         module HasFeet
-          extend World::Traits::Base
+          include World::Traits::Base
+          using Refinements::SmartMerge
 
           included do
             mixin_config_funcs_after.append(
@@ -33,8 +34,10 @@ module Gossamer
                   next unless parts
 
                   parts.each do |(part_name, part)|
-                    parts[part_name] =
-                      smart_merge(part, { parts: { foot: {} } })
+                    if parts[part_name][:type] == :leg
+                      parts[part_name] =
+                        part.smart_merge({ parts: { foot: {} } })
+                    end
                   end
                 end
 

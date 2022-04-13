@@ -6,7 +6,7 @@ module Gossamer
       module Traits
         # Definition of a reptile.
         module Reptile
-          extend World::Traits::Base
+          include World::Traits::Base
           include Things::Traits::Polymorph
 
           class_methods do
